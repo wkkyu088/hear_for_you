@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hear_for_you/widgets/profile.modal.dart';
 
-class SettingSCreen extends StatefulWidget {
-  const SettingSCreen({Key? key}) : super(key: key);
+class SettingScreen extends StatefulWidget {
+  const SettingScreen({Key? key}) : super(key: key);
   @override
-  State<SettingSCreen> createState() => _SettingSCreenState();
+  State<SettingScreen> createState() => _SettingScreenState();
 }
 
 TextStyle settingTitleStyle = const TextStyle(
@@ -12,13 +13,13 @@ TextStyle settingTitleStyle = const TextStyle(
 TextStyle settingTityleValueStyle = const TextStyle(
     fontSize: 25, fontWeight: FontWeight.bold, color: Colors.orange);
 
-class _SettingSCreenState extends State<SettingSCreen> {
+class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     String name = '000';
     double dB = 70;
     double value = 20;
-    bool regular_value = true;
+    bool regularValue = true;
     List<bool> cases = [true, false, false];
 
     return Scaffold(
@@ -36,7 +37,7 @@ class _SettingSCreenState extends State<SettingSCreen> {
             elevation: 0,
             title: const Text(
               '설정',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -50,17 +51,19 @@ class _SettingSCreenState extends State<SettingSCreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(name + ' 님',
+                    Text('$name 님',
                         style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.orange)),
                     IconButton(
-                        onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_drop_down_rounded,
-                          size: 50,
-                        ))
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .restorablePush(profileModalBuilder);
+                        })
                   ],
                 ),
                 SizedBox(
@@ -73,7 +76,7 @@ class _SettingSCreenState extends State<SettingSCreen> {
                       '상시모드 ',
                       style: settingTitleStyle,
                     ),
-                    regular_value
+                    regularValue
                         ? Text(
                             '켜짐',
                             style: settingTityleValueStyle,
@@ -85,10 +88,10 @@ class _SettingSCreenState extends State<SettingSCreen> {
                     const Spacer(),
                     CupertinoSwitch(
                         activeColor: Colors.orange,
-                        value: regular_value,
+                        value: regularValue,
                         onChanged: (bool value) {
                           setState(() {
-                            regular_value = value;
+                            regularValue = value;
                           });
                         })
                   ],
