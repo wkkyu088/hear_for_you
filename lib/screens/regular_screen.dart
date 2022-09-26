@@ -9,6 +9,11 @@ class RegularScreen extends StatefulWidget {
 class _RegularScreenState extends State<RegularScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      body: Center(
+          child: Text('This is main page',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w200))),
+      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+    );
   }
 }
