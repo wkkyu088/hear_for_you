@@ -31,7 +31,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 Icons.close_rounded,
                 size: 30,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             centerTitle: true,
             elevation: 0,
