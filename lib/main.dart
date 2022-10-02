@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
 
@@ -19,6 +22,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = false;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: isDarkMode
+          ? Platform.isIOS
+              ? Brightness.dark
+              : Brightness.light
+          : Platform.isIOS
+              ? Brightness.light
+              : Brightness.dark,
+    ));
+
     return MaterialApp(
       title: 'Hear For You',
       debugShowCheckedModeBanner: false,

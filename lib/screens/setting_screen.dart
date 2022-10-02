@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hear_for_you/widgets/profile.modal.dart';
 import 'package:hear_for_you/constants.dart';
 
@@ -17,7 +18,6 @@ class _SettingScreenState extends State<SettingScreen> {
 
   String name = '000';
   double dB = 70;
-  bool regularValue = true;
   List<bool> cases = [true, false, false];
 
   @override
@@ -26,6 +26,7 @@ class _SettingScreenState extends State<SettingScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
             leading: IconButton(
               icon: const Icon(
                 Icons.close_rounded,
@@ -93,7 +94,9 @@ class _SettingScreenState extends State<SettingScreen> {
                         value: regularValue,
                         onChanged: (bool value) {
                           regularValue = value;
-                          setState(() {});
+                          setState(() {
+                            regularValue = value;
+                          });
                         })
                   ],
                 ),
