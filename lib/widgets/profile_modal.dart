@@ -34,7 +34,7 @@ Route profileModalBuilder(BuildContext context, Object? arguments) {
               ))
         ],
         cancelButton: CupertinoActionSheetAction(
-          child: const Text('취소', style: TextStyle(color: Colors.orange)),
+          child: const Text('확인', style: TextStyle(color: Colors.orange)),
           onPressed: () {
             Navigator.pop(context);
           },
