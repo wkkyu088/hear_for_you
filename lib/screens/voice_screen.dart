@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/widgets/chat_modal.dart';
 
 import '../constants.dart';
 
@@ -252,27 +254,35 @@ class _VoiceScreenState extends State<VoiceScreen> {
                     Container(
                       margin: const EdgeInsets.only(right: 10),
                       child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          primary: Colors.white,
-                          backgroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: const Text(
-                          '저장',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'SCBold',
-                          ),
-                        ),
-                      ),
+                          child: TextButton(
+                            child: const Text(
+                              '저장',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontFamily: 'SCBold',
+                              ),
+                            ),
+                            onPressed: () {
+                              showCupertinoModalPopup(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          chatModalBuilder(context))
+                                  .then((value) => setState(() {}));
+                            },
+                          )),
                     ),
                   ],
                 )

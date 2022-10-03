@@ -129,23 +129,27 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).restorablePush(profileModalBuilder);
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      items[profileValue],
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                    const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 25,
-                    ),
-                  ],
-                ),
-              ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        items[profileValue],
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 25,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    showCupertinoModalPopup(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                profileModalBuilder(context))
+                        .then((value) => setState(() {}));
+                  }),
               spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
