@@ -254,7 +254,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
                     Container(
                       margin: const EdgeInsets.only(right: 10),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showCupertinoModalPopup(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        chatModalBuilder(context))
+                                .then((value) => setState(() {}));
+                          },
                           style: TextButton.styleFrom(
                             primary: Colors.white,
                             backgroundColor: Colors.black,
@@ -266,22 +272,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: TextButton(
-                            child: const Text(
-                              '저장',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontFamily: 'SCBold',
-                              ),
+                          child: const Text(
+                            '저장',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'SCBold',
                             ),
-                            onPressed: () {
-                              showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          chatModalBuilder(context))
-                                  .then((value) => setState(() {}));
-                            },
                           )),
                     ),
                   ],
