@@ -4,6 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:hear_for_you/constants.dart';
 
+// CupertinoSwitch(
+//   activeColor: kMain,
+//   value: cases[0],
+//   onChanged: (bool value) {
+//     setState(() {
+//       cases[0] = value;
+//     });
+//   },
+// ),
+
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
   @override
@@ -34,18 +44,13 @@ class _SettingScreenState extends State<SettingScreen> {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     TextStyle settingTitleStyle = const TextStyle(
-        fontFamily: 'SCBold', fontSize: 20, color: Colors.black);
-    TextStyle settingDetailStyle =
-        const TextStyle(fontSize: 16, color: Colors.black);
-    TextStyle settingTityleValueStyle =
-        TextStyle(fontFamily: 'SCBold', fontSize: 20, color: kMain);
+        fontFamily: 'SCBold', fontSize: 19, color: Colors.black);
 
-    Widget spacer() {
-      // return const SizedBox(height: 10);
+    Widget spacer(margin) {
       return Container(
-        margin: const EdgeInsets.symmetric(vertical: 20),
+        margin: margin,
         height: 1,
-        color: Colors.grey[100],
+        color: Colors.grey[200],
       );
     }
 
@@ -81,15 +86,57 @@ class _SettingScreenState extends State<SettingScreen> {
           ]);
     }
 
+    Widget customCard(title, child, padding) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(left: 10, bottom: 5),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              title,
+              textAlign: TextAlign.start,
+              style: TextStyle(color: Colors.grey[400], fontSize: 13),
+            ),
+          ),
+          Container(
+            padding: padding,
+            margin: const EdgeInsets.only(bottom: 25),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: child,
+          ),
+        ],
+      );
+    }
+
+    Widget settingItem(title, action) {
+      return TextButton(
+        onPressed: () {},
+        style: TextButton.styleFrom(
+          primary: Colors.grey,
+        ),
+        child: Row(
+          children: [
+            title,
+            const Spacer(),
+            action,
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           leading: IconButton(
             icon: const Icon(
               Icons.close_rounded,
-              size: 25,
+              size: 22,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -106,154 +153,250 @@ class _SettingScreenState extends State<SettingScreen> {
           )),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                        fontFamily: 'SCBold', fontSize: 28, color: kMain),
-                  ),
-                  const Text(
-                    ' 님',
-                    style: TextStyle(
-                        fontFamily: 'SCBold',
-                        fontSize: 26,
-                        color: Colors.black),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              GestureDetector(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        items[profileValue],
-                        style:
-                            const TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        size: 25,
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                profileModalBuilder(context))
-                        .then((value) => setState(() {}));
-                  }),
-              spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '상시모드 ',
-                    style: settingTitleStyle,
-                  ),
-                  regularValue
-                      ? Text(
-                          '켜짐',
-                          style: settingTityleValueStyle,
-                        )
-                      : Text(
-                          '꺼짐',
-                          style: settingTityleValueStyle,
-                        ),
-                  const Spacer(),
-                  CupertinoSwitch(
-                      activeColor: kMain,
-                      value: regularValue,
-                      onChanged: (bool value) {
-                        regularValue = value;
-                        setState(() {
-                          regularValue = value;
-                        });
-                      })
-                ],
-              ),
-              spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '상시모드 데시벨 설정',
-                    style: settingTitleStyle,
-                  ),
-                  const Spacer(),
-                  Text(
-                    dB.toString(),
-                    style: settingTityleValueStyle,
-                  ),
-                  Text(
-                    ' dB',
-                    style: settingTitleStyle,
-                  )
-                ],
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: double.maxFinite,
-                child: CupertinoSlider(
-                  thumbColor: kMain,
-                  activeColor: kMain,
-                  min: 0.0,
-                  max: 100.0,
-                  divisions: 20,
-                  value: dB,
-                  onChanged: (value) {
-                    value = value;
-                    setState(() {
-                      dB = value.roundToDouble();
-                    });
-                  },
-                ),
-              ),
-              spacer(),
-              Text(
-                '상시모드 상황별 설정',
-                style: settingTitleStyle,
-              ),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.only(left: 5),
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: 3,
-                  itemBuilder: (context, i) {
-                    return Column(
+              customCard(
+                '개인 설정',
+                Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(caseTitle[i], style: settingTitleStyle),
-                            CupertinoSwitch(
-                              activeColor: kMain,
-                              value: cases[i],
-                              onChanged: (bool value) {
-                                setState(() {
-                                  cases[i] = value;
-                                });
-                              },
-                            )
-                          ],
+                        Text(
+                          name,
+                          style: TextStyle(
+                              fontFamily: 'SCBold', fontSize: 25, color: kMain),
                         ),
-                        const SizedBox(height: 10),
-                        customToggleButton(details[i], detailTitle),
-                        i == 3 ? const SizedBox() : const SizedBox(height: 20),
+                        const Text(
+                          ' 님',
+                          style: TextStyle(
+                              fontFamily: 'SCBold',
+                              fontSize: 22,
+                              color: Colors.black),
+                        ),
                       ],
-                    );
-                  },
+                    ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                items[profileValue],
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.black),
+                              ),
+                              const Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                size: 22,
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          showCupertinoModalPopup(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      profileModalBuilder(context))
+                              .then((value) => setState(() {}));
+                        }),
+                  ],
                 ),
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              ),
+              customCard(
+                '상시모드 설정',
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            '상시모드 ',
+                            style: settingTitleStyle,
+                          ),
+                          regularValue
+                              ? Text(
+                                  '켜짐',
+                                  style: TextStyle(
+                                      fontFamily: 'SCBold',
+                                      fontSize: 19,
+                                      color: kMain),
+                                )
+                              : const Text(
+                                  '꺼짐',
+                                  style: TextStyle(
+                                      fontFamily: 'SCBold',
+                                      fontSize: 19,
+                                      color: Colors.grey),
+                                ),
+                          const Spacer(),
+                          Transform.scale(
+                            scale: 0.9,
+                            child: SizedBox(
+                              height: 10,
+                              child: CupertinoSwitch(
+                                activeColor: kMain,
+                                value: regularValue,
+                                onChanged: (bool value) {
+                                  regularValue = value;
+                                  setState(() {
+                                    regularValue = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    spacer(const EdgeInsets.only(bottom: 5)),
+                    settingItem(
+                      Text(
+                        '데시벨 설정',
+                        style: settingTitleStyle,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            dB.toString(),
+                            style: TextStyle(fontSize: 17, color: kMain),
+                          ),
+                          const Text(
+                            ' dB',
+                            style: TextStyle(fontSize: 17, color: Colors.black),
+                          ),
+                          const Icon(Icons.chevron_right_rounded, size: 22)
+                        ],
+                      ),
+                    ),
+                    // const SizedBox(height: 10),
+                    // SizedBox(
+                    //   width: double.maxFinite,
+                    //   child: CupertinoSlider(
+                    //     thumbColor: kMain,
+                    //     activeColor: kMain,
+                    //     min: 0.0,
+                    //     max: 100.0,
+                    //     divisions: 20,
+                    //     value: dB,
+                    //     onChanged: (value) {
+                    //       value = value;
+                    //       setState(() {
+                    //         dB = value.roundToDouble();
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
+                  ],
+                ),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              ),
+              customCard(
+                '알림 설정',
+                Column(
+                  children: [
+                    settingItem(
+                      Text(caseTitle[0], style: settingTitleStyle),
+                      Row(
+                        children: [
+                          Text(
+                            cases[0] ? '켬' : '끔',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: cases[0] ? kMain : Colors.grey,
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded, size: 22)
+                        ],
+                      ),
+                    ),
+                    spacer(const EdgeInsets.only(bottom: 5)),
+                    settingItem(
+                      Text(caseTitle[1], style: settingTitleStyle),
+                      Row(
+                        children: [
+                          Text(
+                            cases[1] ? '켬' : '끔',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: cases[1] ? kMain : Colors.grey,
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded, size: 22)
+                        ],
+                      ),
+                    ),
+                    spacer(const EdgeInsets.only(bottom: 5)),
+                    settingItem(
+                      Text(caseTitle[2], style: settingTitleStyle),
+                      Row(
+                        children: [
+                          Text(
+                            cases[2] ? '켬' : '끔',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: cases[2] ? kMain : Colors.grey,
+                            ),
+                          ),
+                          const Icon(Icons.chevron_right_rounded, size: 22)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              ),
+              customCard(
+                '기타 설정',
+                settingItem(
+                  Text(
+                    '화면 설정',
+                    style: settingTitleStyle,
+                  ),
+                  const Icon(Icons.chevron_right_rounded, size: 22),
+                ),
+                // Column(
+                //   children: [
+                //     Row(
+                //       children: [
+                //         Text(
+                //           '화면 스타일',
+                //           style: settingTitleStyle,
+                //         ),
+                //         const Spacer(),
+                //         const Text(
+                //           '라이트 모드',
+                //           style: TextStyle(fontSize: 17, color: Colors.black),
+                //         ),
+                //         const Icon(Icons.chevron_right_rounded, size: 22)
+                //       ],
+                //     ),
+                //     spacer(const EdgeInsets.symmetric(vertical: 15)),
+                //     Row(
+                //       children: [
+                //         Text(
+                //           '글씨 크기',
+                //           style: settingTitleStyle,
+                //         ),
+                //         const Spacer(),
+                //         const Text(
+                //           '16',
+                //           style: TextStyle(fontSize: 17, color: Colors.black),
+                //         ),
+                //         const Icon(Icons.chevron_right_rounded, size: 22)
+                //       ],
+                //     )
+                //   ],
+                // ),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               ),
             ],
           ),
