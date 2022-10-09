@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 CupertinoActionSheet chatModalBuilder(BuildContext context) {
   return CupertinoActionSheet(
     actions: [
@@ -21,7 +23,7 @@ CupertinoActionSheet chatModalBuilder(BuildContext context) {
       ),
     ],
     cancelButton: CupertinoActionSheetAction(
-      child: const Text('취소', style: TextStyle(color: Colors.orange)),
+      child: Text('취소', style: TextStyle(color: kMain)),
       onPressed: () {
         Navigator.pop(context);
       },

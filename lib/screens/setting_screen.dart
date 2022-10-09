@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/screens/settings/decibel_setting.dart';
+import 'package:hear_for_you/screens/settings/display_setting.dart';
+import 'package:hear_for_you/screens/settings/notification_setting.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:hear_for_you/constants.dart';
 
@@ -22,15 +25,6 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   String name = '오희정';
-  double dB = 70;
-  List<bool> cases = [true, false, false];
-  List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
-  List<List<bool>> details = [
-    [true, false, true],
-    [false, true, true],
-    [false, false, true]
-  ];
-  List<String> detailTitle = ['진동 알림', '플래시 알림', '전체화면 알림'];
   final items = [
     "중증 청각장애 (2~3급)",
     "경증 청각장애 (4~6급)",
@@ -43,47 +37,18 @@ class _SettingScreenState extends State<SettingScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    TextStyle settingTitleStyle = const TextStyle(
-        fontFamily: 'SCBold', fontSize: 19, color: Colors.black);
+    TextStyle settingTitleStyle = TextStyle(
+      fontFamily: 'SCBold',
+      fontSize: 18,
+      color: darkMode ? Colors.white : Colors.black,
+    );
 
     Widget spacer(margin) {
       return Container(
         margin: margin,
         height: 1,
-        color: Colors.grey[200],
+        color: darkMode ? Colors.grey[800] : Colors.grey[200],
       );
-    }
-
-    Widget buttonItem(s, listValue) {
-      return Container(
-        width: screenWidth / 3 - 25,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Text(s, style: const TextStyle(fontSize: 14)),
-      );
-    }
-
-    Widget customToggleButton(selectList, children) {
-      return ToggleButtons(
-          isSelected: selectList,
-          onPressed: (int index) {
-            setState(() {
-              selectList[index] = !selectList[index];
-            });
-          },
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          constraints: const BoxConstraints(),
-          selectedColor: Colors.white,
-          color: Colors.grey,
-          fillColor: kMain,
-          borderColor: Colors.grey,
-          selectedBorderColor: kMain,
-          borderRadius: BorderRadius.circular(20),
-          children: [
-            buttonItem(children[0], selectList[0]),
-            buttonItem(children[1], selectList[1]),
-            buttonItem(children[2], selectList[2]),
-          ]);
     }
 
     Widget customCard(title, child, padding) {
@@ -103,7 +68,7 @@ class _SettingScreenState extends State<SettingScreen> {
             padding: padding,
             margin: const EdgeInsets.only(bottom: 25),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: darkMode ? Colors.grey[850] : Colors.white,
               borderRadius: BorderRadius.circular(15),
             ),
             child: child,
@@ -112,9 +77,15 @@ class _SettingScreenState extends State<SettingScreen> {
       );
     }
 
-    Widget settingItem(title, action) {
+    Widget settingItem(title, action, screen) {
       return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => screen))
+              .then((value) => setState(
+                    () {},
+                  ));
+        },
         style: TextButton.styleFrom(
           primary: Colors.grey,
         ),
@@ -129,14 +100,16 @@ class _SettingScreenState extends State<SettingScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
       appBar: AppBar(
           backgroundColor: Colors.transparent,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          systemOverlayStyle:
+              darkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
           leading: IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.close_rounded,
-              size: 22,
+              size: 25,
+              color: darkMode ? Colors.white : Colors.black,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -144,11 +117,12 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           centerTitle: true,
           elevation: 0,
-          title: const Text(
+          title: Text(
             '설정',
             style: TextStyle(
               fontFamily: 'SCBold',
               fontSize: 22,
+              color: darkMode ? Colors.white : Colors.black,
             ),
           )),
       body: SingleChildScrollView(
@@ -169,30 +143,34 @@ class _SettingScreenState extends State<SettingScreen> {
                           style: TextStyle(
                               fontFamily: 'SCBold', fontSize: 25, color: kMain),
                         ),
-                        const Text(
+                        Text(
                           ' 님',
                           style: TextStyle(
-                              fontFamily: 'SCBold',
-                              fontSize: 22,
-                              color: Colors.black),
+                            fontFamily: 'SCBold',
+                            fontSize: 22,
+                            color: darkMode ? Colors.white : Colors.black,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     GestureDetector(
                         child: Container(
-                          color: Colors.white,
+                          color: darkMode ? Colors.grey[850] : Colors.white,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 items[profileValue],
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: darkMode ? Colors.white : Colors.black,
+                                ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.keyboard_arrow_down_rounded,
                                 size: 22,
+                                color: darkMode ? Colors.white : Colors.black,
                               ),
                             ],
                           ),
@@ -214,7 +192,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 5),
+                          vertical: 15, horizontal: 8),
                       child: Row(
                         children: [
                           Text(
@@ -226,14 +204,14 @@ class _SettingScreenState extends State<SettingScreen> {
                                   '켜짐',
                                   style: TextStyle(
                                       fontFamily: 'SCBold',
-                                      fontSize: 19,
+                                      fontSize: 18,
                                       color: kMain),
                                 )
                               : const Text(
                                   '꺼짐',
                                   style: TextStyle(
                                       fontFamily: 'SCBold',
-                                      fontSize: 19,
+                                      fontSize: 18,
                                       color: Colors.grey),
                                 ),
                           const Spacer(),
@@ -256,7 +234,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         ],
                       ),
                     ),
-
                     spacer(const EdgeInsets.only(bottom: 5)),
                     settingItem(
                       Text(
@@ -267,34 +244,20 @@ class _SettingScreenState extends State<SettingScreen> {
                         children: [
                           Text(
                             dB.toString(),
-                            style: TextStyle(fontSize: 17, color: kMain),
+                            style: TextStyle(fontSize: 18, color: kMain),
                           ),
-                          const Text(
+                          Text(
                             ' dB',
-                            style: TextStyle(fontSize: 17, color: Colors.black),
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: darkMode ? Colors.white : Colors.black,
+                            ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
                         ],
                       ),
+                      const DecibelSetting(),
                     ),
-                    // const SizedBox(height: 10),
-                    // SizedBox(
-                    //   width: double.maxFinite,
-                    //   child: CupertinoSlider(
-                    //     thumbColor: kMain,
-                    //     activeColor: kMain,
-                    //     min: 0.0,
-                    //     max: 100.0,
-                    //     divisions: 20,
-                    //     value: dB,
-                    //     onChanged: (value) {
-                    //       value = value;
-                    //       setState(() {
-                    //         dB = value.roundToDouble();
-                    //       });
-                    //     },
-                    //   ),
-                    // ),
                   ],
                 ),
                 const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -310,13 +273,14 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[0] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 18,
                               color: cases[0] ? kMain : Colors.grey,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
                         ],
                       ),
+                      const NotificationSetting(num: 0),
                     ),
                     spacer(const EdgeInsets.only(bottom: 5)),
                     settingItem(
@@ -326,13 +290,14 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[1] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 18,
                               color: cases[1] ? kMain : Colors.grey,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
                         ],
                       ),
+                      const NotificationSetting(num: 1),
                     ),
                     spacer(const EdgeInsets.only(bottom: 5)),
                     settingItem(
@@ -342,13 +307,14 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[2] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 18,
                               color: cases[2] ? kMain : Colors.grey,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
                         ],
                       ),
+                      const NotificationSetting(num: 2),
                     ),
                   ],
                 ),
@@ -362,40 +328,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     style: settingTitleStyle,
                   ),
                   const Icon(Icons.chevron_right_rounded, size: 22),
+                  const DisplaySetting(),
                 ),
-                // Column(
-                //   children: [
-                //     Row(
-                //       children: [
-                //         Text(
-                //           '화면 스타일',
-                //           style: settingTitleStyle,
-                //         ),
-                //         const Spacer(),
-                //         const Text(
-                //           '라이트 모드',
-                //           style: TextStyle(fontSize: 17, color: Colors.black),
-                //         ),
-                //         const Icon(Icons.chevron_right_rounded, size: 22)
-                //       ],
-                //     ),
-                //     spacer(const EdgeInsets.symmetric(vertical: 15)),
-                //     Row(
-                //       children: [
-                //         Text(
-                //           '글씨 크기',
-                //           style: settingTitleStyle,
-                //         ),
-                //         const Spacer(),
-                //         const Text(
-                //           '16',
-                //           style: TextStyle(fontSize: 17, color: Colors.black),
-                //         ),
-                //         const Icon(Icons.chevron_right_rounded, size: 22)
-                //       ],
-                //     )
-                //   ],
-                // ),
                 const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               ),
             ],

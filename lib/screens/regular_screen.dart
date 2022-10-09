@@ -42,20 +42,19 @@ class _RegularScreenState extends State<RegularScreen> {
       );
     }
 
-    Widget background(center, point, height) {
+    Widget background(center, point, height, color) {
       return Container(
         width: screenWidth,
         height: screenHeight,
         color: Colors.transparent,
         child: CustomPaint(
-          painter:
-              CurvedPainter(center, point, height, kMain.withOpacity(0.08)),
+          painter: CurvedPainter(center, point, height, color),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
       floatingActionButton: Container(
         margin: const EdgeInsets.all(5),
         child: FloatingActionButton(
@@ -65,20 +64,23 @@ class _RegularScreenState extends State<RegularScreen> {
                 MaterialPageRoute(
                     builder: (context) => const VoiceScreen(title: "voice")));
           },
-          backgroundColor: Colors.black,
+          backgroundColor: darkMode ? Colors.white : Colors.black,
           elevation: 10.0,
-          child: const Icon(
+          child: Icon(
             Icons.mic_rounded,
             size: 26,
-            color: Colors.white,
+            color: darkMode ? Colors.black : Colors.white,
           ),
         ),
       ),
       body: Stack(
         children: [
-          background(const Offset(0, 0), 0.45, 0.58),
-          background(const Offset(0, 10), 0.6, 0.65),
-          background(const Offset(0, 20), 0.55, 0.72),
+          background(const Offset(0, 20), 0.55, 0.72,
+              const Color(0xFFF5ECE5).withOpacity(0.7)),
+          background(const Offset(0, 10), 0.6, 0.65,
+              const Color(0xFFF5E3D7).withOpacity(0.7)),
+          background(const Offset(0, 0), 0.45, 0.58,
+              const Color(0xFFF5DBCC).withOpacity(0.7)),
           Center(
             child: Container(
               margin: EdgeInsets.only(top: screenHeight * 0.3),
@@ -118,8 +120,8 @@ class _RegularScreenState extends State<RegularScreen> {
                   const SizedBox(height: 15),
                   Text(
                     regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 67, 67, 67),
+                    style: TextStyle(
+                      color: Colors.grey[700],
                       fontSize: 14,
                     ),
                   ),
@@ -137,6 +139,7 @@ class _RegularScreenState extends State<RegularScreen> {
                   icon: const Icon(
                     Icons.help_rounded,
                     size: 25,
+                    color: Colors.black,
                   ),
                   padding: const EdgeInsets.all(15),
                   onPressed: () {
@@ -158,6 +161,7 @@ class _RegularScreenState extends State<RegularScreen> {
                         style: TextStyle(
                           fontSize: 22,
                           fontFamily: 'SCBold',
+                          color: Colors.black,
                         ),
                       ),
                       Text(
@@ -175,6 +179,7 @@ class _RegularScreenState extends State<RegularScreen> {
                   icon: const Icon(
                     Icons.settings_rounded,
                     size: 25,
+                    color: Colors.black,
                   ),
                   padding: const EdgeInsets.all(15),
                   onPressed: () {

@@ -64,7 +64,7 @@ class _AlertScreenState extends State<AlertScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
       body: Column(
         children: [
           Stack(

@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
 
+import 'constants.dart';
+
 // void main() {
 //   runApp(new MaterialApp(
 //       home: new SplashScreen(),
@@ -28,8 +30,8 @@ class MyApp extends StatelessWidget {
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarIconBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
-      statusBarBrightness: isDarkMode
+      statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: darkMode
           ? Platform.isIOS
               ? Brightness.dark
               : Brightness.light
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
       title: 'Hear For You',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.grey,
         fontFamily: 'SCMedium',
       ),
       home: RegularScreen(),

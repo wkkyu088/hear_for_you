@@ -40,7 +40,11 @@ class _VoiceScreenState extends State<VoiceScreen> {
         padding: const EdgeInsets.all(15),
         constraints: BoxConstraints(maxWidth: screenWidth * 0.65),
         decoration: BoxDecoration(
-          color: user ? kMain : Colors.grey[200],
+          color: user
+              ? kMain
+              : darkMode
+                  ? Colors.grey[800]
+                  : Colors.grey[200],
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
             topRight: const Radius.circular(20),
@@ -50,8 +54,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
         ),
         child: Text(
           str,
-          style:
-              TextStyle(color: user ? Colors.white : Colors.grey, fontSize: 16),
+          style: TextStyle(
+              color: user
+                  ? Colors.white
+                  : darkMode
+                      ? Colors.white
+                      : Colors.grey,
+              fontSize: 16),
         ),
       );
     }
@@ -63,13 +72,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
         margin: const EdgeInsets.all(3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: const Color(0xFF434343),
+          color: darkMode ? Colors.white : const Color(0xFF434343),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
       body: Container(
         padding: EdgeInsets.only(top: statusBarHeight),
         width: screenWidth,
@@ -200,90 +209,93 @@ class _VoiceScreenState extends State<VoiceScreen> {
                       ],
                     ),
                   ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    size: 25,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Row(
-                  children: [
-                    isEmpty
-                        ? const SizedBox()
-                        : Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  if (isInput == true) {
-                                    isInput = false;
-                                  } else {
-                                    isInput = true;
-                                  }
-                                });
-                              },
-                              style: TextButton.styleFrom(
-                                primary: Colors.black,
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                side: const BorderSide(
-                                    color: Colors.black, width: 2),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: const Text(
-                                '모드 변경', // 모드라는 이름 헷갈려서 바꿔야함
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: 'SCBold',
-                                ),
-                              ),
-                            ),
-                          ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: TextButton(
-                          onPressed: () {
-                            showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        chatModalBuilder(context))
-                                .then((value) => setState(() {}));
-                          },
-                          style: TextButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 12),
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: const Text(
-                            '저장',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontFamily: 'SCBold',
-                            ),
-                          )),
+            Container(
+              color: darkMode ? Colors.grey[900] : Colors.grey[100],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.close_rounded,
+                      size: 25,
+                      color: darkMode ? Colors.white : Colors.black,
                     ),
-                  ],
-                )
-              ],
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const Spacer(),
+                  isEmpty
+                      ? const SizedBox()
+                      : Container(
+                          margin: const EdgeInsets.only(right: 10),
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                if (isInput == true) {
+                                  isInput = false;
+                                } else {
+                                  isInput = true;
+                                }
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              primary: darkMode ? Colors.white : Colors.black,
+                              backgroundColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              side: BorderSide(
+                                  color: darkMode ? Colors.white : Colors.black,
+                                  width: 2),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              '모드 변경', // 모드라는 이름 헷갈려서 바꿔야함
+                              style: TextStyle(
+                                color: darkMode ? Colors.white : Colors.black,
+                                fontSize: 15,
+                                fontFamily: 'SCBold',
+                              ),
+                            ),
+                          ),
+                        ),
+                  Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    child: TextButton(
+                      onPressed: () {
+                        showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    chatModalBuilder(context))
+                            .then((value) => setState(() {}));
+                      },
+                      style: TextButton.styleFrom(
+                        primary: darkMode ? Colors.black : Colors.white,
+                        backgroundColor: darkMode ? Colors.white : Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 6, horizontal: 12),
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        '저장',
+                        style: TextStyle(
+                          color: darkMode ? Colors.black : Colors.white,
+                          fontSize: 15,
+                          fontFamily: 'SCBold',
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             isEmpty
                 ? Positioned(
@@ -433,12 +445,14 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               vertical: 20, horizontal: 10),
                           child: TextField(
                               onChanged: (value) {},
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.black),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      darkMode ? Colors.white : Colors.black),
                               autofocus: true,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: Colors.transparent,
                                 hintText: "입력하세요",
                                 hintStyle: const TextStyle(
                                     fontSize: 16, color: Colors.grey),
@@ -446,6 +460,10 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
                                 focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: darkMode
+                                          ? Colors.white
+                                          : Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 enabledBorder: OutlineInputBorder(
@@ -476,10 +494,12 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                 ],
                               ),
                             ),
-                            const Text(
+                            Text(
                               '대화를 듣고 있습니다...',
                               style: TextStyle(
-                                color: Color(0xFF434343),
+                                color: darkMode
+                                    ? Colors.white
+                                    : const Color(0xFF434343),
                                 fontSize: 14,
                               ),
                             ),

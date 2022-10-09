@@ -15,7 +15,7 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
       SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
           child: CupertinoPicker(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.white.withOpacity(0.5),
             itemExtent: 50, //height of each item
             children: items
                 .map((item) => Center(
@@ -32,7 +32,7 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
           ))
     ],
     cancelButton: CupertinoActionSheetAction(
-      child: const Text('확인', style: TextStyle(color: Colors.orange)),
+      child: Text('확인', style: TextStyle(color: kMain)),
       onPressed: () {
         Navigator.pop(context);
       },
