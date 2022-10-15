@@ -43,8 +43,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
           color: user
               ? kMain
               : darkMode
-                  ? Colors.grey[800]
-                  : Colors.grey[200],
+                  ? kGrey8
+                  : kGrey2,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
             topRight: const Radius.circular(20),
@@ -56,11 +56,11 @@ class _VoiceScreenState extends State<VoiceScreen> {
           str,
           style: TextStyle(
               color: user
-                  ? Colors.white
+                  ? kWhite
                   : darkMode
-                      ? Colors.white
-                      : Colors.grey,
-              fontSize: 16),
+                      ? kWhite
+                      : kGrey5,
+              fontSize: kS),
         ),
       );
     }
@@ -72,28 +72,28 @@ class _VoiceScreenState extends State<VoiceScreen> {
         margin: const EdgeInsets.all(3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: darkMode ? Colors.white : const Color(0xFF434343),
+          color: darkMode ? kWhite : const Color(0xFF434343),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       body: Container(
         padding: EdgeInsets.only(top: statusBarHeight),
         width: screenWidth,
-        height: screenHeight,
+        height: screenHeight - 80,
         child: Stack(
           children: [
             const SizedBox(height: 10),
             isEmpty
-                ? const Flexible(
+                ? Flexible(
                     child: Center(
                       child: Text(
                         '음성모드 화면입니다.\n하단의 버튼을 눌러 대화를 시작하세요.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.grey, fontSize: 16, height: 2),
+                        style:
+                            TextStyle(color: kGrey5, fontSize: kS, height: 2),
                       ),
                     ),
                   )
@@ -101,8 +101,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
                     top: 20,
                     width: screenWidth,
                     height: isInput
-                        ? screenHeight - (keyboardHeight + 125)
-                        : screenHeight - 50,
+                        ? screenHeight - keyboardHeight
+                        : screenHeight - 80 - 50,
                     child: ListView(
                       children: [
                         Container(
@@ -210,25 +210,17 @@ class _VoiceScreenState extends State<VoiceScreen> {
                     ),
                   ),
             Container(
-              color: darkMode ? Colors.grey[900] : Colors.grey[100],
+              color: darkMode ? kBlack : kGrey1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.close_rounded,
-                      size: 25,
-                      color: darkMode ? Colors.white : Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                  Text(MediaQuery.of(context).size.height.toString()),
                   const Spacer(),
                   isEmpty
                       ? const SizedBox()
                       : Container(
-                          margin: const EdgeInsets.only(right: 10),
+                          margin: const EdgeInsets.only(
+                              right: 10, top: 10, bottom: 10),
                           child: TextButton(
                             onPressed: () {
                               setState(() {
@@ -240,14 +232,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               });
                             },
                             style: TextButton.styleFrom(
-                              primary: darkMode ? Colors.white : Colors.black,
+                              primary: darkMode ? kWhite : kBlack,
                               backgroundColor: Colors.transparent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               side: BorderSide(
-                                  color: darkMode ? Colors.white : Colors.black,
-                                  width: 2),
+                                  color: darkMode ? kWhite : kBlack, width: 2),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
                               minimumSize: Size.zero,
@@ -256,15 +247,16 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             child: Text(
                               '모드 변경', // 모드라는 이름 헷갈려서 바꿔야함
                               style: TextStyle(
-                                color: darkMode ? Colors.white : Colors.black,
-                                fontSize: 15,
+                                color: darkMode ? kWhite : kBlack,
+                                fontSize: kS,
                                 fontFamily: 'SCBold',
                               ),
                             ),
                           ),
                         ),
                   Container(
-                    margin: const EdgeInsets.only(right: 10),
+                    margin:
+                        const EdgeInsets.only(right: 10, top: 10, bottom: 10),
                     child: TextButton(
                       onPressed: () {
                         showCupertinoModalPopup(
@@ -274,8 +266,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             .then((value) => setState(() {}));
                       },
                       style: TextButton.styleFrom(
-                        primary: darkMode ? Colors.black : Colors.white,
-                        backgroundColor: darkMode ? Colors.white : Colors.black,
+                        primary: darkMode ? kBlack : kWhite,
+                        backgroundColor: darkMode ? kWhite : kBlack,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -287,8 +279,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
                       child: Text(
                         '저장',
                         style: TextStyle(
-                          color: darkMode ? Colors.black : Colors.white,
-                          fontSize: 15,
+                          color: darkMode ? kBlack : kWhite,
+                          fontSize: kS,
                           fontFamily: 'SCBold',
                         ),
                       ),
@@ -299,7 +291,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
             ),
             isEmpty
                 ? Positioned(
-                    bottom: 0,
+                    bottom: 80,
                     width: screenWidth,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,11 +303,9 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             alignment: AlignmentDirectional.centerStart,
                             children: [
                               Container(
-                                  width: 120,
-                                  color: Colors.grey.withOpacity(0.5)),
+                                  width: 120, color: kGrey5.withOpacity(0.5)),
                               Container(
-                                  width: 100,
-                                  color: Colors.grey.withOpacity(0.5)),
+                                  width: 100, color: kGrey5.withOpacity(0.5)),
                             ],
                           ),
                           onDismissed: (direction) {
@@ -330,7 +320,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                 width: 120,
                                 height: 120,
                                 decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.5),
+                                    color: kGrey5.withOpacity(0.5),
                                     borderRadius: const BorderRadius.only(
                                         topRight: Radius.circular(150))),
                               ),
@@ -340,7 +330,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                   width: 100,
                                   height: 100,
                                   decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.5),
+                                      color: kGrey5.withOpacity(0.5),
                                       borderRadius: const BorderRadius.only(
                                           topRight: Radius.circular(150))),
                                   child: Container(
@@ -349,17 +339,16 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Icon(
                                           Icons.mic_rounded,
-                                          color: Colors.white,
+                                          color: kWhite,
                                           size: 35,
                                         ),
                                         Text(
                                           '소리 듣기',
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14),
+                                              color: kWhite, fontSize: kXS),
                                         ),
                                       ],
                                     ),
@@ -413,17 +402,16 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: const [
+                                      children: [
                                         Icon(
                                           Icons.keyboard_rounded,
-                                          color: Colors.white,
+                                          color: kWhite,
                                           size: 35,
                                         ),
                                         Text(
                                           '입력하기',
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14),
+                                              color: kWhite, fontSize: kXS),
                                         ),
                                       ],
                                     ),
@@ -442,33 +430,29 @@ class _VoiceScreenState extends State<VoiceScreen> {
                         width: screenWidth,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10),
+                              vertical: 5, horizontal: 10),
                           child: TextField(
                               onChanged: (value) {},
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                      darkMode ? Colors.white : Colors.black),
+                                  fontSize: kS,
+                                  color: darkMode ? kWhite : kBlack),
                               autofocus: true,
                               decoration: InputDecoration(
                                 filled: true,
-                                fillColor: Colors.transparent,
+                                fillColor: darkMode ? kBlack : kGrey1,
                                 hintText: "입력하세요",
-                                hintStyle: const TextStyle(
-                                    fontSize: 16, color: Colors.grey),
+                                hintStyle:
+                                    TextStyle(fontSize: kS, color: kGrey5),
                                 counterText: "",
                                 contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: darkMode
-                                          ? Colors.white
-                                          : Colors.black),
+                                      color: darkMode ? kWhite : kBlack),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey),
+                                  borderSide: BorderSide(color: kGrey5),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                               )),
@@ -497,10 +481,9 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             Text(
                               '대화를 듣고 있습니다...',
                               style: TextStyle(
-                                color: darkMode
-                                    ? Colors.white
-                                    : const Color(0xFF434343),
-                                fontSize: 14,
+                                color:
+                                    darkMode ? kWhite : const Color(0xFF434343),
+                                fontSize: kXS,
                               ),
                             ),
                           ],

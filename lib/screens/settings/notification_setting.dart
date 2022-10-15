@@ -21,7 +21,7 @@ class _NotificationSettingState extends State<NotificationSetting> {
       return Container(
         margin: const EdgeInsets.symmetric(vertical: 15),
         height: 1,
-        color: darkMode ? Colors.grey[700] : Colors.grey[200],
+        color: darkMode ? Colors.grey[700] : kGrey2,
       );
     }
 
@@ -34,8 +34,8 @@ class _NotificationSettingState extends State<NotificationSetting> {
               Text(
                 detailTitle[n],
                 style: TextStyle(
-                  fontSize: 17,
-                  color: darkMode ? Colors.white : Colors.black,
+                  fontSize: kM,
+                  color: darkMode ? kWhite : kBlack,
                 ),
               ),
               const Spacer(),
@@ -44,7 +44,7 @@ class _NotificationSettingState extends State<NotificationSetting> {
                 child: SizedBox(
                   height: 10,
                   child: CupertinoSwitch(
-                    activeColor: cases[widget.num] ? kMain : Colors.grey,
+                    activeColor: cases[widget.num] ? kMain : kGrey5,
                     value: caseDetails[widget.num][n],
                     onChanged: cases[widget.num]
                         ? (bool value) {
@@ -64,14 +64,14 @@ class _NotificationSettingState extends State<NotificationSetting> {
             child: Text(
               detail,
               style: TextStyle(
-                fontSize: 14,
-                color: darkMode ? Colors.white : Colors.black,
+                fontSize: kXS,
+                color: darkMode ? kWhite : kBlack,
               ),
             ),
           ),
           Container(
             height: 120,
-            color: darkMode ? Colors.grey[700] : Colors.grey[200],
+            color: darkMode ? Colors.grey[700] : kGrey2,
             child: const Center(child: Text('예시 사진/그림')),
           ),
         ],
@@ -79,7 +79,7 @@ class _NotificationSettingState extends State<NotificationSetting> {
     }
 
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         systemOverlayStyle:
@@ -88,7 +88,7 @@ class _NotificationSettingState extends State<NotificationSetting> {
           icon: Icon(
             Icons.chevron_left_rounded,
             size: 25,
-            color: darkMode ? Colors.white : Colors.black,
+            color: darkMode ? kWhite : kBlack,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -100,14 +100,14 @@ class _NotificationSettingState extends State<NotificationSetting> {
           '${caseTitle[widget.num]} 알림',
           style: TextStyle(
             fontFamily: 'SCBold',
-            fontSize: 20,
-            color: darkMode ? Colors.white : Colors.black,
+            fontSize: kL,
+            color: darkMode ? kWhite : kBlack,
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,16 +116,24 @@ class _NotificationSettingState extends State<NotificationSetting> {
                     top: 15, bottom: 15, left: 15, right: 10),
                 margin: const EdgeInsets.only(bottom: 25),
                 decoration: BoxDecoration(
-                  color: darkMode ? Colors.grey[850] : Colors.white,
+                  color: darkMode ? kGrey9 : kWhite,
                   borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                      spreadRadius: 3,
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
                     Text(
                       cases[widget.num] ? '알림 끄기' : '알림 켜기',
                       style: TextStyle(
-                        fontSize: 17,
-                        color: darkMode ? Colors.white : Colors.black,
+                        fontSize: kM,
+                        color: darkMode ? kWhite : kBlack,
                       ),
                     ),
                     const Spacer(),
@@ -154,15 +162,23 @@ class _NotificationSettingState extends State<NotificationSetting> {
                 child: Text(
                   '알림 방법',
                   textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                  style: TextStyle(color: kGrey4, fontSize: kXS),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.only(
                     top: 15, bottom: 15, left: 15, right: 10),
                 decoration: BoxDecoration(
-                  color: darkMode ? Colors.grey[850] : Colors.white,
+                  color: darkMode ? kGrey9 : kWhite,
                   borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                      spreadRadius: 3,
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -180,9 +196,9 @@ class _NotificationSettingState extends State<NotificationSetting> {
                 child: Text(
                   caseContents[widget.num],
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: kXS,
                     height: 1.5,
-                    color: darkMode ? Colors.white : Colors.black,
+                    color: darkMode ? kWhite : kBlack,
                   ),
                 ),
               ),

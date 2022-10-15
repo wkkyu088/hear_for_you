@@ -12,9 +12,15 @@ class DisplaySetting extends StatefulWidget {
 
 class _DisplaySettingState extends State<DisplaySetting> {
   @override
+  void initState() {
+    super.initState();
+    checked[selectedColor] = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         systemOverlayStyle:
@@ -23,7 +29,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
           icon: Icon(
             Icons.chevron_left_rounded,
             size: 25,
-            color: darkMode ? Colors.white : Colors.black,
+            color: darkMode ? kWhite : kBlack,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -35,14 +41,14 @@ class _DisplaySettingState extends State<DisplaySetting> {
           '화면 설정',
           style: TextStyle(
             fontFamily: 'SCBold',
-            fontSize: 20,
-            color: darkMode ? Colors.white : Colors.black,
+            fontSize: kL,
+            color: darkMode ? kWhite : kBlack,
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
           child: Column(
             children: [
               Column(
@@ -54,7 +60,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                     child: Text(
                       '화면 스타일',
                       textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                      style: TextStyle(color: kGrey4, fontSize: kXS),
                     ),
                   ),
                   Container(
@@ -62,16 +68,24 @@ class _DisplaySettingState extends State<DisplaySetting> {
                         top: 15, bottom: 15, left: 15, right: 10),
                     margin: const EdgeInsets.only(bottom: 25),
                     decoration: BoxDecoration(
-                      color: darkMode ? Colors.grey[850] : Colors.white,
+                      color: darkMode ? kGrey9 : kWhite,
                       borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                          spreadRadius: 3,
+                          blurRadius: 15,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [
                         Text(
                           '다크 모드',
                           style: TextStyle(
-                            fontSize: 17,
-                            color: darkMode ? Colors.white : Colors.black,
+                            fontSize: kS,
+                            color: darkMode ? kWhite : kBlack,
                           ),
                         ),
                         const Spacer(),
@@ -100,7 +114,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                     child: Text(
                       '글씨',
                       textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                      style: TextStyle(color: kGrey4, fontSize: kXS),
                     ),
                   ),
                   Container(
@@ -108,16 +122,24 @@ class _DisplaySettingState extends State<DisplaySetting> {
                         top: 12, bottom: 12, left: 15, right: 10),
                     margin: const EdgeInsets.only(bottom: 25),
                     decoration: BoxDecoration(
-                      color: darkMode ? Colors.grey[850] : Colors.white,
+                      color: darkMode ? kGrey9 : kWhite,
                       borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                          spreadRadius: 3,
+                          blurRadius: 15,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: Row(
                       children: [
                         Text(
                           '글씨 크기',
                           style: TextStyle(
-                            fontSize: 17,
-                            color: darkMode ? Colors.white : Colors.black,
+                            fontSize: kM,
+                            color: darkMode ? kWhite : kBlack,
                           ),
                         ),
                         const Spacer(),
@@ -126,19 +148,19 @@ class _DisplaySettingState extends State<DisplaySetting> {
                             Text(
                               '$fontSize pt',
                               style: TextStyle(
-                                fontSize: 16,
-                                color: darkMode ? Colors.white : Colors.black,
+                                fontSize: kS,
+                                color: darkMode ? kWhite : kBlack,
                               ),
                             ),
                             const SizedBox(width: 10),
                             ToggleButtons(
                               isSelected: const [false, false],
-                              color: Colors.grey,
-                              textStyle: const TextStyle(fontSize: 17),
+                              color: kGrey5,
+                              textStyle: TextStyle(fontSize: kM),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               constraints: const BoxConstraints(
                                   minWidth: 40, minHeight: 30),
-                              borderColor: Colors.grey,
+                              borderColor: kGrey5,
                               borderRadius: BorderRadius.circular(30),
                               children: const [Text('-'), Text('+')],
                               onPressed: (index) {
@@ -155,6 +177,81 @@ class _DisplaySettingState extends State<DisplaySetting> {
                         ),
                       ],
                     ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, bottom: 5),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '대표 색상',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: kGrey4, fontSize: kXS),
+                    ),
+                  ),
+                  Container(
+                    height: 140,
+                    padding: const EdgeInsets.only(
+                        top: 15, bottom: 15, left: 15, right: 10),
+                    margin: const EdgeInsets.only(bottom: 25),
+                    decoration: BoxDecoration(
+                      color: darkMode ? kGrey9 : kWhite,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                          spreadRadius: 3,
+                          blurRadius: 15,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 8,
+                          mainAxisSpacing: 4.0,
+                          crossAxisSpacing: 4.0,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: colorChart.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedColor = index;
+                                kMain = colorChart[index];
+                                for (int i = 0; i < checked.length; i++) {
+                                  if (i == index) {
+                                    checked[i] = true;
+                                  } else {
+                                    checked[i] = false;
+                                  }
+                                }
+                              });
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: checked[index]
+                                        ? Border.all(color: kBlack, width: 2)
+                                        : const Border(),
+                                    color: colorChart[index],
+                                  ),
+                                ),
+                                checked[index]
+                                    ? Center(
+                                        child: Icon(
+                                          Icons.check_rounded,
+                                          color: kBlack,
+                                          size: 25,
+                                        ),
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                          );
+                        }),
                   ),
                 ],
               ),

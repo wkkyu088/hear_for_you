@@ -15,7 +15,7 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
       SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
           child: CupertinoPicker(
-            backgroundColor: Colors.white.withOpacity(0.5),
+            backgroundColor: kWhite.withOpacity(0.5),
             itemExtent: 50, //height of each item
             children: items
                 .map((item) => Center(

@@ -52,19 +52,14 @@ class _AlertScreenState extends State<AlertScreen> {
         height: screenHeight,
         color: Colors.transparent,
         child: CustomPaint(
-          painter: CurvedPainter(
-              center,
-              point,
-              height,
-              mode
-                  ? const Color(0xFFC80000).withOpacity(0.5)
-                  : const Color(0xFFF8AE24).withOpacity(0.5)),
+          painter: CurvedPainter(center, point, height,
+              mode ? kAlert1.withOpacity(0.5) : kAlert2.withOpacity(0.5)),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       body: Column(
         children: [
           Stack(
@@ -75,37 +70,34 @@ class _AlertScreenState extends State<AlertScreen> {
               Center(
                 child: Container(
                   margin: EdgeInsets.only(top: screenHeight * 0.1),
-                  width: screenWidth * 0.55,
+                  width: screenWidth * 0.58,
                   child: Column(
                     children: [
                       Icon(
                         mode
                             ? Icons.notifications_active_rounded
                             : Icons.warning_rounded,
-                        color: Colors.white,
+                        color: kWhite,
                         size: 85,
                       ),
                       const SizedBox(height: 30),
-                      const Text(
+                      Text(
                         '사이렌 감지',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 38,
-                            fontFamily: 'SCBold'),
+                            color: kWhite, fontSize: 38, fontFamily: 'SCBold'),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         '${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 22),
+                        style: TextStyle(color: kWhite, fontSize: kXL),
                       ),
                       const SizedBox(height: 30),
                       Text(
                         '${now.hour}시 ${now.minute}분 ${now.second}초에 사이렌 소리가 감지되었습니다.\n알림을 끄려면 확인 버튼을 눌러주세요.',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
+                        style: TextStyle(
+                            color: kWhite,
+                            fontSize: kM,
                             height: 1.3,
                             fontFamily: 'SCLight'),
                       ),
@@ -122,19 +114,17 @@ class _AlertScreenState extends State<AlertScreen> {
                     Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(
-                    primary: Colors.black,
-                    backgroundColor: mode
-                        ? const Color(0xFFC80000)
-                        : const Color(0xFFF8AE24),
+                    primary: kBlack,
+                    backgroundColor: mode ? kAlert1 : kAlert2,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50)),
                   ),
-                  child: const Text(
+                  child: Text(
                     '확인',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
+                      color: kWhite,
+                      fontSize: kXL + 2,
                     ),
                   ),
                 ),

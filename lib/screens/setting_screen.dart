@@ -39,15 +39,15 @@ class _SettingScreenState extends State<SettingScreen> {
 
     TextStyle settingTitleStyle = TextStyle(
       fontFamily: 'SCBold',
-      fontSize: 18,
-      color: darkMode ? Colors.white : Colors.black,
+      fontSize: kM,
+      color: darkMode ? kWhite : kBlack,
     );
 
     Widget spacer(margin) {
       return Container(
         margin: margin,
         height: 1,
-        color: darkMode ? Colors.grey[800] : Colors.grey[200],
+        color: darkMode ? kGrey8 : kGrey2,
       );
     }
 
@@ -61,15 +61,23 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Text(
               title,
               textAlign: TextAlign.start,
-              style: TextStyle(color: Colors.grey[400], fontSize: 13),
+              style: TextStyle(color: kGrey4, fontSize: kXS),
             ),
           ),
           Container(
             padding: padding,
             margin: const EdgeInsets.only(bottom: 25),
             decoration: BoxDecoration(
-              color: darkMode ? Colors.grey[850] : Colors.white,
+              color: darkMode ? kGrey9 : kWhite,
               borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                  spreadRadius: 3,
+                  blurRadius: 15,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: child,
           ),
@@ -87,7 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   ));
         },
         style: TextButton.styleFrom(
-          primary: Colors.grey,
+          primary: kGrey5,
         ),
         child: Row(
           children: [
@@ -100,34 +108,25 @@ class _SettingScreenState extends State<SettingScreen> {
     }
 
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           systemOverlayStyle:
               darkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-          leading: IconButton(
-            icon: Icon(
-              Icons.close_rounded,
-              size: 25,
-              color: darkMode ? Colors.white : Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
           centerTitle: true,
           elevation: 0,
           title: Text(
             '설정',
             style: TextStyle(
               fontFamily: 'SCBold',
-              fontSize: 22,
-              color: darkMode ? Colors.white : Colors.black,
+              fontSize: kXL,
+              color: darkMode ? kWhite : kBlack,
             ),
           )),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+          margin: const EdgeInsets.only(bottom: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,14 +140,16 @@ class _SettingScreenState extends State<SettingScreen> {
                         Text(
                           name,
                           style: TextStyle(
-                              fontFamily: 'SCBold', fontSize: 25, color: kMain),
+                              fontFamily: 'SCBold',
+                              fontSize: kXL + 3,
+                              color: kMain),
                         ),
                         Text(
                           ' 님',
                           style: TextStyle(
                             fontFamily: 'SCBold',
-                            fontSize: 22,
-                            color: darkMode ? Colors.white : Colors.black,
+                            fontSize: kXL,
+                            color: darkMode ? kWhite : kBlack,
                           ),
                         ),
                       ],
@@ -156,21 +157,21 @@ class _SettingScreenState extends State<SettingScreen> {
                     const SizedBox(height: 10),
                     GestureDetector(
                         child: Container(
-                          color: darkMode ? Colors.grey[850] : Colors.white,
+                          color: darkMode ? kGrey9 : kWhite,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 items[profileValue],
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  color: darkMode ? Colors.white : Colors.black,
+                                  fontSize: kS,
+                                  color: darkMode ? kWhite : kBlack,
                                 ),
                               ),
                               Icon(
                                 Icons.keyboard_arrow_down_rounded,
                                 size: 22,
-                                color: darkMode ? Colors.white : Colors.black,
+                                color: darkMode ? kWhite : kBlack,
                               ),
                             ],
                           ),
@@ -184,7 +185,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         }),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
               ),
               customCard(
                 '상시모드 설정',
@@ -204,15 +205,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                   '켜짐',
                                   style: TextStyle(
                                       fontFamily: 'SCBold',
-                                      fontSize: 18,
+                                      fontSize: kM,
                                       color: kMain),
                                 )
-                              : const Text(
+                              : Text(
                                   '꺼짐',
                                   style: TextStyle(
                                       fontFamily: 'SCBold',
-                                      fontSize: 18,
-                                      color: Colors.grey),
+                                      fontSize: kM,
+                                      color: kGrey5),
                                 ),
                           const Spacer(),
                           Transform.scale(
@@ -244,13 +245,13 @@ class _SettingScreenState extends State<SettingScreen> {
                         children: [
                           Text(
                             dB.toString(),
-                            style: TextStyle(fontSize: 18, color: kMain),
+                            style: TextStyle(fontSize: kM, color: kMain),
                           ),
                           Text(
                             ' dB',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: darkMode ? Colors.white : Colors.black,
+                              fontSize: kM,
+                              color: darkMode ? kWhite : kBlack,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
@@ -260,7 +261,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               ),
               customCard(
                 '알림 설정',
@@ -273,8 +274,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[0] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: cases[0] ? kMain : Colors.grey,
+                              fontSize: kM,
+                              color: cases[0] ? kMain : kGrey5,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
@@ -290,8 +291,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[1] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: cases[1] ? kMain : Colors.grey,
+                              fontSize: kM,
+                              color: cases[1] ? kMain : kGrey5,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
@@ -307,8 +308,8 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             cases[2] ? '켬' : '끔',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: cases[2] ? kMain : Colors.grey,
+                              fontSize: kM,
+                              color: cases[2] ? kMain : kGrey5,
                             ),
                           ),
                           const Icon(Icons.chevron_right_rounded, size: 22)
@@ -318,7 +319,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               ),
               customCard(
                 '기타 설정',
@@ -330,7 +331,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   const Icon(Icons.chevron_right_rounded, size: 22),
                   const DisplaySetting(),
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
               ),
             ],
           ),

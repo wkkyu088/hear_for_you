@@ -63,7 +63,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
     ];
 
     return Scaffold(
-      backgroundColor: darkMode ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: darkMode ? kBlack : kGrey1,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         systemOverlayStyle:
@@ -72,7 +72,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
           icon: Icon(
             Icons.chevron_left_rounded,
             size: 25,
-            color: darkMode ? Colors.white : Colors.black,
+            color: darkMode ? kWhite : kBlack,
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -84,14 +84,14 @@ class _DecibelSettingState extends State<DecibelSetting> {
           '데시벨 설정',
           style: TextStyle(
             fontFamily: 'SCBold',
-            fontSize: 20,
-            color: darkMode ? Colors.white : Colors.black,
+            fontSize: kL,
+            color: darkMode ? kWhite : kBlack,
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +102,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                 child: Text(
                   '데시벨',
                   textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.grey[400], fontSize: 13),
+                  style: TextStyle(color: kGrey4, fontSize: kXS),
                 ),
               ),
               Container(
@@ -110,8 +110,16 @@ class _DecibelSettingState extends State<DecibelSetting> {
                     const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 margin: const EdgeInsets.only(bottom: 15),
                 decoration: BoxDecoration(
-                  color: darkMode ? Colors.grey[850] : Colors.white,
+                  color: darkMode ? kGrey9 : kWhite,
                   borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: darkMode ? kBlack : kBlack.withOpacity(0.05),
+                      spreadRadius: 3,
+                      blurRadius: 15,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +128,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                     Icon(
                       Icons.volume_mute_rounded,
                       size: 25,
-                      color: darkMode ? Colors.white : Colors.black,
+                      color: darkMode ? kWhite : kBlack,
                     ),
                     SizedBox(
                       width: screenWidth - 140,
@@ -142,7 +150,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                     Icon(
                       Icons.volume_up_rounded,
                       size: 25,
-                      color: darkMode ? Colors.white : Colors.black,
+                      color: darkMode ? kWhite : kBlack,
                     ),
                   ],
                 ),
@@ -151,8 +159,8 @@ class _DecibelSettingState extends State<DecibelSetting> {
                 text: TextSpan(
                   style: TextStyle(
                     fontFamily: 'SCMedium',
-                    fontSize: 16,
-                    color: darkMode ? Colors.white : Colors.black,
+                    fontSize: kS,
+                    color: darkMode ? kWhite : kBlack,
                   ),
                   children: [
                     const TextSpan(text: '데시벨이 '),
@@ -160,7 +168,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                       text: '$dB dB',
                       style: TextStyle(
                         fontFamily: 'SCBold',
-                        fontSize: 16,
+                        fontSize: kS,
                         color: kMain,
                       ),
                     ),
@@ -172,8 +180,8 @@ class _DecibelSettingState extends State<DecibelSetting> {
               Text(
                 '부가 설명?',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: darkMode ? Colors.white : Colors.black,
+                  fontSize: kXS,
+                  color: darkMode ? kWhite : kBlack,
                 ),
               ),
               const SizedBox(height: 20),
@@ -191,32 +199,32 @@ class _DecibelSettingState extends State<DecibelSetting> {
                               width: 80,
                               height: 35,
                               color: dB > decibels[index]
-                                  ? Colors.grey.withOpacity(0.5)
+                                  ? kGrey5.withOpacity(0.5)
                                   : colors[index].withOpacity(0.9),
                               child: Center(
                                 child: Text(
                                   '${decibels[index]} dB',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    fontSize: kL,
+                                    color: kWhite,
                                     fontFamily: 'SCBold',
                                   ),
                                 ),
                               ),
                             ),
                             Container(
-                              width: screenWidth - 40 - 80,
+                              width: screenWidth - 36 - 80,
                               height: 35,
                               color: dB > decibels[index]
-                                  ? Colors.grey.withOpacity(0.1)
+                                  ? kGrey5.withOpacity(0.1)
                                   : colors[index].withOpacity(0.1),
                               padding: const EdgeInsets.only(left: 10),
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 contents[index],
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: darkMode ? Colors.white : Colors.black,
+                                  fontSize: kS,
+                                  color: darkMode ? kWhite : kBlack,
                                 ),
                               ),
                             ),
