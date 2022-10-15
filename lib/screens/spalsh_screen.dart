@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import '../constants.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -27,12 +29,14 @@ class _SplashScreenState extends State<SplashScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        backgroundColor: darkMode ? kBlack : kWhite,
         body: Center(
-      child: Container(
-        width: screenWidth * 0.6,
-        child: Image.asset('lib/assets/images/splash_image.png'),
-      ),
-      //child: Text('This is Splash Screen', style: TextStyle(fontSize: 20))),
-    ));
+          child: SizedBox(
+            width: screenWidth * 0.6,
+            child: darkMode
+                ? Image.asset('lib/assets/images/splash_image2.png')
+                : Image.asset('lib/assets/images/splash_image.png'),
+          ),
+        ));
   }
 }
