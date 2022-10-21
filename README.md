@@ -1,6 +1,6 @@
 # hear_for_you
 
-A new Flutter project.
+A new Flutter project
 
 ## Getting Started
 
