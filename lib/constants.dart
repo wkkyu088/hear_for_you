@@ -17,7 +17,7 @@ List<String> caseContents = [
   '실내 위험 알림입니다.\n설명설명 어떤 상황인지 설명하고 예시로 뭐가 있는지 설명하고'
 ];
 bool darkMode = false;
-double fontSize = 15;
+List<bool> fontSizes = [false, true, false];
 
 Color kMain = colorChart[7];
 Color kWhite = const Color(0xFFFEFEFE);

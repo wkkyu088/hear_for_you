@@ -145,30 +145,49 @@ class _DisplaySettingState extends State<DisplaySetting> {
                         const Spacer(),
                         Row(
                           children: [
-                            Text(
-                              '$fontSize pt',
-                              style: TextStyle(
-                                fontSize: kS,
-                                color: darkMode ? kWhite : kBlack,
-                              ),
-                            ),
+                            // Text(
+                            //   '$fontSize pt',
+                            //   style: TextStyle(
+                            //     fontSize: kS,
+                            //     color: darkMode ? kWhite : kBlack,
+                            //   ),
+                            // ),
                             const SizedBox(width: 10),
                             ToggleButtons(
-                              isSelected: const [false, false],
+                              isSelected: fontSizes,
                               color: kGrey5,
-                              textStyle: TextStyle(fontSize: kM),
+                              selectedColor: kWhite,
+                              fillColor: kMain,
+                              textStyle:
+                                  const TextStyle(fontFamily: 'SCMedium'),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               constraints: const BoxConstraints(
-                                  minWidth: 40, minHeight: 30),
-                              borderColor: kGrey5,
-                              borderRadius: BorderRadius.circular(30),
-                              children: const [Text('-'), Text('+')],
+                                  minWidth: 65, minHeight: 45),
+                              borderColor: kGrey4,
+                              selectedBorderColor: kMain,
+                              borderRadius: BorderRadius.circular(10),
+                              children: [
+                                Text(
+                                  '작게',
+                                  style: TextStyle(fontSize: kXS),
+                                ),
+                                Text(
+                                  '보통',
+                                  style: TextStyle(fontSize: kM),
+                                ),
+                                Text(
+                                  '크게',
+                                  style: TextStyle(fontSize: kXL),
+                                )
+                              ],
                               onPressed: (index) {
                                 setState(() {
-                                  if (index == 0) {
-                                    fontSize -= 1;
-                                  } else {
-                                    fontSize += 1;
+                                  for (int i = 0; i < 3; i++) {
+                                    if (i == index) {
+                                      fontSizes[i] = true;
+                                    } else {
+                                      fontSizes[i] = false;
+                                    }
                                   }
                                 });
                               },
@@ -188,7 +207,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                     ),
                   ),
                   Container(
-                    height: 140,
+                    height: 130,
                     padding: const EdgeInsets.only(
                         top: 15, bottom: 15, left: 15, right: 10),
                     margin: const EdgeInsets.only(bottom: 25),
