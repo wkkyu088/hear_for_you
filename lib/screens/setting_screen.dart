@@ -7,16 +7,6 @@ import 'package:hear_for_you/screens/settings/notification_setting.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:hear_for_you/constants.dart';
 
-// CupertinoSwitch(
-//   activeColor: kMain,
-//   value: cases[0],
-//   onChanged: (bool value) {
-//     setState(() {
-//       cases[0] = value;
-//     });
-//   },
-// ),
-
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
   @override
@@ -66,7 +56,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           Container(
             padding: padding,
-            margin: const EdgeInsets.only(bottom: 25),
+            margin: const EdgeInsets.only(bottom: 22),
             decoration: BoxDecoration(
               color: darkMode ? kGrey9 : kWhite,
               borderRadius: BorderRadius.circular(15),
@@ -125,7 +115,7 @@ class _SettingScreenState extends State<SettingScreen> {
           )),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 18),
           margin: const EdgeInsets.only(bottom: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -185,7 +175,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         }),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
+                const EdgeInsets.symmetric(vertical: 16, horizontal: 15),
               ),
               customCard(
                 '상시모드 설정',
@@ -193,7 +183,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 8),
+                          vertical: 14, horizontal: 8),
                       child: Row(
                         children: [
                           Text(
@@ -235,7 +225,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         ],
                       ),
                     ),
-                    spacer(const EdgeInsets.only(bottom: 5)),
+                    spacer(const EdgeInsets.only(bottom: 2)),
                     settingItem(
                       Text(
                         '데시벨 설정',
@@ -261,7 +251,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
               ),
               customCard(
                 '알림 설정',
@@ -319,7 +309,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ],
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
               ),
               customCard(
                 '기타 설정',
@@ -331,7 +321,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   const Icon(Icons.chevron_right_rounded, size: 22),
                   const DisplaySetting(),
                 ),
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
               ),
             ],
           ),

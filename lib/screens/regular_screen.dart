@@ -51,60 +51,6 @@ class _RegularScreenState extends State<RegularScreen>
         children: [
           Column(
             children: [
-              // background(const Offset(0, 20), 0.55, 0.72,
-              //     const Color(0xFFF5ECE5).withOpacity(0.7)),
-              // background(const Offset(0, 10), 0.6, 0.65,
-              //     const Color(0xFFF5E3D7).withOpacity(0.7)),
-              // background(const Offset(0, 0), 0.45, 0.58,
-              //     const Color(0xFFF5DBCC).withOpacity(0.7)),
-              // Center(
-              //   child: Container(
-              //     margin: EdgeInsets.only(top: screenHeight * 0.3),
-              //     child: Column(
-              //       children: [
-              //         GestureDetector(
-              //           child: SizedBox(
-              //             height: 60,
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.center,
-              //               children: [
-              //                 waveForm(heights[0]),
-              //                 waveForm(heights[1]),
-              //                 waveForm(heights[2]),
-              //                 waveForm(heights[3]),
-              //                 waveForm(heights[4]),
-              //               ],
-              //             ),
-              //           ),
-              //           onTap: () {
-              //             // setState(() {
-              //             //   for (int i = 0; i < heights.length; i++) {
-              //             //     if (op[i] == true) {
-              //             //       heights[i] += 5;
-              //             //     } else {
-              //             //       heights[i] -= 5;
-              //             //     }
-              //             //     if (heights[i] == 55) {
-              //             //       op[i] = false;
-              //             //     } else if (heights[i] == 5) {
-              //             //       op[i] = true;
-              //             //     }
-              //             //   }
-              //             // });
-              //           },
-              //         ),
-              //         const SizedBox(height: 15),
-              //         Text(
-              //           regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
-              //           style: TextStyle(
-              //             color: Colors.grey[700],
-              //             fontSize: kXS,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               Container(
                 padding: EdgeInsets.only(top: statusBarHeight),
                 child: Padding(
@@ -172,7 +118,7 @@ class _RegularScreenState extends State<RegularScreen>
                   Container(
                     width: screenWidth * 0.7,
                     height: screenWidth * 0.7,
-                    margin: const EdgeInsets.only(top: 80),
+                    margin: const EdgeInsets.only(top: 60),
                     child: SfRadialGauge(
                       axes: <RadialAxis>[
                         RadialAxis(
@@ -209,7 +155,7 @@ class _RegularScreenState extends State<RegularScreen>
                   Container(
                     width: screenWidth * 0.55,
                     height: screenWidth * 0.55,
-                    margin: const EdgeInsets.only(top: 80),
+                    margin: const EdgeInsets.only(top: 60),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: LinearGradient(
@@ -248,7 +194,7 @@ class _RegularScreenState extends State<RegularScreen>
                   ),
                 ],
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
