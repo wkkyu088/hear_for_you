@@ -64,7 +64,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 1;
   final screens = [
-    const VoiceScreen(title: '음성모드'),
+    const VoiceScreen(),
     const RegularScreen(),
     const SettingScreen()
   ];

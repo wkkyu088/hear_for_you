@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
+// 음성모드 저장시 뜨는 모달
 CupertinoActionSheet chatModalBuilder(BuildContext context) {
   return CupertinoActionSheet(
     actions: [
@@ -19,7 +20,10 @@ CupertinoActionSheet chatModalBuilder(BuildContext context) {
           '종료하기',
           style: TextStyle(color: Colors.red),
         ),
-        onPressed: () {},
+        onPressed: () {
+          isEmpty = true;
+          Navigator.pop(context);
+        },
       ),
     ],
     cancelButton: CupertinoActionSheetAction(

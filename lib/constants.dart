@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 int profileValue = 2;
+String name = '오희정';
+final profileItems = [
+  "중증 청각장애 (2~3급)",
+  "경증 청각장애 (4~6급)",
+  "청각중복장애 (시각 등)",
+  "직접 설정",
+];
 bool regularValue = true;
 double dB = 70;
 List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
@@ -18,6 +25,9 @@ List<String> caseContents = [
 ];
 bool darkMode = false;
 List<bool> fontSizes = [false, true, false];
+
+bool missedAlertOpen = true;
+late bool isEmpty;
 
 Color kMain = colorChart[7];
 Color kWhite = const Color(0xFFFEFEFE);
