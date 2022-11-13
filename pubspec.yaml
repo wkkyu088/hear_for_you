@@ -37,6 +37,14 @@ dependencies:
   flutter_native_splash: ^2.2.9
   syncfusion_flutter_gauges: ^20.3.49
 
+  # voice mode
+  speech_to_text: ^6.1.0
+  highlight_text: ^1.6.0
+
+  # regular mode
+  audio_waveforms: ^0.1.5+1
+  path_provider: ^2.0.11
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
