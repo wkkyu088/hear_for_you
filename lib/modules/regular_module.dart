@@ -1,8 +1,12 @@
+// ignore_for_file: avoid_print
+
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:noise_meter/noise_meter.dart';
 
 import '../constants.dart';
 
@@ -14,7 +18,13 @@ class RegularScreenTest extends StatefulWidget {
 }
 
 class RegularScreenTestState extends State<RegularScreenTest> {
+  int currentDecibel = 0;
+
+  StreamSubscription<NoiseReading>? _noiseSubscription;
+  late NoiseMeter _noiseMeter;
+  late Timer _timer;
   late final RecorderController recorderController;
+
   String? _path;
   late Directory appDirectory;
 
@@ -23,24 +33,51 @@ class RegularScreenTestState extends State<RegularScreenTest> {
     _path = "${appDirectory.path}/audio.wav";
   }
 
+  void onData(NoiseReading noiseReading) {
+    setState(() {
+      if (!regularValue) {
+        regularValue = true;
+      }
+      if (noiseReading.maxDecibel.toInt() > dB) {
+        print(noiseReading.toString());
+
+        save();
+      }
+    });
+  }
+
+  void onError(Object error) {
+    print(error.toString());
+    regularValue = false;
+  }
+
   void start() async {
+    print('starting');
+    // 녹음 및 소음 측정 시작
     try {
       regularValue = true;
       await recorderController.record(_path);
+      _noiseSubscription = _noiseMeter.noiseStream.listen(onData);
+      _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+        print(DateTime.now());
+      });
       setState(() {});
     } catch (e) {
       print(e);
     }
   }
 
+  // save & timer reset
   void save() async {
-    final path = await recorderController.stop();
+    var path = await recorderController.stop();
     regularValue = false;
+    _noiseSubscription!.cancel();
+    _timer.cancel();
     setState(() {});
-
-    print(path);
+    print('save done $path');
   }
 
+  // init & dispose
   @override
   void initState() {
     super.initState();
@@ -50,11 +87,14 @@ class RegularScreenTestState extends State<RegularScreenTest> {
       ..androidEncoder = AndroidEncoder.aac
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC;
+    _noiseMeter = NoiseMeter(onError);
   }
 
   @override
   void dispose() {
     recorderController.dispose();
+    _noiseSubscription?.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
