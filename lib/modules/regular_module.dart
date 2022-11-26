@@ -23,6 +23,7 @@ class RegularScreenTestState extends State<RegularScreenTest> {
   StreamSubscription<NoiseReading>? _noiseSubscription;
   late NoiseMeter _noiseMeter;
   late Timer _timer;
+
   late final RecorderController recorderController;
 
   String? _path;
@@ -40,41 +41,34 @@ class RegularScreenTestState extends State<RegularScreenTest> {
       }
       if (noiseReading.maxDecibel.toInt() > dB) {
         print(noiseReading.toString());
-
-        save();
+        startTimer();
+        start();
       }
     });
   }
 
-  void onError(Object error) {
-    print(error.toString());
-    regularValue = false;
-  }
-
   void start() async {
-    print('starting');
+    print('======================= starting');
     // 녹음 및 소음 측정 시작
     try {
       regularValue = true;
       await recorderController.record(_path);
       _noiseSubscription = _noiseMeter.noiseStream.listen(onData);
-      _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-        print(DateTime.now());
-      });
       setState(() {});
     } catch (e) {
       print(e);
     }
   }
 
-  // save & timer reset
+  // 특정 데시벨 이상일 때만 호출 - 저장
   void save() async {
     var path = await recorderController.stop();
+    print('=======================saved to $path');
     regularValue = false;
     _noiseSubscription!.cancel();
-    _timer.cancel();
-    setState(() {});
-    print('save done $path');
+    setState(() {
+      start();
+    });
   }
 
   // init & dispose
@@ -87,7 +81,9 @@ class RegularScreenTestState extends State<RegularScreenTest> {
       ..androidEncoder = AndroidEncoder.aac
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC;
-    _noiseMeter = NoiseMeter(onError);
+    _noiseMeter = NoiseMeter();
+    start();
+    startTimer();
   }
 
   @override
@@ -96,6 +92,13 @@ class RegularScreenTestState extends State<RegularScreenTest> {
     _noiseSubscription?.cancel();
     _timer.cancel();
     super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      print(DateTime.now());
+      save();
+    });
   }
 
   @override
@@ -108,19 +111,8 @@ class RegularScreenTestState extends State<RegularScreenTest> {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: start,
-              child: Text('Start'),
-            ),
-            TextButton(
-              onPressed: save,
-              child: Text('Save'),
-            ),
-          ],
-        ),
+        Text('상시보드 : $regularValue',
+            style: TextStyle(fontSize: 20, color: kBlack)),
         Container(
           width: screenWidth * 0.55,
           height: screenWidth * 0.55,
