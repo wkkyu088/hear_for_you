@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/widgets/custom_card.dart';
+import 'package:hear_for_you/widgets/setting_appbar.dart';
 
 import '../../constants.dart';
+
+// 알림 설정 페이지
 
 class NotificationSetting extends StatefulWidget {
   const NotificationSetting({Key? key, required this.num}) : super(key: key);
@@ -13,121 +17,76 @@ class NotificationSetting extends StatefulWidget {
 }
 
 class _NotificationSettingState extends State<NotificationSetting> {
-  @override
-  Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
-    Widget spacer() {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 15),
-        height: 1,
-        color: darkMode ? Colors.grey[700] : kGrey2,
-      );
-    }
-
-    Widget noti(n, detail) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                detailTitle[n],
-                style: TextStyle(
-                  fontSize: kM,
-                  color: darkMode ? kWhite : kBlack,
-                ),
-              ),
-              const Spacer(),
-              Transform.scale(
-                scale: 0.9,
-                child: SizedBox(
-                  height: 10,
-                  child: CupertinoSwitch(
-                    activeColor: cases[widget.num] ? kMain : kGrey5,
-                    value: caseDetails[widget.num][n],
-                    onChanged: cases[widget.num]
-                        ? (bool value) {
-                            caseDetails[widget.num][n] = value;
-                            setState(() {
-                              caseDetails[widget.num][n] = value;
-                            });
-                          }
-                        : null,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              detail,
+  // 알림 방법 세가지 + 스위치 + 설명
+  Widget noti(n, detail) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              detailTitle[n],
               style: TextStyle(
-                fontSize: kXS,
+                fontSize: kM,
                 color: darkMode ? kWhite : kBlack,
               ),
             ),
+            const Spacer(),
+            Transform.scale(
+              scale: 0.9,
+              child: SizedBox(
+                height: 10,
+                child: CupertinoSwitch(
+                  activeColor: cases[widget.num] ? kMain : kGrey5,
+                  value: caseDetails[widget.num][n],
+                  onChanged: cases[widget.num]
+                      ? (bool value) {
+                          caseDetails[widget.num][n] = value;
+                          setState(() {
+                            caseDetails[widget.num][n] = value;
+                          });
+                        }
+                      : null,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            detail,
+            style: TextStyle(
+              fontSize: kXS,
+              color: darkMode ? kWhite : kBlack,
+            ),
           ),
-          Container(
-            height: 120,
-            color: darkMode ? Colors.grey[700] : kGrey2,
-            child: const Center(child: Text('예시 사진/그림')),
-          ),
-        ],
-      );
-    }
+        ),
+        Container(
+          height: 120,
+          color: darkMode ? Colors.grey[700] : kGrey2,
+          child: const Center(child: Text('예시 사진/그림')),
+        ),
+      ],
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        systemOverlayStyle:
-            darkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-        leading: IconButton(
-          icon: Icon(
-            Icons.chevron_left_rounded,
-            size: 25,
-            color: darkMode ? kWhite : kBlack,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        elevation: 0,
-        title: Text(
-          '${caseTitle[widget.num]} 알림',
-          style: TextStyle(
-            fontFamily: 'SCBold',
-            fontSize: kL,
-            color: darkMode ? kWhite : kBlack,
-          ),
-        ),
-      ),
+      // 1. 앱바
+      appBar: settingAppbar('${caseTitle[widget.num]} 알림', context),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                    top: 15, bottom: 15, left: 15, right: 10),
-                margin: const EdgeInsets.only(bottom: 25),
-                decoration: BoxDecoration(
-                  color: darkMode ? kGrey9 : kWhite,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: darkMode ? kBlack : kBlack.withOpacity(0.05),
-                      spreadRadius: 3,
-                      blurRadius: 15,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
+              // 2. 알림 끄기, 켜기 설정 영역
+              customCard(
+                '',
+                Row(
                   children: [
                     Text(
                       cases[widget.num] ? '알림 끄기' : '알림 켜기',
@@ -155,44 +114,27 @@ class _NotificationSettingState extends State<NotificationSetting> {
                     ),
                   ],
                 ),
+                const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 10),
+                nontitle: true,
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 10, bottom: 5),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '알림 방법',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: kGrey4, fontSize: kXS),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(
-                    top: 15, bottom: 15, left: 15, right: 10),
-                decoration: BoxDecoration(
-                  color: darkMode ? kGrey9 : kWhite,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                      color: darkMode ? kBlack : kBlack.withOpacity(0.05),
-                      spreadRadius: 3,
-                      blurRadius: 15,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
+              // 3. 알림 방법 설정 영역
+              customCard(
+                '알림 방법',
+                Column(
                   children: [
                     noti(0, '휴대폰 진동으로 알림을 줍니다.'),
-                    spacer(),
+                    spacer(const EdgeInsets.symmetric(vertical: 15)),
                     noti(1, '휴대폰 플래시로 알림을 줍니다.'),
-                    spacer(),
+                    spacer(const EdgeInsets.symmetric(vertical: 15)),
                     noti(2, '휴대폰에 전체 화면으로 알림을 줍니다.'),
                   ],
                 ),
+                const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 10),
               ),
+              // 4. 알림 분류 부가 설명
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 20, left: 10, right: 10),
                 child: Text(
                   caseContents[widget.num],
                   style: TextStyle(

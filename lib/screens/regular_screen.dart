@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/screens/alert_screen.dart';
+import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:hear_for_you/widgets/wave_form.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../constants.dart';
+
+// 상시모드 페이지
 
 class RegularScreen extends StatefulWidget {
   const RegularScreen({Key? key}) : super(key: key);
@@ -14,12 +17,11 @@ class RegularScreen extends StatefulWidget {
 
 class _RegularScreenState extends State<RegularScreen>
     with SingleTickerProviderStateMixin {
-  List<bool> op = [true, true, true, true, true];
-  bool open = true;
   late AnimationController controller;
   late Animation<double> animation =
       Tween(begin: 0.0, end: 100.0).animate(controller);
 
+  // 애니메이션 시작
   @override
   void initState() {
     super.initState();
@@ -33,6 +35,7 @@ class _RegularScreenState extends State<RegularScreen>
     });
   }
 
+  // 애니메이션 종료
   @override
   void dispose() {
     controller.dispose();
@@ -43,7 +46,6 @@ class _RegularScreenState extends State<RegularScreen>
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
@@ -51,70 +53,73 @@ class _RegularScreenState extends State<RegularScreen>
         children: [
           Column(
             children: [
-              Container(
-                padding: EdgeInsets.only(top: statusBarHeight),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.help_rounded,
-                          size: 24,
-                          color: darkMode ? kWhite : kBlack,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AlertScreen(title: "alert")));
-                        },
+              // 1. 상시모드 상태 표시줄
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 5 + statusBarHeight, bottom: 5, left: 5, right: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // 1-1. 도움말 버튼 (현재 임시로 알림 화면 연결)
+                    IconButton(
+                      icon: Icon(
+                        Icons.help_rounded,
+                        size: 24,
+                        color: darkMode ? kWhite : kBlack,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '상시모드 ',
-                              style: TextStyle(
-                                fontSize: kXL,
-                                fontFamily: 'SCBold',
-                                color: darkMode ? kWhite : kBlack,
-                              ),
+                      padding: const EdgeInsets.all(10),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AlertScreen()));
+                      },
+                    ),
+                    // 1-2. 상시모드 상태
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '상시모드 ',
+                            style: TextStyle(
+                              fontSize: kXL,
+                              fontFamily: 'PretendardBold',
+                              color: darkMode ? kWhite : kBlack,
                             ),
-                            Text(
-                              regularValue ? '켜짐' : '꺼짐',
-                              style: TextStyle(
-                                fontSize: kXL,
-                                fontFamily: 'SCBold',
-                                color: regularValue ? kMain : kGrey5,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Text(
+                            regularValue ? '켜짐' : '꺼짐',
+                            style: TextStyle(
+                              fontSize: kXL,
+                              fontFamily: 'PretendardBold',
+                              color: regularValue ? kMain : kGrey5,
+                            ),
+                          )
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.help_rounded,
-                          size: 25,
-                          color: Colors.transparent,
-                        ),
-                        padding: const EdgeInsets.all(15),
-                        onPressed: () {},
+                    ),
+                    // 1-3. 대칭 맞추기용 아이콘
+                    IconButton(
+                      icon: const Icon(
+                        Icons.help_rounded,
+                        size: 24,
+                        color: Colors.transparent,
                       ),
-                    ],
-                  ),
+                      padding: const EdgeInsets.all(15),
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
               ),
+              // 2. 원형 회전 애니메이션
               Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
+                  // 2-1. 애니메이션 외부 (실제 돌아가는 부분)
                   Container(
                     width: screenWidth * 0.7,
                     height: screenWidth * 0.7,
@@ -152,6 +157,7 @@ class _RegularScreenState extends State<RegularScreen>
                       ],
                     ),
                   ),
+                  // 2-2. 애니메이션 내부 (웨이브폼이 그려져있는 이미지)
                   Container(
                     width: screenWidth * 0.55,
                     height: screenWidth * 0.55,
@@ -163,6 +169,7 @@ class _RegularScreenState extends State<RegularScreen>
                           end: Alignment.bottomCenter,
                           colors: [kMain, kMain.withOpacity(0.5)]),
                     ),
+                    // 2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
                     child: Stack(
                       children: [
                         CustomPaint(
@@ -195,6 +202,7 @@ class _RegularScreenState extends State<RegularScreen>
                 ],
               ),
               const SizedBox(height: 60),
+              // 3. 소리를 듣고 있습니다. (큰 의미 없음, 보조 표식)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -219,113 +227,11 @@ class _RegularScreenState extends State<RegularScreen>
               const Spacer(),
             ],
           ),
-          open
-              ? Positioned(
-                  left: 15,
-                  right: 15,
-                  bottom: 90,
-                  child: Container(
-                    width: screenWidth,
-                    height: 120,
-                    padding: const EdgeInsets.only(
-                        top: 5, bottom: 12, left: 15, right: 15),
-                    decoration: BoxDecoration(
-                      color: darkMode
-                          ? kGrey8.withOpacity(0.8)
-                          : kWhite.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: darkMode ? kBlack : kBlack.withOpacity(0.1),
-                          spreadRadius: 3,
-                          blurRadius: 15,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '미확인 알림',
-                              style: TextStyle(fontSize: kXS, color: kGrey5),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: Icon(
-                                Icons.close_rounded,
-                                size: 20,
-                                color: kGrey5,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  open = !open;
-                                });
-                              },
-                              constraints: const BoxConstraints(),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                fontFamily: 'SCBold',
-                                fontSize: kS,
-                                color: darkMode ? kWhite : kBlack,
-                              ),
-                              children: [
-                                TextSpan(
-                                    text: '사이렌 소리 ',
-                                    style: TextStyle(fontSize: kL)),
-                                const TextSpan(text: '(17시 20분)'),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Row(
-                          children: [
-                            Text(
-                              '확인하셨나요?',
-                              style: TextStyle(
-                                  fontSize: kM,
-                                  color: darkMode ? kWhite : kBlack),
-                            ),
-                            const Spacer(),
-                            TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: Text(
-                                '네',
-                                style: TextStyle(fontSize: kS, color: kMain),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
-                              child: Text(
-                                '아니오',
-                                style: TextStyle(fontSize: kS, color: kGrey5),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+          // 4. 미확인 알림 팝업 자리
+          missedAlertOpen
+              ? MissedAlert(
+                  title: '사이렌 소리',
+                  time: DateTime(2022, 9, 7, 17, 30),
                 )
               : Container(),
         ],

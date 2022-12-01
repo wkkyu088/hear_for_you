@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/constants.dart';
 
+// 알림 화면 배경
 class CurvedPainter extends CustomPainter {
   final double point;
   final double height;

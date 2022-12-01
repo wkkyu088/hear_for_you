@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
 int profileValue = 2;
+String name = '오희정';
+final profileItems = [
+  "중증 청각장애 (2~3급)",
+  "경증 청각장애 (4~6급)",
+  "청각중복장애 (시각 등)",
+  "직접 설정",
+];
 bool regularValue = true;
 double dB = 70;
 List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
@@ -18,6 +25,9 @@ List<String> caseContents = [
 ];
 bool darkMode = false;
 List<bool> fontSizes = [false, true, false];
+
+bool missedAlertOpen = true;
+late bool isEmpty;
 
 Color kMain = colorChart[7];
 Color kWhite = const Color(0xFFFEFEFE);
@@ -56,4 +66,12 @@ final List colorChart = [
   const Color(0xFFCFB8E0),
   const Color(0xFF8C65AC),
   const Color(0xFFEC7B97),
+];
+
+List voiceScreenChat = [
+  ['이것은 음성모드입니다.', false],
+  ['대화를 인식하여 텍스트로 보여줍니다.', false],
+  ['이것은 사용자의 발화입니다.', true],
+  ['키보드로 입력하여 전달합니다.', true],
+  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장 또는 공유할 수 있습니다.', false],
 ];

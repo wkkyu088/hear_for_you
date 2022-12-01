@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/screens/voice_screen.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/setting_screen.dart';
@@ -32,13 +33,13 @@ class MyApp extends StatelessWidget {
           darkMode ? Brightness.light : Brightness.dark,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
-      statusBarBrightness: darkMode
-          ? Platform.isIOS
-              ? Brightness.dark
-              : Brightness.light
-          : Platform.isIOS
-              ? Brightness.light
-              : Brightness.dark,
+      // statusBarBrightness: darkMode
+      //     ? Platform.isIOS
+      //         ? Brightness.dark
+      //         : Brightness.light
+      //     : Platform.isIOS
+      //         ? Brightness.light
+      //         : Brightness.dark,
     ));
 
     return MaterialApp(
@@ -46,8 +47,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.grey,
-        fontFamily: 'SCMedium',
+        fontFamily: 'PretendardMedium',
       ),
+      // home: const LoginScreen(),
       home: const BottomNavBar(),
       // home: SplashScreen(),
     );
@@ -64,7 +66,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 1;
   final screens = [
-    const VoiceScreen(title: '음성모드'),
+    const VoiceScreen(),
     const RegularScreen(),
     const SettingScreen()
   ];

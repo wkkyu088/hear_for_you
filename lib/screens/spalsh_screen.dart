@@ -3,15 +3,20 @@ import 'dart:async';
 
 import '../constants.dart';
 
+// 스플래시 페이지
+
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // 4초 동안 지속된 후 홈스크린으로 이동
   startTime() async {
-    var _duration = new Duration(seconds: 4);
-    return new Timer(_duration, navigationPage);
+    var duration = const Duration(seconds: 4);
+    return Timer(duration, navigationPage);
   }
 
   void navigationPage() {

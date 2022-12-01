@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.2.9
   syncfusion_flutter_gauges: ^20.3.49
+  path_provider: ^2.0.11
+  image_gallery_saver: ^1.7.1
 
   # voice mode
   speech_to_text: ^6.1.0
@@ -89,15 +91,24 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: SCLight
+    # - family: SCLight
+    #   fonts:
+    #     - asset: lib/assets/fonts/SCDream3.otf
+    # - family: SCMedium
+    #   fonts:
+    #     - asset: lib/assets/fonts/SCDream5.otf
+    # - family: SCBold
+    #   fonts:
+    #     - asset: lib/assets/fonts/SCDream7.otf
+    - family: PretendardLight
       fonts:
-        - asset: lib/assets/fonts/SCDream3.otf
-    - family: SCMedium
+        - asset: lib/assets/fonts/Pretendard-Regular.otf
+    - family: PretendardMedium
       fonts:
-        - asset: lib/assets/fonts/SCDream5.otf
-    - family: SCBold
+        - asset: lib/assets/fonts/Pretendard-SemiBold.otf
+    - family: PretendardBold
       fonts:
-        - asset: lib/assets/fonts/SCDream7.otf
+        - asset: lib/assets/fonts/Pretendard-ExtraBold.otf
   # fonts:
   #   - family: Schyler
   #     fonts:

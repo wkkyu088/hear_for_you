@@ -4,9 +4,10 @@ import 'dart:async';
 
 import '../constants.dart';
 
+// 전체 화면 알림 페이지
+
 class AlertScreen extends StatefulWidget {
-  const AlertScreen({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const AlertScreen({Key? key}) : super(key: key);
 
   @override
   State<AlertScreen> createState() => _AlertScreenState();
@@ -18,6 +19,7 @@ class _AlertScreenState extends State<AlertScreen> {
   int min = 0;
   int sec = 0;
 
+  // 알림이 발생된 시각 기록, 타이머 시작
   @override
   initState() {
     super.initState();
@@ -33,6 +35,7 @@ class _AlertScreenState extends State<AlertScreen> {
     });
   }
 
+  // 타이머 종료
   @override
   void dispose() {
     _timer.cancel();
@@ -46,6 +49,7 @@ class _AlertScreenState extends State<AlertScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
+    // 배경 웨이브
     Widget background(center, point, height) {
       return Container(
         width: screenWidth,
@@ -73,6 +77,7 @@ class _AlertScreenState extends State<AlertScreen> {
                   width: screenWidth * 0.58,
                   child: Column(
                     children: [
+                      // 알림 종류 아이콘
                       Icon(
                         mode
                             ? Icons.notifications_active_rounded
@@ -81,17 +86,22 @@ class _AlertScreenState extends State<AlertScreen> {
                         size: 85,
                       ),
                       const SizedBox(height: 30),
+                      // 알림 이름
                       Text(
                         '사이렌 감지',
                         style: TextStyle(
-                            color: kWhite, fontSize: 38, fontFamily: 'SCBold'),
+                            color: kWhite,
+                            fontSize: 38,
+                            fontFamily: 'PretendardBold'),
                       ),
                       const SizedBox(height: 10),
+                      // 알림 발생 시간
                       Text(
                         '${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}',
                         style: TextStyle(color: kWhite, fontSize: kXL),
                       ),
                       const SizedBox(height: 30),
+                      // 알림 발생 시각과 부가 설명
                       Text(
                         '${now.hour}시 ${now.minute}분 ${now.second}초에 사이렌 소리가 감지되었습니다.\n알림을 끄려면 확인 버튼을 눌러주세요.',
                         textAlign: TextAlign.center,
@@ -99,12 +109,13 @@ class _AlertScreenState extends State<AlertScreen> {
                             color: kWhite,
                             fontSize: kM,
                             height: 1.3,
-                            fontFamily: 'SCLight'),
+                            fontFamily: 'PretendardLight'),
                       ),
                     ],
                   ),
                 ),
               ),
+              // 확인 버튼
               Positioned(
                 bottom: 60,
                 left: screenWidth / 2 - 90,

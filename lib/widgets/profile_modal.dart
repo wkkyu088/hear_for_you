@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
+// 개인 설정의 장애 정도 선택 모달
 CupertinoActionSheet profileModalBuilder(BuildContext context) {
   final items = [
     "중증 청각장애 (2~3급)",

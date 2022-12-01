@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/constants.dart';
 
+// 상시모드 중앙의 물결 곡선
 class WaveForm extends CustomPainter {
   final double height;
   final double opacity;

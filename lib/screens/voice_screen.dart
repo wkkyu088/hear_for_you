@@ -1,29 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/widgets/chat_modal.dart';
+import 'package:hear_for_you/widgets/voice_mode_select.dart';
 
 import '../constants.dart';
 
 class VoiceScreen extends StatefulWidget {
-  const VoiceScreen({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const VoiceScreen({Key? key}) : super(key: key);
 
   @override
   State<VoiceScreen> createState() => _VoiceScreenState();
 }
 
 class _VoiceScreenState extends State<VoiceScreen> {
-  late bool isEmpty;
   late bool isInput;
   bool isOpen = false;
-  final ScrollController _controller = ScrollController();
+  var gloabalKey = new GlobalKey();
 
+  // 변수 초기화
   @override
   initState() {
     super.initState();
     isEmpty = true;
     isInput = false;
+    // voiceScreenChat = [];
   }
+
+  // 텍스트필드 컨트롤러
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +35,12 @@ class _VoiceScreenState extends State<VoiceScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    final List chat1 = ['이것은 음성모드입니다.', '대화를 인식하여 텍스트로 보여줍니다.'];
-    final List chat2 = ['이것은 사용자의 발화입니다.', '키보드로 입력하여 전달합니다.'];
-    final List chat3 = ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장 또는 공유할 수 있습니다.'];
-
+    // 채팅 메세지가 담길 버블
     Widget bubble(str, user, last) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           user ? const Spacer() : const SizedBox(),
-          (user == true && last == true)
-              ? Text(
-                  '03:30 ',
-                  style: TextStyle(color: kGrey5, fontSize: kXS - 1),
-                )
-              : const SizedBox(),
           Container(
             padding: const EdgeInsets.all(12),
             constraints: BoxConstraints(maxWidth: screenWidth * 0.65),
@@ -73,17 +68,12 @@ class _VoiceScreenState extends State<VoiceScreen> {
                   fontSize: kS),
             ),
           ),
-          (user == false && last == true)
-              ? Text(
-                  ' 18:30',
-                  style: TextStyle(color: kGrey5, fontSize: kXS - 1),
-                )
-              : const SizedBox(),
           user ? const SizedBox() : const Spacer(),
         ],
       );
     }
 
+    // 소리를 듣고 있다는 표시
     Widget waveForm(height) {
       return Container(
         width: 6,
@@ -96,6 +86,16 @@ class _VoiceScreenState extends State<VoiceScreen> {
       );
     }
 
+    // 입력 필드 전송 관리, 사용자 발화 추가
+    void _handleSubmitted(String text) {
+      textController.clear();
+      if (text != "") {
+        setState(() {
+          voiceScreenChat.add([text, true]);
+        });
+      }
+    }
+
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
       body: Container(
@@ -105,132 +105,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
         child: Stack(
           children: [
             const SizedBox(height: 10),
-            isEmpty
-                ? Flexible(
-                    child: Center(
-                      child: Text(
-                        '음성모드 화면입니다.\n하단의 버튼을 눌러 대화를 시작하세요.',
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(color: kGrey5, fontSize: kS, height: 2),
-                      ),
-                    ),
-                  )
-                : Container(
-                    margin: EdgeInsets.only(
-                        top: 20,
-                        bottom: isOpen
-                            ? 60
-                            : isInput
-                                ? 140
-                                : 80),
-                    width: screenWidth,
-                    child: ListView(
-                      reverse: true,
-                      children: [
-                        SizedBox(height: isInput ? 0 : 80),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              bubble(chat1[0], false, false),
-                              const SizedBox(height: 6),
-                              bubble(chat1[1], false, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              bubble(chat2[0], true, false),
-                              const SizedBox(height: 6),
-                              bubble(chat2[1], true, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              bubble(chat3[0], false, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              bubble(chat1[0], false, false),
-                              const SizedBox(height: 6),
-                              bubble(chat1[1], false, false),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              bubble(chat2[0], true, false),
-                              const SizedBox(height: 6),
-                              bubble(chat2[1], true, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              bubble(chat1[0], false, false),
-                              const SizedBox(height: 6),
-                              bubble(chat1[1], false, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              bubble(chat2[0], true, false),
-                              const SizedBox(height: 6),
-                              bubble(chat2[1], true, true),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              bubble(chat3[0], false, true),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // 모드 변경/저장 버튼, empty라면 빈 칸
             !isEmpty
                 ? Container(
                     color: darkMode ? kBlack : kGrey1,
@@ -265,11 +140,11 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             child: Text(
-                              isInput ? '소리 듣기' : '입력하기', // 모드라는 이름 헷갈려서 바꿔야함
+                              isInput ? '소리 듣기' : '입력하기',
                               style: TextStyle(
                                 color: darkMode ? kWhite : kBlack,
                                 fontSize: kS,
-                                fontFamily: 'SCBold',
+                                fontFamily: 'PretendardBold',
                               ),
                             ),
                           ),
@@ -282,7 +157,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               showCupertinoModalPopup(
                                       context: context,
                                       builder: (BuildContext context) =>
-                                          chatModalBuilder(context))
+                                          chatModalBuilder(context, gloabalKey))
                                   .then((value) => setState(() {}));
                             },
                             style: TextButton.styleFrom(
@@ -301,7 +176,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               style: TextStyle(
                                 color: darkMode ? kBlack : kWhite,
                                 fontSize: kS,
-                                fontFamily: 'SCBold',
+                                fontFamily: 'PretendardBold',
                               ),
                             ),
                           ),
@@ -310,142 +185,109 @@ class _VoiceScreenState extends State<VoiceScreen> {
                     ),
                   )
                 : const SizedBox(),
+            // 채팅 내용, empty라면 안내 문구
             isEmpty
+                ? Flexible(
+                    child: Center(
+                      child: Text(
+                        '음성모드 화면입니다.\n하단의 버튼을 눌러 대화를 시작하세요.',
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: kGrey5, fontSize: kS, height: 2),
+                      ),
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 40),
+                        width: screenWidth,
+                      ),
+                      Flexible(
+                        child: RepaintBoundary(
+                          key: gloabalKey,
+                          child: ListView.builder(
+                              // reverse: true,
+                              itemCount: voiceScreenChat.length,
+                              itemBuilder: (BuildContext context, idx) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  margin: EdgeInsets.only(
+                                      bottom: (idx + 1 <
+                                                  voiceScreenChat.length) &&
+                                              (voiceScreenChat[idx][1] !=
+                                                  voiceScreenChat[idx + 1][1])
+                                          ? 10
+                                          : 5),
+                                  alignment: voiceScreenChat[idx][1]
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  child: bubble(voiceScreenChat[idx][0],
+                                      voiceScreenChat[idx][1], false),
+                                );
+                              }),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: isOpen ? 60 : 140),
+                        width: screenWidth,
+                      ),
+                      // Container(
+                      //   margin: EdgeInsets.only(
+                      //       top: 20,
+                      //       bottom: isOpen
+                      //           ? 60
+                      //           : isInput
+                      //               ? 140
+                      //               : 80),
+                      //   width: screenWidth,
+                      // )
+                    ],
+                  ),
+            // 하단 위젯, empty라면 모드 선택 버튼, input이라면 텍스트 필드, 아니라면 소리 듣기 표시
+            isEmpty
+                // 모드 선택 버튼
                 ? Positioned(
                     bottom: 80,
                     width: screenWidth,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Dismissible(
-                          key: const Key('1'),
-                          direction: DismissDirection.up,
-                          background: Stack(
-                            alignment: AlignmentDirectional.centerStart,
-                            children: [
-                              Container(
-                                  width: 120, color: kGrey5.withOpacity(0.5)),
-                              Container(
-                                  width: 100, color: kGrey5.withOpacity(0.5)),
-                            ],
-                          ),
-                          onDismissed: (direction) {
+                        voiceModeSelect(
+                          kGrey5,
+                          const BorderRadius.only(
+                              topRight: Radius.circular(150)),
+                          [0.0, 15.0],
+                          Icons.mic_rounded,
+                          '소리 듣기',
+                          () {
                             setState(() {
                               isInput = false;
                               isEmpty = false;
                             });
                           },
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    color: kGrey5.withOpacity(0.5),
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(150))),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                      color: kGrey5.withOpacity(0.5),
-                                      borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(150))),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, right: 15),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.mic_rounded,
-                                          color: kWhite,
-                                          size: 35,
-                                        ),
-                                        Text(
-                                          '소리 듣기',
-                                          style: TextStyle(
-                                              color: kWhite, fontSize: kXS),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-                        Dismissible(
-                          key: const Key('2'),
-                          direction: DismissDirection.up,
-                          background: Stack(
-                            alignment: AlignmentDirectional.centerEnd,
-                            children: [
-                              Container(
-                                  width: 120, color: kMain.withOpacity(0.5)),
-                              Container(
-                                  width: 100, color: kMain.withOpacity(0.5)),
-                            ],
-                          ),
-                          onDismissed: (direction) {
+                        voiceModeSelect(
+                          kMain,
+                          const BorderRadius.only(
+                              topLeft: Radius.circular(150)),
+                          [15.0, 0.0],
+                          Icons.keyboard_rounded,
+                          '입력하기',
+                          () {
                             setState(() {
                               isInput = true;
                               isEmpty = false;
                             });
                           },
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    color: kMain.withOpacity(0.5),
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(150))),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                      color: kMain.withOpacity(0.5),
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(150))),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 15, left: 15),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.keyboard_rounded,
-                                          color: kWhite,
-                                          size: 35,
-                                        ),
-                                        Text(
-                                          '입력하기',
-                                          style: TextStyle(
-                                              color: kWhite, fontSize: kXS),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          isRight: true,
                         ),
                       ],
                     ),
                   )
                 : isInput
+                    // 텍스트 필드
                     ? Positioned(
                         bottom: isOpen ? 0 : 80,
                         width: screenWidth,
@@ -458,33 +300,53 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                 isOpen = focused ? true : false;
                               });
                             },
-                            child: TextField(
-                                onChanged: (value) {},
-                                style: TextStyle(
-                                    fontSize: kS,
-                                    color: darkMode ? kWhite : kBlack),
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: darkMode ? kBlack : kGrey1,
-                                  hintText: "입력하세요",
-                                  hintStyle:
-                                      TextStyle(fontSize: kS, color: kGrey5),
-                                  counterText: "",
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    controller: textController,
+                                    onSubmitted: _handleSubmitted,
+                                    onChanged: (value) {},
+                                    style: TextStyle(
+                                        fontSize: kS,
                                         color: darkMode ? kWhite : kBlack),
-                                    borderRadius: BorderRadius.circular(15),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: darkMode ? kBlack : kGrey1,
+                                      hintText: "입력하세요",
+                                      hintStyle: TextStyle(
+                                          fontSize: kS, color: kGrey5),
+                                      counterText: "",
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 15),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: darkMode ? kWhite : kBlack),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: kGrey5),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                    ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: kGrey5),
-                                    borderRadius: BorderRadius.circular(15),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  child: IconButton(
+                                    icon: Icon(Icons.send, color: kMain),
+                                    onPressed: () =>
+                                        _handleSubmitted(textController.text),
                                   ),
-                                )),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       )
+                    // 소리 듣기 표시
                     : Positioned(
                         bottom: 80,
                         height: 80,
