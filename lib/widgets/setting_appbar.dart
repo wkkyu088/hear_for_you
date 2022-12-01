@@ -14,7 +14,7 @@ PreferredSizeWidget settingAppbar(title, context, {isLeading = true}) {
     title: Text(
       title,
       style: TextStyle(
-        fontFamily: 'SCBold',
+        fontFamily: 'PretendardBold',
         fontSize: kL,
         color: darkMode ? kWhite : kBlack,
       ),

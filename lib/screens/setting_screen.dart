@@ -22,7 +22,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     // 설정 타이틀의 스타일
     TextStyle settingTitleStyle = TextStyle(
-      fontFamily: 'SCBold',
+      fontFamily: 'PretendardBold',
       fontSize: kM,
       color: darkMode ? kWhite : kBlack,
     );
@@ -73,7 +73,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         Text(
                           name,
                           style: TextStyle(
-                            fontFamily: 'SCBold',
+                            fontFamily: 'PretendardBold',
                             fontSize: kXL + 3,
                             color: kMain,
                           ),
@@ -81,7 +81,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         Text(
                           ' 님',
                           style: TextStyle(
-                            fontFamily: 'SCBold',
+                            fontFamily: 'PretendardBold',
                             fontSize: kXL,
                             color: darkMode ? kWhite : kBlack,
                           ),
@@ -143,7 +143,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               ? Text(
                                   '켜짐',
                                   style: TextStyle(
-                                    fontFamily: 'SCBold',
+                                    fontFamily: 'PretendardBold',
                                     fontSize: kM,
                                     color: kMain,
                                   ),
@@ -151,7 +151,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               : Text(
                                   '꺼짐',
                                   style: TextStyle(
-                                    fontFamily: 'SCBold',
+                                    fontFamily: 'PretendardBold',
                                     fontSize: kM,
                                     color: kGrey5,
                                   ),

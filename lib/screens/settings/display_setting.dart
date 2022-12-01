@@ -44,7 +44,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                     Text(
                       '다크 모드',
                       style: TextStyle(
-                        fontSize: kS,
+                        fontSize: kM,
                         color: darkMode ? kWhite : kBlack,
                       ),
                     ),
@@ -89,7 +89,8 @@ class _DisplaySettingState extends State<DisplaySetting> {
                           color: kGrey5,
                           selectedColor: kWhite,
                           fillColor: kMain,
-                          textStyle: const TextStyle(fontFamily: 'SCMedium'),
+                          textStyle:
+                              const TextStyle(fontFamily: 'PretendardMedium'),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           constraints:
                               const BoxConstraints(minWidth: 65, minHeight: 45),

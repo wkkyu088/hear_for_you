@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
 
@@ -16,50 +15,18 @@ class DecibelSetting extends StatefulWidget {
 }
 
 class _DecibelSettingState extends State<DecibelSetting> {
-  List decibels = [
-    140,
-    125,
-    120,
-    115,
-    110,
-    105,
-    100,
-    95,
-    90,
-    85,
-    70,
-    60,
-    40,
-  ];
-  List contents = [
-    '비행기 이착륙, 총소리',
-    '사이렌 소리, 폭죽 소리',
-    '록 콘서트, 나이트 클럽',
-    '아기 울음소리, 제트 스키',
-    '스노우 모빌 (운전자 기준)',
-    '헬리콥터',
-    '헤드폰, 이어폰, 전기톱 소리',
-    '오토바이',
-    '도로 주행 중인 트럭, 잔디 깎는 기계',
-    '청력 안전 기준',
-    '진공 청소기 소리',
-    '일반 대화, 설거지 소리',
-    '조용한 방'
-  ];
-  List colors = [
-    Colors.red[400],
-    Colors.deepOrange[400],
-    Colors.orange[400],
-    Colors.amber[400],
-    Colors.yellow[600],
-    const Color(0xFFF5E665),
-    Colors.lime[400],
-    Colors.lightGreen[400],
-    Colors.lightGreen[600],
-    Colors.green[400],
-    Colors.teal[400],
-    Colors.blue[400],
-    Colors.indigo[400],
+  List data = [
+    [140, '비행기 이착륙, 폭죽 소리', Colors.red[400]],
+    [120, '록 콘서트, 전동 드릴', Colors.deepOrange[400]],
+    [115, '아기 울음소리', Colors.orange[400]],
+    [110, '앰뷸런스 소리, 헬리콥터', Colors.yellow[600]],
+    [110, '전차가 지나가는 다리 밑', Colors.lime[400]],
+    [100, '자동차 경적, 전기톱 소리', Colors.lightGreen[400]],
+    [90, '지하철, 자동차 소음, 공장 소음', Colors.lightGreen[600]],
+    [80, '철도변, 진공청소기', Colors.green[400]],
+    [70, '매미 소리, 도로변 소음', Colors.teal[400]],
+    [60, '빗소리, 세탁기, 전화벨', Colors.blue[400]],
+    [40, '조용한 방, 일반적인 대화', Colors.indigo[400]],
   ];
 
   @override
@@ -96,7 +63,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                         activeColor: kMain,
                         min: 0.0,
                         max: 145.0,
-                        divisions: 145,
+                        divisions: 29,
                         value: dB,
                         onChanged: (value) {
                           value = value;
@@ -119,7 +86,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
               RichText(
                 text: TextSpan(
                   style: TextStyle(
-                    fontFamily: 'SCMedium',
+                    fontFamily: 'PretendardMedium',
                     fontSize: kS,
                     color: darkMode ? kWhite : kBlack,
                   ),
@@ -128,7 +95,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                     TextSpan(
                       text: '$dB dB',
                       style: TextStyle(
-                        fontFamily: 'SCBold',
+                        fontFamily: 'PretendardBold',
                         fontSize: kS,
                         color: kMain,
                       ),
@@ -152,7 +119,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                 height: 500,
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: 13,
+                  itemCount: 11,
                   itemBuilder: ((context, index) {
                     return Column(
                       children: [
@@ -160,31 +127,31 @@ class _DecibelSettingState extends State<DecibelSetting> {
                           children: [
                             Container(
                               width: 80,
-                              height: 35,
-                              color: dB > decibels[index]
+                              height: 40,
+                              color: dB > data[index][0]
                                   ? kGrey5.withOpacity(0.5)
-                                  : colors[index].withOpacity(0.9),
+                                  : data[index][2].withOpacity(0.9),
                               child: Center(
                                 child: Text(
-                                  '${decibels[index]} dB',
+                                  '${data[index][0]} dB',
                                   style: TextStyle(
                                     fontSize: kL,
                                     color: kWhite,
-                                    fontFamily: 'SCBold',
+                                    fontFamily: 'PretendardBold',
                                   ),
                                 ),
                               ),
                             ),
                             Container(
                               width: screenWidth - 36 - 80,
-                              height: 35,
-                              color: dB > decibels[index]
+                              height: 40,
+                              color: dB > data[index][0]
                                   ? kGrey5.withOpacity(0.1)
-                                  : colors[index].withOpacity(0.1),
+                                  : data[index][2].withOpacity(0.1),
                               padding: const EdgeInsets.only(left: 10),
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                contents[index],
+                                data[index][1],
                                 style: TextStyle(
                                   fontSize: kS,
                                   color: darkMode ? kWhite : kBlack,

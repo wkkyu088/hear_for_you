@@ -71,7 +71,7 @@ class _MissedAlertState extends State<MissedAlert> {
               child: RichText(
                 text: TextSpan(
                   style: TextStyle(
-                    fontFamily: 'SCBold',
+                    fontFamily: 'PretendardBold',
                     fontSize: kS,
                     color: darkMode ? kWhite : kBlack,
                   ),

@@ -90,7 +90,9 @@ class _AlertScreenState extends State<AlertScreen> {
                       Text(
                         '사이렌 감지',
                         style: TextStyle(
-                            color: kWhite, fontSize: 38, fontFamily: 'SCBold'),
+                            color: kWhite,
+                            fontSize: 38,
+                            fontFamily: 'PretendardBold'),
                       ),
                       const SizedBox(height: 10),
                       // 알림 발생 시간
@@ -107,7 +109,7 @@ class _AlertScreenState extends State<AlertScreen> {
                             color: kWhite,
                             fontSize: kM,
                             height: 1.3,
-                            fontFamily: 'SCLight'),
+                            fontFamily: 'PretendardLight'),
                       ),
                     ],
                   ),

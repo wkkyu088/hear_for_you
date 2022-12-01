@@ -87,7 +87,7 @@ class _RegularScreenState extends State<RegularScreen>
                             '상시모드 ',
                             style: TextStyle(
                               fontSize: kXL,
-                              fontFamily: 'SCBold',
+                              fontFamily: 'PretendardBold',
                               color: darkMode ? kWhite : kBlack,
                             ),
                           ),
@@ -95,7 +95,7 @@ class _RegularScreenState extends State<RegularScreen>
                             regularValue ? '켜짐' : '꺼짐',
                             style: TextStyle(
                               fontSize: kXL,
-                              fontFamily: 'SCBold',
+                              fontFamily: 'PretendardBold',
                               color: regularValue ? kMain : kGrey5,
                             ),
                           )
