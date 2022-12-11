@@ -36,7 +36,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.2.9
   syncfusion_flutter_gauges: ^20.3.49
-  path_provider: ^2.0.11
   image_gallery_saver: ^1.7.1
 
   # voice mode

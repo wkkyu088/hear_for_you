@@ -1,0 +1,70 @@
+PODS:
+  - audio_session (0.0.1):
+    - Flutter
+  - ffmpeg-kit-ios-https (4.5.1)
+  - ffmpeg_kit_flutter (4.5.1):
+    - ffmpeg_kit_flutter/https (= 4.5.1)
+    - Flutter
+  - ffmpeg_kit_flutter/https (4.5.1):
+    - ffmpeg-kit-ios-https (= 4.5.1)
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - just_audio (0.0.1):
+    - Flutter
+  - LibTorch (1.8.0):
+    - LibTorch/Core (= 1.8.0)
+  - LibTorch/Core (1.8.0):
+    - LibTorch/Torch
+  - LibTorch/Torch (1.8.0)
+  - path_provider_ios (0.0.1):
+    - Flutter
+  - pytorch_mobile (0.0.1):
+    - Flutter
+    - LibTorch (~> 1.8.0)
+
+DEPENDENCIES:
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - ffmpeg_kit_flutter (from `.symlinks/plugins/ffmpeg_kit_flutter/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - pytorch_mobile (from `.symlinks/plugins/pytorch_mobile/ios`)
+
+SPEC REPOS:
+  trunk:
+    - ffmpeg-kit-ios-https
+    - LibTorch
+
+EXTERNAL SOURCES:
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
+  ffmpeg_kit_flutter:
+    :path: ".symlinks/plugins/ffmpeg_kit_flutter/ios"
+  Flutter:
+    :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
+  pytorch_mobile:
+    :path: ".symlinks/plugins/pytorch_mobile/ios"
+
+SPEC CHECKSUMS:
+  audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  ffmpeg-kit-ios-https: cec24d405b511e4f274980d8a9c751d384f89558
+  ffmpeg_kit_flutter: e2f0bd6b75e361faeee3b34c70650d3ec6ec35d0
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  LibTorch: d7724112589515bedd5eadf14a9db5b1d62d8a34
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  pytorch_mobile: cdb1566b9883c59662d443e904db6674e829dd84
+
+PODFILE CHECKSUM: 988c6dfac2e99d530d846d5cf429b20ada680a97
+
+COCOAPODS: 1.11.3
