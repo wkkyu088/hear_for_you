@@ -15,14 +15,14 @@ class VoiceScreen extends StatefulWidget {
 class _VoiceScreenState extends State<VoiceScreen> {
   late bool isInput;
   bool isOpen = false;
-  var gloabalKey = new GlobalKey();
+  var gloabalKey = GlobalKey();
 
   // 변수 초기화
   @override
   initState() {
     super.initState();
-    isEmpty = true;
-    isInput = false;
+    isEmpty = false;
+    isInput = true;
     // voiceScreenChat = [];
   }
 
@@ -157,7 +157,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               showCupertinoModalPopup(
                                       context: context,
                                       builder: (BuildContext context) =>
-                                          chatModalBuilder(context, gloabalKey))
+                                          chatModalBuilder(context,
+                                              globalKey: gloabalKey))
                                   .then((value) => setState(() {}));
                             },
                             style: TextButton.styleFrom(
@@ -186,214 +187,212 @@ class _VoiceScreenState extends State<VoiceScreen> {
                   )
                 : const SizedBox(),
             // 채팅 내용, empty라면 안내 문구
-            isEmpty
-                ? Flexible(
-                    child: Center(
-                      child: Text(
-                        '음성모드 화면입니다.\n하단의 버튼을 눌러 대화를 시작하세요.',
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(color: kGrey5, fontSize: kS, height: 2),
-                      ),
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 40),
-                        width: screenWidth,
-                      ),
-                      Flexible(
-                        child: RepaintBoundary(
-                          key: gloabalKey,
-                          child: ListView.builder(
-                              // reverse: true,
-                              itemCount: voiceScreenChat.length,
-                              itemBuilder: (BuildContext context, idx) {
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  margin: EdgeInsets.only(
-                                      bottom: (idx + 1 <
-                                                  voiceScreenChat.length) &&
-                                              (voiceScreenChat[idx][1] !=
-                                                  voiceScreenChat[idx + 1][1])
-                                          ? 10
-                                          : 5),
-                                  alignment: voiceScreenChat[idx][1]
-                                      ? Alignment.centerRight
-                                      : Alignment.centerLeft,
-                                  child: bubble(voiceScreenChat[idx][0],
-                                      voiceScreenChat[idx][1], false),
-                                );
-                              }),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: isOpen ? 60 : 140),
-                        width: screenWidth,
-                      ),
-                      // Container(
-                      //   margin: EdgeInsets.only(
-                      //       top: 20,
-                      //       bottom: isOpen
-                      //           ? 60
-                      //           : isInput
-                      //               ? 140
-                      //               : 80),
-                      //   width: screenWidth,
-                      // )
-                    ],
+            // isEmpty
+            //     ? Flexible(
+            //         child: Center(
+            //           child: Text(
+            //             '음성모드 화면입니다.\n하단의 버튼을 눌러 대화를 시작하세요.',
+            //             textAlign: TextAlign.center,
+            //             style:
+            //                 TextStyle(color: kGrey5, fontSize: kS, height: 2),
+            //           ),
+            //         ),
+            //       )
+            //     :
+            Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 40),
+                  width: screenWidth,
+                ),
+                Flexible(
+                  child: RepaintBoundary(
+                    key: gloabalKey,
+                    child: ListView.builder(
+                        // reverse: true,
+                        itemCount: voiceScreenChat.length,
+                        itemBuilder: (BuildContext context, idx) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: EdgeInsets.only(
+                                bottom: (idx + 1 < voiceScreenChat.length) &&
+                                        (voiceScreenChat[idx][1] !=
+                                            voiceScreenChat[idx + 1][1])
+                                    ? 10
+                                    : 5),
+                            alignment: voiceScreenChat[idx][1]
+                                ? Alignment.centerRight
+                                : Alignment.centerLeft,
+                            child: bubble(voiceScreenChat[idx][0],
+                                voiceScreenChat[idx][1], false),
+                          );
+                        }),
                   ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: isOpen ? 60 : 140),
+                  width: screenWidth,
+                ),
+                // Container(
+                //   margin: EdgeInsets.only(
+                //       top: 20,
+                //       bottom: isOpen
+                //           ? 60
+                //           : isInput
+                //               ? 140
+                //               : 80),
+                //   width: screenWidth,
+                // )
+              ],
+            ),
             // 하단 위젯, empty라면 모드 선택 버튼, input이라면 텍스트 필드, 아니라면 소리 듣기 표시
-            isEmpty
-                // 모드 선택 버튼
+            // isEmpty
+            //     // 모드 선택 버튼
+            //     ? Positioned(
+            //         bottom: 80,
+            //         width: screenWidth,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             voiceModeSelect(
+            //               kGrey5,
+            //               const BorderRadius.only(
+            //                   topRight: Radius.circular(150)),
+            //               [0.0, 15.0],
+            //               Icons.mic_rounded,
+            //               '소리 듣기',
+            //               () {
+            //                 setState(() {
+            //                   isInput = false;
+            //                   isEmpty = false;
+            //                 });
+            //               },
+            //             ),
+            //             voiceModeSelect(
+            //               kMain,
+            //               const BorderRadius.only(
+            //                   topLeft: Radius.circular(150)),
+            //               [15.0, 0.0],
+            //               Icons.keyboard_rounded,
+            //               '입력하기',
+            //               () {
+            //                 setState(() {
+            //                   isInput = true;
+            //                   isEmpty = false;
+            //                 });
+            //               },
+            //               isRight: true,
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //    :
+            isInput
+                // 텍스트 필드
                 ? Positioned(
-                    bottom: 80,
+                    bottom: isOpen ? 0 : 80,
                     width: screenWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        voiceModeSelect(
-                          kGrey5,
-                          const BorderRadius.only(
-                              topRight: Radius.circular(150)),
-                          [0.0, 15.0],
-                          Icons.mic_rounded,
-                          '소리 듣기',
-                          () {
-                            setState(() {
-                              isInput = false;
-                              isEmpty = false;
-                            });
-                          },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: Focus(
+                        onFocusChange: (focused) {
+                          setState(() {
+                            isOpen = focused ? true : false;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Flexible(
+                              child: TextField(
+                                controller: textController,
+                                onSubmitted: _handleSubmitted,
+                                onChanged: (value) {},
+                                style: TextStyle(
+                                    fontSize: kS,
+                                    color: darkMode ? kWhite : kBlack),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: darkMode ? kBlack : kGrey1,
+                                  hintText: "입력하세요",
+                                  hintStyle:
+                                      TextStyle(fontSize: kS, color: kGrey5),
+                                  counterText: "",
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 15),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: darkMode ? kWhite : kBlack),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: kGrey5),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: IconButton(
+                                icon: Icon(Icons.send, color: kMain),
+                                onPressed: () =>
+                                    _handleSubmitted(textController.text),
+                              ),
+                            ),
+                          ],
                         ),
-                        voiceModeSelect(
-                          kMain,
-                          const BorderRadius.only(
-                              topLeft: Radius.circular(150)),
-                          [15.0, 0.0],
-                          Icons.keyboard_rounded,
-                          '입력하기',
-                          () {
-                            setState(() {
-                              isInput = true;
-                              isEmpty = false;
-                            });
-                          },
-                          isRight: true,
-                        ),
-                      ],
+                      ),
                     ),
                   )
-                : isInput
-                    // 텍스트 필드
-                    ? Positioned(
-                        bottom: isOpen ? 0 : 80,
-                        width: screenWidth,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          child: Focus(
-                            onFocusChange: (focused) {
-                              setState(() {
-                                isOpen = focused ? true : false;
-                              });
-                            },
+                // 소리 듣기 표시
+                : Positioned(
+                    bottom: 80,
+                    height: 80,
+                    width: screenWidth,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: darkMode
+                                ? kBlack.withOpacity(0.65)
+                                : kWhite.withOpacity(0.85),
+                            blurRadius: 20,
+                          ),
+                        ],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            height: 40,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Flexible(
-                                  child: TextField(
-                                    controller: textController,
-                                    onSubmitted: _handleSubmitted,
-                                    onChanged: (value) {},
-                                    style: TextStyle(
-                                        fontSize: kS,
-                                        color: darkMode ? kWhite : kBlack),
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: darkMode ? kBlack : kGrey1,
-                                      hintText: "입력하세요",
-                                      hintStyle: TextStyle(
-                                          fontSize: kS, color: kGrey5),
-                                      counterText: "",
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 15),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: darkMode ? kWhite : kBlack),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: kGrey5),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
-                                  child: IconButton(
-                                    icon: Icon(Icons.send, color: kMain),
-                                    onPressed: () =>
-                                        _handleSubmitted(textController.text),
-                                  ),
-                                ),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
                               ],
                             ),
                           ),
-                        ),
-                      )
-                    // 소리 듣기 표시
-                    : Positioned(
-                        bottom: 80,
-                        height: 80,
-                        width: screenWidth,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.3),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: darkMode
-                                    ? kBlack.withOpacity(0.65)
-                                    : kWhite.withOpacity(0.85),
-                                blurRadius: 20,
-                              ),
-                            ],
-                            shape: BoxShape.circle,
+                          Text(
+                            '대화를 듣고 있습니다...',
+                            style: TextStyle(
+                              color:
+                                  darkMode ? kWhite : const Color(0xFF434343),
+                              fontSize: kXS,
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                '대화를 듣고 있습니다...',
-                                style: TextStyle(
-                                  color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
-                                  fontSize: kXS,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        ],
                       ),
+                    ),
+                  ),
           ],
         ),
       ),

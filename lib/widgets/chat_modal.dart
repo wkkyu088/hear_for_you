@@ -11,7 +11,8 @@ import 'package:path_provider/path_provider.dart';
 import '../constants.dart';
 
 // 음성모드 저장시 뜨는 모달
-CupertinoActionSheet chatModalBuilder(BuildContext context, globalKey) {
+CupertinoActionSheet chatModalBuilder(BuildContext context,
+    {globalKey = GlobalKey}) {
   // 채팅 내역 캡처하여 디바이스에 저장
   void captureChat() async {
     print("START CAPTURE");
