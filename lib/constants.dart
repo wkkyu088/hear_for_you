@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 int profileValue = 2;
-String name = '오희정';
+String name = '';
 final profileItems = [
   "중증 청각장애 (2~3급)",
   "경증 청각장애 (4~6급)",

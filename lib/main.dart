@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         fontFamily: 'PretendardMedium',
       ),
-      // home: const LoginScreen(),
-      home: const BottomNavBar(),
+      home: const LoginScreen(),
+      // home: const BottomNavBar(),
       // home: SplashScreen(),
     );
   }
@@ -83,7 +83,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     Widget bottomNavBar() {
       return SizedBox(
-        height: 80,
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
