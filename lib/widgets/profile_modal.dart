@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 
@@ -11,6 +12,7 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
     "청각중복장애 (시각 등)",
     "직접 설정",
   ];
+
   return CupertinoActionSheet(
     actions: [
       SizedBox(
@@ -25,10 +27,12 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
                       ),
                     ))
                 .toList(),
-            onSelectedItemChanged: (index) {
+            onSelectedItemChanged: (index) async {
               profileValue = index;
-
-              print("Selected Iem: $index");
+              final SharedPreferences pref =
+                  await SharedPreferences.getInstance();
+              pref.setInt('profileValue', profileValue);
+              print("Selected Item: $profileValue");
             },
           ))
     ],

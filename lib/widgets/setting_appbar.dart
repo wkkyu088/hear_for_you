@@ -30,6 +30,6 @@ PreferredSizeWidget settingAppbar(title, context, {isLeading = true}) {
               Navigator.pop(context);
             },
           )
-        : null,
+        : Container(),
   );
 }

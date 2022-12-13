@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 화면 설정 페이지
 
@@ -15,13 +16,29 @@ class DisplaySetting extends StatefulWidget {
 }
 
 class _DisplaySettingState extends State<DisplaySetting> {
-  @override
-
   // 현재 선택되어 있는 메인 색상 표시
   @override
   initState() {
     super.initState();
     checked[selectedColor] = true;
+  }
+
+  static void setDarkMode(bool darkMode) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('darkMode', darkMode);
+    print("darkMode changed! : $darkMode");
+  }
+
+  static void setSelectedColor(int selectedColor) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setInt('selectedColor', selectedColor);
+    print("selectedColor changed! : $selectedColor");
+  }
+
+  static void setFontSizeId(int fontSizeId) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setInt('fontSizeId', fontSizeId);
+    print("fontSize changed! $fontSizeId");
   }
 
   @override
@@ -60,6 +77,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                             darkMode = value;
                             setState(() {
                               darkMode = value;
+                              setDarkMode(darkMode);
                             });
                           },
                         ),
@@ -72,58 +90,68 @@ class _DisplaySettingState extends State<DisplaySetting> {
               // 3. 글씨 크기 설정 영역
               customCard(
                 '글씨 크기',
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '글씨 크기',
-                      style: TextStyle(
-                        fontSize: kM,
-                        color: darkMode ? kWhite : kBlack,
-                      ),
-                    ),
-                    const Spacer(),
                     Row(
                       children: [
-                        ToggleButtons(
-                          isSelected: fontSizes,
-                          color: kGrey5,
-                          selectedColor: kWhite,
-                          fillColor: kMain,
-                          textStyle:
-                              const TextStyle(fontFamily: 'PretendardMedium'),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          constraints:
-                              const BoxConstraints(minWidth: 65, minHeight: 45),
-                          borderColor: kGrey4,
-                          selectedBorderColor: kMain,
-                          borderRadius: BorderRadius.circular(10),
+                        Text(
+                          '글씨 크기',
+                          style: TextStyle(
+                            fontSize: kM,
+                            color: darkMode ? kWhite : kBlack,
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
                           children: [
-                            Text(
-                              '작게',
-                              style: TextStyle(fontSize: kXS),
+                            ToggleButtons(
+                              isSelected: fontSizes,
+                              color: kGrey5,
+                              selectedColor: kWhite,
+                              fillColor: kMain,
+                              textStyle: const TextStyle(
+                                  fontFamily: 'PretendardMedium'),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              constraints: const BoxConstraints(
+                                  minWidth: 65, minHeight: 45),
+                              borderColor: kGrey4,
+                              selectedBorderColor: kMain,
+                              borderRadius: BorderRadius.circular(10),
+                              children: const [
+                                Text(
+                                  '작게',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Text(
+                                  '보통',
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                                Text(
+                                  '크게',
+                                  style: TextStyle(fontSize: 21),
+                                )
+                              ],
+                              onPressed: (index) {
+                                setState(() {
+                                  for (int i = 0; i < 3; i++) {
+                                    if (i == index) {
+                                      fontSizes[i] = true;
+                                      setFontSizeId(i);
+                                    } else {
+                                      fontSizes[i] = false;
+                                    }
+                                  }
+                                });
+                              },
                             ),
-                            Text(
-                              '보통',
-                              style: TextStyle(fontSize: kM),
-                            ),
-                            Text(
-                              '크게',
-                              style: TextStyle(fontSize: kXL),
-                            )
                           ],
-                          onPressed: (index) {
-                            setState(() {
-                              for (int i = 0; i < 3; i++) {
-                                if (i == index) {
-                                  fontSizes[i] = true;
-                                } else {
-                                  fontSizes[i] = false;
-                                }
-                              }
-                            });
-                          },
                         ),
                       ],
+                    ),
+                    Text(
+                      "⚠️ 앱을 껐다 켜면 적용됩니다.",
+                      style: TextStyle(fontSize: 13, color: kMain),
                     ),
                   ],
                 ),
@@ -177,6 +205,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                               checked[i] = false;
                             }
                           }
+                          setSelectedColor(selectedColor);
                         });
                       },
                       child: Stack(

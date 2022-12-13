@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 
@@ -16,6 +17,29 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isOpen = false;
   final TextEditingController textController = TextEditingController();
+
+  static void setProfile(String name, int profileValue) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('name', name);
+    pref.setInt('profileValue', profileValue);
+    pref.setBool('regularValue', true);
+    pref.setDouble('dB', 70.0);
+    pref.setBool('darkMode', false);
+    pref.setInt('selectedColor', 7);
+    pref.setInt('fontSizeId', 1);
+    pref.setBool('case1', true);
+    pref.setBool('case2', false);
+    pref.setBool('case3', false);
+    pref.setBool('case1detail1', true);
+    pref.setBool('case1detail2', false);
+    pref.setBool('case1detail3', true);
+    pref.setBool('case2detail1', false);
+    pref.setBool('case2detail2', true);
+    pref.setBool('case2detail3', true);
+    pref.setBool('case3detail1', false);
+    pref.setBool('case3detail2', false);
+    pref.setBool('case3detail3', true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   if (textController.text != "") {
                     name = textController.text;
+                    setProfile(name, profileValue);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

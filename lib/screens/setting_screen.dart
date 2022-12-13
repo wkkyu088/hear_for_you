@@ -8,6 +8,7 @@ import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 설정 페이지
 
@@ -18,6 +19,11 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  static void setRegularValue(bool regularValue) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('regularValue', regularValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     // 설정 타이틀의 스타일
@@ -168,6 +174,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   regularValue = value;
                                   setState(() {
                                     regularValue = value;
+                                    setRegularValue(regularValue);
                                   });
                                 },
                               ),
