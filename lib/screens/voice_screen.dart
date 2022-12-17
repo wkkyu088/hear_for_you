@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hear_for_you/widgets/chat_modal.dart';
-import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../constants.dart';
@@ -19,27 +18,32 @@ class _VoiceScreenState extends State<VoiceScreen> {
   bool isOpen = false;
   var gloabalKey = GlobalKey();
 
+  // 텍스트필드 컨트롤러
+  final TextEditingController textController = TextEditingController();
+
+  // 변수 초기화
+  @override
+  initState() {
+    super.initState();
+    isEmpty = false;
+    isInput = true;
+    _initSpeech();
+    setState(() {});
+    // voiceScreenChat = [];
+  }
+
   ////////////////////////////////////////////////////////////////////////////////////
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
-  bool _speechAvailable = false;
   String _lastWords = '';
   String _currentWords = '';
 
-  final String _selectedLocaleId = 'ko_KR';
-
 // This has to happen only once per app
   void _initSpeech() async {
-    _speechAvailable = await _speechToText.initialize(
-        onError: errorListener, onStatus: statusListener);
+    await _speechToText.initialize(onStatus: statusListener);
     setState(() {});
   }
 
-  void errorListener(SpeechRecognitionError error) {
-    debugPrint(error.errorMsg.toString());
-  }
-
-//
   /// stt가 특정시간이 지나면 자동종료가 되기때문에 다시 시작해주는 코드 필요
   void statusListener(String status) async {
     debugPrint("status $status");
@@ -61,15 +65,17 @@ class _VoiceScreenState extends State<VoiceScreen> {
   /// Each time to start a speech recognition session
   Future _startListening() async {
     regularValue = false;
-    // await _stopListening();
+
     await Future.delayed(const Duration(milliseconds: 1));
     await _speechToText.listen(
-        onResult: _onSpeechResult,
-        // [listenFor] sets the maximum duration that it will listen for, after that it automatically stops the listen for you.
-        // [pauseFor] sets the maximum duration of a pause in speech with no words detected, after that it automatically stops the listen for you.
+        onResult: (SpeechRecognitionResult result) {
+          setState(() {
+            _currentWords = " ${result.recognizedWords}";
+          });
+        },
         listenFor: const Duration(seconds: 30),
-        pauseFor: const Duration(seconds: 5),
-        localeId: _selectedLocaleId,
+        pauseFor: const Duration(milliseconds: 5),
+        localeId: 'ko_KR',
         cancelOnError: false,
         partialResults: false,
         listenMode: ListenMode.confirmation);
@@ -79,36 +85,13 @@ class _VoiceScreenState extends State<VoiceScreen> {
   }
 
   Future _stopListening() async {
+    await _speechToText.stop();
     setState(() {
       _speechEnabled = false;
       regularValue = true;
     });
-    await _speechToText.stop();
   }
-
-  /// This is the callback that the SpeechToText plugin calls when
-  /// the platform returns recognized words.
-  void _onSpeechResult(SpeechRecognitionResult result) {
-    setState(() {
-      _currentWords = " ${result.recognizedWords}";
-    });
-  }
-
-////////////////////////////////////////////////////////////////////////////////////
-
-  // 변수 초기화
-  @override
-  initState() {
-    super.initState();
-    isEmpty = false;
-    isInput = true;
-    _initSpeech();
-    setState(() {});
-    // voiceScreenChat = [];
-  }
-
-  // 텍스트필드 컨트롤러
-  final TextEditingController textController = TextEditingController();
+  ////////////////////////////////////////////////////////////////////////////////////
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +151,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
     }
 
     // 입력 필드 전송 관리, 사용자 발화 추가
-    void _handleSubmitted(String text) {
+    void handleSubmitted(String text) {
       textController.clear();
       if (text != "") {
         setState(() {
@@ -392,7 +375,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                             Flexible(
                               child: TextField(
                                 controller: textController,
-                                onSubmitted: _handleSubmitted,
+                                onSubmitted: handleSubmitted,
                                 onChanged: (value) {},
                                 style: TextStyle(
                                     fontSize: kS,
@@ -424,7 +407,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                               child: IconButton(
                                 icon: Icon(Icons.send, color: kMain),
                                 onPressed: () =>
-                                    _handleSubmitted(textController.text),
+                                    handleSubmitted(textController.text),
                               ),
                             ),
                           ],
