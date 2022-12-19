@@ -8,14 +8,16 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 import '../constants.dart';
 
-class VoiceScreenTest extends StatefulWidget {
-  const VoiceScreenTest({Key? key}) : super(key: key);
+class VoiceModule extends StatefulWidget {
+  const VoiceModule({Key? key}) : super(key: key);
 
   @override
-  State<VoiceScreenTest> createState() => _VoiceScreenTestState();
+  State<VoiceModule> createState() => _VoiceModuleState();
+
+  void _initSpeech() {}
 }
 
-class _VoiceScreenTestState extends State<VoiceScreenTest> {
+class _VoiceModuleState extends State<VoiceModule> {
   late bool isInput;
   bool isOpen = false;
   var gloabalKey = GlobalKey();
@@ -57,8 +59,10 @@ class _VoiceScreenTestState extends State<VoiceScreenTest> {
     if (status == "done" && _speechEnabled) {
       setState(() {
         _lastWords += " $_currentWords";
-        voiceScreenChat.add([_lastWords, false]);
-
+        if (_lastWords.isNotEmpty || _lastWords != " ") {
+          voiceScreenChat.insert(0, [_lastWords, false]);
+        }
+        _lastWords = "";
         _currentWords = "";
         _speechEnabled = false;
       });
@@ -69,9 +73,10 @@ class _VoiceScreenTestState extends State<VoiceScreenTest> {
   /// Each time to start a speech recognition session
   Future _startListening() async {
     regularValue = false;
-    await _stopListening();
+    // await _stopListening();
     await Future.delayed(const Duration(milliseconds: 1));
     await _speechToText.listen(
+        onResult: _onSpeechResult,
         // [listenFor] sets the maximum duration that it will listen for, after that it automatically stops the listen for you.
         // [pauseFor] sets the maximum duration of a pause in speech with no words detected, after that it automatically stops the listen for you.
         listenFor: const Duration(seconds: 30),
@@ -165,7 +170,7 @@ class _VoiceScreenTestState extends State<VoiceScreenTest> {
       textController.clear();
       if (text != "") {
         setState(() {
-          voiceScreenChat.add([text, true]);
+          voiceScreenChat.insert(0, [text, true]);
         });
       }
     }
@@ -272,7 +277,7 @@ class _VoiceScreenTestState extends State<VoiceScreenTest> {
                   child: RepaintBoundary(
                     key: gloabalKey,
                     child: ListView.builder(
-                        // reverse: true,
+                        reverse: true,
                         itemCount: voiceScreenChat.length,
                         itemBuilder: (BuildContext context, idx) {
                           return Container(
@@ -378,40 +383,42 @@ class _VoiceScreenTestState extends State<VoiceScreenTest> {
                         ],
                         shape: BoxShape.circle,
                       ),
-                      child: _lastWords.isNotEmpty
-                          ? Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: kGrey5),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Text('$_lastWords $_currentWords'))
-                          : Column(
+                      child:
+                          // _lastWords.isNotEmpty
+                          //     ? Container(
+                          //         decoration: BoxDecoration(
+                          //           border: Border.all(color: kGrey5),
+                          //           borderRadius: BorderRadius.circular(15),
+                          //         ),
+                          //         child: bubble(
+                          //             '$_lastWords $_currentWords', false, false))
+                          //     :
+                          Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            height: 40,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height: 40,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      waveForm(6.0),
-                                      waveForm(6.0),
-                                      waveForm(6.0),
-                                      waveForm(6.0),
-                                      waveForm(6.0),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  '대화를 듣고 있습니다...',
-                                  style: TextStyle(
-                                    color: darkMode
-                                        ? kWhite
-                                        : const Color(0xFF434343),
-                                    fontSize: kXS,
-                                  ),
-                                ),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
+                                waveForm(6.0),
                               ],
                             ),
+                          ),
+                          Text(
+                            '대화를 듣고 있습니다...',
+                            style: TextStyle(
+                              color:
+                                  darkMode ? kWhite : const Color(0xFF434343),
+                              fontSize: kXS,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           ],
