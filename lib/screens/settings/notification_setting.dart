@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 
@@ -17,6 +18,18 @@ class NotificationSetting extends StatefulWidget {
 }
 
 class _NotificationSettingState extends State<NotificationSetting> {
+  static void setCases(int n, bool value) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('case${n + 1}', value);
+    print("case${n + 1} changed! : $value");
+  }
+
+  static void setCaseDetails(int n, int m, bool value) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('case${n + 1}detail${m + 1}', value);
+    print("case${n + 1}Detail${m + 1} changed! : $value");
+  }
+
   // 알림 방법 세가지 + 스위치 + 설명
   Widget noti(n, detail) {
     return Column(
@@ -44,6 +57,8 @@ class _NotificationSettingState extends State<NotificationSetting> {
                           caseDetails[widget.num][n] = value;
                           setState(() {
                             caseDetails[widget.num][n] = value;
+                            // 여기에 setCaseDetails
+                            setCaseDetails(widget.num, n, value);
                           });
                         }
                       : null,
@@ -107,6 +122,8 @@ class _NotificationSettingState extends State<NotificationSetting> {
                             cases[widget.num] = value;
                             setState(() {
                               cases[widget.num] = value;
+                              // 여기에 setCases
+                              setCases(widget.num, value);
                             });
                           },
                         ),

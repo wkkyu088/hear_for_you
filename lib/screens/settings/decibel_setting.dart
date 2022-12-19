@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 
@@ -28,6 +29,11 @@ class _DecibelSettingState extends State<DecibelSetting> {
     [60, '빗소리, 세탁기, 전화벨', Colors.blue[400]],
     [40, '조용한 방, 일반적인 대화', Colors.indigo[400]],
   ];
+
+  static void setDB(double dB) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setDouble('dB', dB);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +75,7 @@ class _DecibelSettingState extends State<DecibelSetting> {
                           value = value;
                           setState(() {
                             dB = value.roundToDouble();
+                            setDB(dB);
                           });
                         },
                       ),

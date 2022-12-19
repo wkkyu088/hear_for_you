@@ -10,14 +10,6 @@ import 'package:hear_for_you/screens/spalsh_screen.dart';
 
 import 'constants.dart';
 
-// void main() {
-//   runApp(new MaterialApp(
-//       home: new SplashScreen(),
-//       routes: <String, WidgetBuilder>{
-//         '/HomeScreen': (BuildContext context) => new RegularScreen()
-//       }));
-// }
-
 void main() {
   runApp(const MyApp());
 }
@@ -33,13 +25,13 @@ class MyApp extends StatelessWidget {
           darkMode ? Brightness.light : Brightness.dark,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
-      // statusBarBrightness: darkMode
-      //     ? Platform.isIOS
-      //         ? Brightness.dark
-      //         : Brightness.light
-      //     : Platform.isIOS
-      //         ? Brightness.light
-      //         : Brightness.dark,
+      statusBarBrightness: darkMode
+          ? Platform.isIOS
+              ? Brightness.dark
+              : Brightness.light
+          : Platform.isIOS
+              ? Brightness.light
+              : Brightness.dark,
     ));
 
     return MaterialApp(
@@ -49,9 +41,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.grey,
         fontFamily: 'PretendardMedium',
       ),
-      // home: const LoginScreen(),
-      home: const BottomNavBar(),
-      // home: SplashScreen(),
+      // home: name == "" ? const LoginScreen() : const BottomNavBar(),
+      // home: const BottomNavBar(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -83,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     Widget bottomNavBar() {
       return SizedBox(
-        height: 80,
+        height: bottomHeight,
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

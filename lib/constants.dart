@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
 
-int profileValue = 2;
-String name = '오희정';
-final profileItems = [
-  "중증 청각장애 (2~3급)",
-  "경증 청각장애 (4~6급)",
-  "청각중복장애 (시각 등)",
-  "직접 설정",
-];
+double bottomHeight = 80.0;
+
+// Shared_Preference에 들어가는 변수들
+String name = '';
+int profileValue = 0;
 bool regularValue = true;
 double dB = 70;
-List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
-List<String> detailTitle = ['진동 알림', '플래시 알림', '전체화면 알림'];
+bool darkMode = false;
+int selectedColor = 7;
+List<bool> fontSizes = [false, true, false];
+int fontSizeId = 1;
 List<bool> cases = [true, false, false];
 List<List<bool>> caseDetails = [
   [true, false, true],
   [false, true, true],
   [false, false, true]
 ];
+
+final profileItems = [
+  "중증 청각장애 (2~3급)",
+  "경증 청각장애 (4~6급)",
+  "청각중복장애 (시각 등)",
+  "직접 설정",
+];
+List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
+List<String> detailTitle = ['진동 알림', '플래시 알림', '전체화면 알림'];
 List<String> caseContents = [
   '긴급 재난 알림입니다.\n설명설명 어떤 상황인지 설명하고 예시로 뭐가 있는지 설명하고',
   '실외 위험 알림입니다.\n설명설명 어떤 상황인지 설명하고 예시로 뭐가 있는지 설명하고',
   '실내 위험 알림입니다.\n설명설명 어떤 상황인지 설명하고 예시로 뭐가 있는지 설명하고'
 ];
-bool darkMode = false;
-List<bool> fontSizes = [false, true, false];
 
 bool missedAlertOpen = true;
 late bool isEmpty;
 
-Color kMain = colorChart[7];
+Color kMain = colorChart[selectedColor];
 Color kWhite = const Color(0xFFFEFEFE);
 Color kBlack = const Color(0xFF212121); // grey[900]
 
@@ -46,13 +52,32 @@ Color kGrey1 = const Color(0xFFFAFAFA); // grey[50]
 Color kAlert1 = const Color(0xFFC80000);
 Color kAlert2 = const Color(0xFFF8AE24);
 
-double kXL = 21;
-double kL = 19;
-double kM = 17;
-double kS = 15;
-double kXS = 13;
+double kXL = fontSizeId == 0
+    ? 19
+    : fontSizeId == 1
+        ? 21
+        : 23;
+double kL = fontSizeId == 0
+    ? 17
+    : fontSizeId == 1
+        ? 19
+        : 21;
+double kM = fontSizeId == 0
+    ? 15
+    : fontSizeId == 1
+        ? 17
+        : 19;
+double kS = fontSizeId == 0
+    ? 13
+    : fontSizeId == 1
+        ? 15
+        : 17;
+double kXS = fontSizeId == 0
+    ? 11
+    : fontSizeId == 1
+        ? 13
+        : 15;
 
-int selectedColor = 7;
 List<bool> checked = List.filled(colorChart.length, false);
 final List colorChart = [
   const Color(0xFFED504B),
@@ -69,9 +94,9 @@ final List colorChart = [
 ];
 
 List voiceScreenChat = [
-  ['이것은 음성모드입니다.', false],
-  ['대화를 인식하여 텍스트로 보여줍니다.', false],
-  ['이것은 사용자의 발화입니다.', true],
+  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장할 수 있습니다.', false],
   ['키보드로 입력하여 전달합니다.', true],
-  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장 또는 공유할 수 있습니다.', false],
+  ['이것은 사용자의 발화입니다.', true],
+  ['대화를 인식하여 텍스트로 보여줍니다.', false],
+  ['이것은 음성모드입니다.', false],
 ];
