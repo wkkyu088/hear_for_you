@@ -83,6 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     getProfile();
     startTime();
+
     print("################### START ###################");
     print(name);
     print(profileValue);
@@ -94,6 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print(cases);
     print(caseDetails);
     print("######################################");
+
     LocalNotification.initialize();
     setState(() {});
   }

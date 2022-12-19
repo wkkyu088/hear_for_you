@@ -61,6 +61,7 @@ class RegularScreenTestState extends State<RegularScreenTest> {
   }
 
   // 특정 데시벨 이상일 때만 호출 - 저장
+  // 이 부분에서 ai 호출 -> 팝업창 등장 -> 소리 판별 후에 알림 주기
   void save() async {
     var path = await recorderController.stop();
     print('=======================saved to $path');
