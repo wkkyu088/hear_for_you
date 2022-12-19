@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:hear_for_you/main.dart';
+// import 'package:hear_for_you/modules/local_notification.dart';
+import 'package:hear_for_you/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+>>>>>>> Stashed changes
 import 'dart:async';
 
 import '../constants.dart';
@@ -27,6 +34,22 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     startTime();
+<<<<<<< Updated upstream
+=======
+    print("################### START ###################");
+    print(name);
+    print(profileValue);
+    print(regularValue);
+    print(dB);
+    print(darkMode);
+    print(selectedColor);
+    print(fontSizes);
+    print(cases);
+    print(caseDetails);
+    print("######################################");
+    // LocalNotification.initialize();
+    setState(() {});
+>>>>>>> Stashed changes
   }
 
   @override

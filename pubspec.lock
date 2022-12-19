@@ -99,6 +99,23 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+<<<<<<< Updated upstream
+=======
+  dbus:
+    dependency: transitive
+    description:
+      name: dbus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.8"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
+>>>>>>> Stashed changes
   fake_async:
     dependency: transitive
     description:
@@ -170,6 +187,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.1"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.2"
   image:
     dependency: transitive
     description:
@@ -483,6 +507,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  wav:
+    dependency: "direct main"
+    description:
+      name: wav
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   win32:
     dependency: transitive
     description:
