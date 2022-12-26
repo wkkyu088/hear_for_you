@@ -53,6 +53,9 @@ dependencies:
   flutter_animation_progress_bar: ^2.3.1
   flutter_local_notifications: ^12.0.4
   torch_light: ^1.0.0
+  intl: ^0.17.0
+  permission_handler: ^10.2.0
+  carousel_slider: ^4.2.1
 
   
 dev_dependencies:
@@ -96,15 +99,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    # - family: SCLight
-    #   fonts:
-    #     - asset: lib/assets/fonts/SCDream3.otf
-    # - family: SCMedium
-    #   fonts:
-    #     - asset: lib/assets/fonts/SCDream5.otf
-    # - family: SCBold
-    #   fonts:
-    #     - asset: lib/assets/fonts/SCDream7.otf
     - family: PretendardLight
       fonts:
         - asset: lib/assets/fonts/Pretendard-Regular.otf
@@ -114,17 +108,5 @@ flutter:
     - family: PretendardBold
       fonts:
         - asset: lib/assets/fonts/Pretendard-ExtraBold.otf
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
