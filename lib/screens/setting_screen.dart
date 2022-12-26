@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/screens/settings/data_setting.dart';
 import 'package:hear_for_you/screens/settings/decibel_setting.dart';
 import 'package:hear_for_you/screens/settings/display_setting.dart';
 import 'package:hear_for_you/screens/settings/notification_setting.dart';
@@ -42,6 +43,9 @@ class _SettingScreenState extends State<SettingScreen> {
       color: darkMode ? kWhite : kBlack,
     );
 
+    Icon chevronIcon =
+        Icon(Icons.chevron_right_rounded, size: 22, color: kGrey5);
+
     // 각 설정 목록, 누르면 해당 페이지로 이동
     Widget settingItem(title, action, screen) {
       return TextButton(
@@ -71,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
       appBar: settingAppbar('설정', context, isLeading: false),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           margin: const EdgeInsets.only(bottom: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,7 +125,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
                               size: 22,
-                              color: darkMode ? kWhite : kBlack,
+                              color: kGrey5,
                             ),
                           ],
                         ),
@@ -212,7 +216,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               color: darkMode ? kWhite : kBlack,
                             ),
                           ),
-                          const Icon(Icons.chevron_right_rounded, size: 22)
+                          chevronIcon,
                         ],
                       ),
                       const DecibelSetting(),
@@ -238,7 +242,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               color: cases[0] ? kMain : kGrey5,
                             ),
                           ),
-                          const Icon(Icons.chevron_right_rounded, size: 22)
+                          chevronIcon,
                         ],
                       ),
                       const NotificationSetting(num: 0),
@@ -256,7 +260,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               color: cases[1] ? kMain : kGrey5,
                             ),
                           ),
-                          const Icon(Icons.chevron_right_rounded, size: 22)
+                          chevronIcon,
                         ],
                       ),
                       const NotificationSetting(num: 1),
@@ -274,7 +278,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               color: cases[2] ? kMain : kGrey5,
                             ),
                           ),
-                          const Icon(Icons.chevron_right_rounded, size: 22)
+                          chevronIcon,
                         ],
                       ),
                       const NotificationSetting(num: 2),
@@ -292,10 +296,24 @@ class _SettingScreenState extends State<SettingScreen> {
                     '화면 설정',
                     style: settingTitleStyle,
                   ),
-                  const Icon(Icons.chevron_right_rounded, size: 22),
+                  chevronIcon,
                   const DisplaySetting(),
                 ),
                 const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+              ),
+              // 6. 앱 정보 공시 영역
+              customCard(
+                '',
+                settingItem(
+                  Text(
+                    '정보',
+                    style: settingTitleStyle,
+                  ),
+                  chevronIcon,
+                  const DataSetting(),
+                ),
+                const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                nontitle: true,
               ),
             ],
           ),
