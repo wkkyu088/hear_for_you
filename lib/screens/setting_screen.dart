@@ -22,12 +22,14 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  static void setRegularValue(bool regularValue) async {
+  void setRegularValue(bool regularValue) async {
     // 상시모드 초기설정, 시작
     if (regularValue) {
-      rm.initRegularMode();
+      rm.initRegularMode(context);
+      setState(() {});
     } else {
       rm.disposeRegularMode();
+      setState(() {});
     }
 
     final SharedPreferences pref = await SharedPreferences.getInstance();

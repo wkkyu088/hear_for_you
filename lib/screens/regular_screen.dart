@@ -1,3 +1,4 @@
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/screens/alert_screen.dart';
 import 'package:hear_for_you/screens/tutorial_screen.dart';
@@ -11,6 +12,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../constants.dart';
 import '../widgets/custom_dialog.dart';
 
+import 'package:hear_for_you/modules/regular_module.dart' as rm;
 // 상시모드 페이지
 
 class RegularScreen extends StatefulWidget {
@@ -181,46 +183,58 @@ class _RegularScreenState extends State<RegularScreen>
                   ),
                   // 2-2. 애니메이션 내부 (웨이브폼이 그려져있는 이미지)
                   Container(
-                    width: screenWidth * 0.55,
-                    height: screenWidth * 0.55,
-                    margin: const EdgeInsets.only(top: 60),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [kMain, kMain.withOpacity(0.5)]),
-                    ),
-                    // 2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
-                    child: Stack(
-                      children: [
-                        CustomPaint(
-                          size: MediaQuery.of(context).size,
-                          painter: WaveForm(1, 1),
-                        ),
-                        regularValue
-                            ? Container(
-                                margin: EdgeInsets.only(
-                                    top: screenWidth * 0.55 * 0.4 * 0.5),
-                                child: CustomPaint(
-                                  size: MediaQuery.of(context).size,
-                                  painter: WaveForm(0.6, 0.6),
-                                ),
-                              )
-                            : const SizedBox(),
-                        regularValue
-                            ? Container(
-                                margin: EdgeInsets.only(
-                                    top: screenWidth * 0.55 * 0.8 * 0.5),
-                                child: CustomPaint(
-                                  size: MediaQuery.of(context).size,
-                                  painter: WaveForm(0.2, 0.2),
-                                ),
-                              )
-                            : const SizedBox(),
-                      ],
-                    ),
-                  ),
+                      width: screenWidth * 0.55,
+                      height: screenWidth * 0.55,
+                      margin: const EdgeInsets.only(top: 60),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [kMain, kMain.withOpacity(0.5)]),
+                      ),
+                      // 2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
+                      // child: Stack(
+                      //   children: [
+                      //     CustomPaint(
+                      //       size: MediaQuery.of(context).size,
+                      //       painter: WaveForm(1, 1),
+                      //     ),
+                      //     regularValue
+                      //         ? Container(
+                      //             margin: EdgeInsets.only(
+                      //                 top: screenWidth * 0.55 * 0.4 * 0.5),
+                      //             child: CustomPaint(
+                      //               size: MediaQuery.of(context).size,
+                      //               painter: WaveForm(0.6, 0.6),
+                      //             ),
+                      //           )
+                      //         : const SizedBox(),
+                      //     regularValue
+                      //         ? Container(
+                      //             margin: EdgeInsets.only(
+                      //                 top: screenWidth * 0.55 * 0.8 * 0.5),
+                      //             child: CustomPaint(
+                      //               size: MediaQuery.of(context).size,
+                      //               painter: WaveForm(0.2, 0.2),
+                      //             ),
+                      //           )
+                      //         : const SizedBox(),
+                      //   ],
+                      // ),
+                      child: regularValue
+                          ? AudioWaveforms(
+                              waveStyle: const WaveStyle(
+                                waveColor: Colors.white,
+                                spacing: 8.0,
+                                extendWaveform: true,
+                                showMiddleLine: false,
+                              ),
+                              size: Size(
+                                  MediaQuery.of(context).size.width, 200.0),
+                              recorderController: rm.recorderController,
+                            )
+                          : Container())
                 ],
               ),
               const SizedBox(height: 60),
