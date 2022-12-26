@@ -10,6 +10,8 @@ import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:hear_for_you/modules/regular_module.dart' as rm;
+
 // 설정 페이지
 
 class SettingScreen extends StatefulWidget {
@@ -20,6 +22,13 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   static void setRegularValue(bool regularValue) async {
+    // 상시모드 초기설정, 시작
+    if (regularValue) {
+      rm.initRegularMode();
+    } else {
+      rm.disposeRegularMode();
+    }
+
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('regularValue', regularValue);
   }

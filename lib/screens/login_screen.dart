@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
-import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:hear_for_you/modules/regular_module.dart' as rm;
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -179,6 +178,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (textController.text != "") {
                     name = textController.text;
                     setProfile(name, profileValue);
+
+                    // 상시모드 초기설정, 시작
+                    rm.initRegularMode();
+                    rm.repeatRecorder();
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
