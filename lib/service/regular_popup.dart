@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'Functions.dart';
+import 'functions.dart';
 import 'package:flutter/material.dart';
 
 class SoundPage extends StatefulWidget {

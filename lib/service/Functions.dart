@@ -10,6 +10,29 @@ import '../constants.dart' as setting;
 import 'notification.dart' as notification;
 
 class FunctionClass {
+  /* 
+    @@@@@@@@@@@ 현재 FunctionClass 내부에 존재하는 함수에 대한 간단한 정보들 @@@@@@@@@@@
+
+    ### 모든 함수는 static 함수임! 별도의 객체 생성 없이 사용 가능
+
+    ## 외부에서 호출하여 사용해야 하는 함수들
+    void showPopup(BuildContext context)  : 실행하면 저장된 음원을 자르고 서버로 보내서 결과를 받아온다. 함수 실행과 동시에 팝업창을 띄우며, 분석된 결과는 팝업창에 보여진다. 일정 데시벨 이상의 소리가 감지된 경우에 이 함수 하나만 실행해주면 됨.
+    bool raiseDecibelCheck()              : 저장된 로그들을 확인하고, 데시벨 기준을 높여야 할 상황인지 알려준다. True면 높여야 하는 것, False면 높이지 않아도 되는 것. showPopup 실행 이후에 바로 같이 사용되면 좋을 것 같음.
+    List<String> getLogString()           : 저장되어있는 로그들을 알림창 등에 사용 가능한 형태로 반환해준다. 로그를 출력하려 할 때 사용한다. 분석에 실패한 값은 리스트에 나오지 않음.
+      Example --------------------------------------------------------
+      ["사이렌 소리가 17시 30분 24초에 발생하였습니다.",
+      "차량 급정거 소리가 18시 31분 02초에 발생하였습니다."]
+      ----------------------------------------------------------------
+
+    ## 내부에서만 사용되는(외부에서 호출될 필요 없는) 함수들
+    Future<String> cutFile() async
+    Future<String> uploadFile() async 
+    Future<String> getPreciction() async
+    Future<String> getPath({fileName = "audio.wav"})
+    int getMinuteValue(DateTime time)
+  
+  */
+
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
   static Future<String> getPrediction() async {
     try {
@@ -132,13 +155,14 @@ class FunctionClass {
     }
   }
 
-  static bool lowerDecibelCheck() {
+  static bool raiseDecibelCheck() {
+    int length = setting.logList.length;
     try {
       // 가장 최근에 발생한(4번째로 저장되어있는) 큰 소리의 시간을 가져오기
-      String timeLatest = setting.logList[4].split(",")[3];
+      String timeLatest = setting.logList[length - 1].split(",")[3];
       // 이것보다 5개 이전에 발생한(0번쨰로 저장되어있는)
       // 이 때 기록된 것이 5개 이하라면 여기서 오류가 날 수 있으므로 try-catch
-      String timePrevious = setting.logList[0].split(",")[3];
+      String timePrevious = setting.logList[length - 5].split(",")[3];
 
       // 비교를 위해 int형으로 변환
       int minLatest = int.parse(timeLatest);
@@ -175,9 +199,10 @@ class FunctionClass {
     List<String> logList = [];
     for (int i = 0; i < setting.logList.length; i++) {
       var splitted = setting.logList[i].split(",");
-      //if (splitted[0] != "unknown" && splitted[2] == "false") {
-      logList.add("${splitted[0]}가 ${splitted[1]}에 발생하였습니다. 확인하셨나요?");
-      //}
+      // if (splitted[0] != "unknown" && splitted[2] == "false") {
+      if (splitted[0] != "unknown") {
+        logList.add("${splitted[0]}가 ${splitted[1]}에 발생하였습니다.");
+      }
     }
     return logList;
   }
