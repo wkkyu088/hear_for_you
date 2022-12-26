@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import '../service/regular_popup.dart' as popup;
 import 'package:noise_meter/noise_meter.dart';
 
 import '../constants.dart';
