@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       darkMode = pref.getBool('darkMode')!;
       selectedColor = pref.getInt('selectedColor')!;
       fontSizeId = pref.getInt('fontSizeId')!;
+      logList = pref.getStringList('logList')!;
       for (var i = 0; i < 3; i++) {
         if (i == fontSizeId) {
           fontSizes[i] = true;

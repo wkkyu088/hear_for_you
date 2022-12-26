@@ -17,6 +17,7 @@ List<List<bool>> caseDetails = [
   [false, true, true],
   [false, false, true]
 ];
+List<String> logList = [];
 
 final profileItems = [
   "중증 청각장애 (2~3급)",
