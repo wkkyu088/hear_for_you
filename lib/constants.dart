@@ -5,7 +5,7 @@ double bottomHeight = 100.0;
 // Shared_Preference에 들어가는 변수들
 String name = '';
 int profileValue = 0;
-bool regularValue = true;
+bool regularValue = false;
 double dB = 70;
 bool darkMode = false;
 int selectedColor = 7;
@@ -105,6 +105,21 @@ final List colorChart = [
 ];
 
 List voiceScreenChat = [
+  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장할 수 있습니다.', false],
+  ['키보드로 입력하여 전달합니다.', true],
+  ['이것은 사용자의 발화입니다.', true],
+  ['대화를 인식하여 텍스트로 보여줍니다.', false],
+  ['이것은 음성모드입니다.', false],
+  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장할 수 있습니다.', false],
+  ['키보드로 입력하여 전달합니다.', true],
+  ['이것은 사용자의 발화입니다.', true],
+  ['대화를 인식하여 텍스트로 보여줍니다.', false],
+  ['이것은 음성모드입니다.', false],
+  ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장할 수 있습니다.', false],
+  ['키보드로 입력하여 전달합니다.', true],
+  ['이것은 사용자의 발화입니다.', true],
+  ['대화를 인식하여 텍스트로 보여줍니다.', false],
+  ['이것은 음성모드입니다.', false],
   ['종료 버튼을 눌러 대화를 종료하거나 진행한 대화를 저장할 수 있습니다.', false],
   ['키보드로 입력하여 전달합니다.', true],
   ['이것은 사용자의 발화입니다.', true],
