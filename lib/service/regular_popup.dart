@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wav/wav.dart';
 import 'package:dio/dio.dart';
+import '../logs.dart';
 
 class Processing {
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
@@ -67,6 +68,9 @@ class Processing {
   // 서버와 상호작용하고 결과를 반환해준다
   static Future<String> uploadFile() async {
     try {
+      // 기록을 위한 로그파일 생성
+      List<dynamic> singleLog = [];
+
       // dio 생성 (http request를 수행해줌)
       var dio = Dio();
       var target = await getPath(fileName: "cuttedFile.wav");
@@ -79,7 +83,8 @@ class Processing {
       // 현재는 파일과 유저명을 전달하는데, 유저명이 겹칠 수 있으므로 유저번호?를 사용해도 좋을 듯!
       var formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(target),
-        // 'userName': setting.userName
+        // 이거 유저네임을 어떻게 받아오는지?..
+        'userName': setting.userName
       });
 
       print("uploadFile : 파일 폼데이터 만들기에 성공했습니다");
@@ -91,7 +96,13 @@ class Processing {
       // 서버가 반환해준 결과를 result에 저장
       var result = response.data['prediction'];
 
-      //반환되 값이 null이라면 분석에 실패한 것이므로 exception을 반환
+      // 로그에 분석 결과와 분석 시간 삽입, 확인 여부는 일단 False로 하고 넣기
+      singleLog.add(result);
+      singleLog.add(DateTime.now());
+      singleLog.add(false);
+
+      logList.add(singleLog);
+      //반환된 값이 null이라면 분석에 실패한 것이므로 exception을 반환
       if (result == "null") {
         throw SignalException;
       } else {
