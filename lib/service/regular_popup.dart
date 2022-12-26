@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wav/wav.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import '../logs.dart';
 
 class Processing {
@@ -111,6 +112,40 @@ class Processing {
     } catch (e) {
       rethrow;
     }
+  }
+
+  static Future<bool> lowerDecibelCheck() async {
+    int logLength = logList.length;
+
+    try {
+      // 가장 최근에 발생한 큰 소리의 시간을 가져오기
+      DateTime timeLatest = logList[logLength - 1][1];
+      // 이것보다 5회 이전에 발생한 큰 소리의 시간을 가져오기
+      // 이 때 기록된 것이 5개 이하라면 여기서 오류가 날 수 있으므로 try-catch
+      DateTime timePrevious = logList[logLength - 6][1];
+
+      // 분 단위로 비교 가능하도록 int값으로 바꿔주는 함수 활용
+      int minLatest = getMinuteValue(timeLatest);
+      int minPrevious = getMinuteValue(timePrevious);
+
+      // 둘을 뺐을 때 10이하면, 데시벨 이상의 소리가 10분 이내에 5번 발생한 것이므로 true를 반환해서 내리도록, 아니면 false 반환
+      if (minLatest - minPrevious < 10) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      // 에러가 났을 경우에는 기록된 것이 5개 이하인 경우일 것이므로 false 반환
+      return false;
+    }
+  }
+
+  static int getMinuteValue(DateTime time) {
+    int forReturn = 0;
+    forReturn += (int.parse(DateFormat("dd").format(DateTime.now())) * 60 * 24);
+    forReturn += (int.parse(DateFormat("HH").format(DateTime.now())) * 60);
+    forReturn += (int.parse(DateFormat("mm").format(DateTime.now())));
+    return forReturn;
   }
 }
 
