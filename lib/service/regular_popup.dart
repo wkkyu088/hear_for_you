@@ -22,12 +22,7 @@ class SoundPageState extends State<SoundPage> {
             icon: const Icon(Icons.dark_mode),
             iconSize: 50,
             onPressed: () {
-              showDialog(
-                  context: context,
-                  barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
-                  builder: (BuildContext context) {
-                    return const ModelPopup();
-                  });
+              FunctionClass.showPopup(context);
             })
       ],
     );
