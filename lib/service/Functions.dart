@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class FunctionClass {
     void showPopup(BuildContext context)  : 실행하면 저장된 음원을 자르고 서버로 보내서 결과를 받아온다. 함수 실행과 동시에 팝업창을 띄우며, 분석된 결과는 팝업창에 보여진다. 일정 데시벨 이상의 소리가 감지된 경우에 이 함수 하나만 실행해주면 됨.
     bool raiseDecibelCheck()              : 저장된 로그들을 확인하고, 데시벨 기준을 높여야 할 상황인지 알려준다. True면 높여야 하는 것, False면 높이지 않아도 되는 것. showPopup 실행 이후에 바로 같이 사용되면 좋을 것 같음.
     List<String> getLogString()           : 저장되어있는 로그들을 알림창 등에 사용 가능한 형태로 반환해준다. 로그를 출력하려 할 때 사용한다. 분석에 실패한 값은 리스트에 나오지 않음.
+
       Example --------------------------------------------------------
       ["사이렌 소리가 17시 30분 24초에 발생하였습니다.",
       "차량 급정거 소리가 18시 31분 02초에 발생하였습니다."]
@@ -40,6 +42,10 @@ class FunctionClass {
       var result = await uploadFile();
       return result;
     } catch (e) {
+      if (e.toString().split(" ")[0] == "DioError") {
+        print("dioError 발생");
+        return getPrediction();
+      }
       print("Processing에서 에러 처리");
       // 처리 과정 중 에러가 발생했으면 여기서도 에러 반환
       rethrow;
@@ -64,7 +70,6 @@ class FunctionClass {
       var readedFile = await Wav.readFile(path);
 
       // 잘린 파일의 channel을 보니 두개이다! 왼쪽,오른쪽이라고 하는데 첫번째것만 남기기
-      print("channels의 길이 : ${readedFile.channels.length}");
 
       // 전체 길이 - samplesPerSecond부터 슬라이싱하면 마지막 1초간의 데이터만 남게 됨
       for (int i = 0; i < readedFile.channels.length; i++) {
@@ -82,6 +87,8 @@ class FunctionClass {
       // 파일 저장하기
       path = await getPath(fileName: "cuttedFile.wav");
       print("cutFile : 저장할 경로는 $path입니다");
+      File(path).delete();
+
       readedFile.writeFile(path);
 
       return path;
@@ -114,20 +121,22 @@ class FunctionClass {
         'userName': setting.name
       });
 
-      print("uploadFile : 파일 폼데이터 만들기에 성공했습니다");
-
       // dio객체를 이용해서 서버와 상호작용하는 부분
       var response = await dio.post("$address/uploadFile", data: formData);
       print("uploadFile : 서버와 통신에 성공했습니다.");
+
+      // 통신에 성공했으면 기존 객체 삭제하기
+      File(target).delete();
 
       // 서버가 반환해준 결과를 result에 저장
       var result = response.data['prediction'];
       var message = response.data['message'];
 
+      // 알람 보내는 부분.
       if (result == "unknown") {
-        notification.showNotification("분석 실패", "큰 소리가 발생했습니다. 주변을 확인하세요");
+        notification.showNotification("소리 알림", "큰 소리가 발생했습니다. 주변을 확인하세요");
       } else {
-        notification.showNotification("분석 성공", "$result가 들립니다. 주의하세요");
+        notification.showNotification("소리 알림", "$result가 들립니다. 주의하세요");
       }
 
       // 로그에 분석 결과와 분석 시간 삽입, 확인 여부는 일단 False로 하고 넣기

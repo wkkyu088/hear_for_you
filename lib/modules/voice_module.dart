@@ -236,12 +236,12 @@ class _VoiceModuleState extends State<VoiceModule> {
                         const EdgeInsets.only(right: 10, top: 10, bottom: 10),
                     child: TextButton(
                       onPressed: () {
-                        showCupertinoModalPopup(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    chatModalBuilder(context,
-                                        globalKey: gloabalKey))
-                            .then((value) => setState(() {}));
+                        // showCupertinoModalPopup(
+                        //         context: context,
+                        //         builder: (BuildContext context) =>
+                        //             chatModalBuilder(context,
+                        //                 globalKey: gloabalKey))
+                        //     .then((value) => setState(() {}));
                       },
                       style: TextButton.styleFrom(
                         primary: darkMode ? kBlack : kWhite,

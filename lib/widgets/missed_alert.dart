@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:hear_for_you/constants.dart';
 
+import '../service/Functions.dart';
+
 // 미확인 알림 팝업
 
 class MissedAlert extends StatefulWidget {
@@ -95,7 +97,9 @@ class _MissedAlertState extends State<MissedAlert> {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    FunctionClass.showPopup(context);
+                  },
                   style: TextButton.styleFrom(
                     padding:
                         const EdgeInsets.symmetric(vertical: 6, horizontal: 12),

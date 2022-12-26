@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-double bottomHeight = 80.0;
+double bottomHeight = 100.0;
 
 // Shared_Preference에 들어가는 변수들
 String name = '';
@@ -17,6 +17,16 @@ List<List<bool>> caseDetails = [
   [false, true, true],
   [false, false, true]
 ];
+/*
+    로그는 SharedPreference에 저장하기 위해 List<String> 형태이다.
+    10개까지 저장하며, 하나의 String이 하나의 로그임!
+    각각의 자료는 ,으로 구분되며, logList[i].split(",")[0] 처럼 필요한 부분만 불러서 사용이 가능하다.
+    분류 결과(실패시 unknown), 발생 시각, 확인 여부(기본값은 false), 데시벨 기준 변경 여부를 확인하기 위한 분값 으로 이루어짐.
+    example)  ["사이렌 소리,17시 30분 24초,false,32434",
+              "unknown",17시 32분 02초,false,32436",
+              ...
+              ]
+*/
 List<String> logList = [];
 
 final profileItems = [

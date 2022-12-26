@@ -13,13 +13,14 @@ var decibelTimer;
 // 상시모드 켜기
 void initRegularMode() async {
   print('--------------------- init regular mode');
-  var dir = await getExternalStorageDirectory();
-  path = "${dir!.path}/audio.wav";
+  var dir = await getApplicationDocumentsDirectory();
+  path = "${dir.path}/audio.wav";
 
   recorderController = RecorderController()
     ..androidEncoder = AndroidEncoder.aac
     ..androidOutputFormat = AndroidOutputFormat.mpeg4
     ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC;
+
   checkDecibel();
   repeatRecorder();
 }
@@ -71,7 +72,7 @@ void repeatRecorder() {
 
   recordTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
     print(DateTime.now());
-    save();
+
     await recorderController.record(path);
   });
 }

@@ -3,6 +3,7 @@ import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/service/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../service/notification.dart';
 import 'dart:async';
 
 import '../constants.dart';
@@ -21,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final SharedPreferences pref = await SharedPreferences.getInstance();
 
     try {
+      initNotification();
       name = pref.getString('name')!;
       profileValue = pref.getInt('profileValue')!;
       regularValue = pref.getBool('regularValue')!;

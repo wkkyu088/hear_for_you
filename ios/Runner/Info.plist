@@ -4,6 +4,8 @@
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app requires Mic's permission.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app requires Mic's permission.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
