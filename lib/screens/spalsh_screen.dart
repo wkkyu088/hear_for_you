@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
-import 'package:hear_for_you/modules/local_notification.dart';
 import 'package:hear_for_you/screens/login_screen.dart';
+import 'package:hear_for_you/service/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       darkMode = pref.getBool('darkMode')!;
       selectedColor = pref.getInt('selectedColor')!;
       fontSizeId = pref.getInt('fontSizeId')!;
+      logList = pref.getStringList('logList')!;
       for (var i = 0; i < 3; i++) {
         if (i == fontSizeId) {
           fontSizes[i] = true;
@@ -95,9 +96,6 @@ class _SplashScreenState extends State<SplashScreen> {
     print(cases);
     print(caseDetails);
     print("######################################");
-
-    LocalNotification.initialize();
-    setState(() {});
   }
 
   @override

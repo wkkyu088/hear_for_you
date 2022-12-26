@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/screens/alert_screen.dart';
+import 'package:hear_for_you/screens/tutorial_screen.dart';
+import 'package:hear_for_you/service/flash_light.dart';
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:hear_for_you/widgets/wave_form.dart';
+import 'package:hear_for_you/service/notification.dart';
+import 'package:hear_for_you/service/flash_light.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../constants.dart';
+import '../widgets/custom_dialog.dart';
 
 // 상시모드 페이지
 
@@ -70,10 +74,28 @@ class _RegularScreenState extends State<RegularScreen>
                       ),
                       padding: const EdgeInsets.all(10),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AlertScreen()));
+                        // 전체화면 알림
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const AlertScreen()));
+
+                        // 안드로이드 notification + 플래시
+                        // showNotification("알림 제목", "알림이 왔습니다.");
+                        // FlashLight.startFlashLight(0);
+
+                        // 커스텀 모달
+                        // showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return customDialog("제목", "내용");
+                        //     });
+
+                        // 튜토리얼 페이지
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const TutorialScreen()));
                       },
                     ),
                     // 1-2. 상시모드 상태

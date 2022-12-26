@@ -1,29 +1,20 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'dart:typed_data';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
+import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../constants.dart';
 
-_saveAsImage(globalKey, String fileName) async {
-  RenderRepaintBoundary boundary =
-      globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  ui.Image image = await boundary.toImage();
-  ByteData? byteData = await (image.toByteData(format: ui.ImageByteFormat.png));
-  if (byteData != null) {
-    final result = await ImageGallerySaver.saveImage(
-        byteData.buffer.asUint8List(),
-        name: '$fileName-chat');
-    print(result);
-  }
+_saveAsImage(String fileName, screenshotController) {
+  screenshotController.capture().then((image) async {
+    final result =
+        await ImageGallerySaver.saveImage(image, name: '$fileName-chat');
+    debugPrint(result);
+  });
 }
 
 /// storage/emulated/0/Android/data/com.example.hear_for_you/files/2022-12-17T12:41:41.844957.txt
@@ -37,40 +28,66 @@ _saveAsText(String fileName) async {
       reChatList.add('[상대방]\t{$voiceScreenChat[i][0]}\n');
     }
   }
-  print(reChatList);
+  debugPrint(reChatList.toString());
   File('${dir!.path}/$fileName-chat.txt').writeAsString(reChatList.toString());
 }
 
-_endChat(context) {
-  isEmpty = true;
+_endChat() {
   voiceScreenChat = [];
-  Navigator.pop(context);
+  isEmpty = true;
 }
 
 // 음성모드 저장시 뜨는 모달
 CupertinoActionSheet chatModalBuilder(BuildContext context,
-    {globalKey = GlobalKey}) {
+    {screenshotController = ScreenshotController}) {
   final fileName = DateTime.now().toIso8601String();
+  final navigator = Navigator.of(context);
 
   return CupertinoActionSheet(
     actions: [
       // 전체 대화 이미지로 저장
       CupertinoActionSheetAction(
         child: const Text('이미지로 저장하기'),
-        onPressed: () {
-          _saveAsImage(globalKey, fileName);
-          _endChat(context);
+        onPressed: () async {
+          _saveAsImage(fileName, screenshotController);
+
+          final confirmed = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return customDialog("이미지 저장", "대화 내용을 갤러리에 저장하였습니다.", false,
+                    () {
+                  Navigator.pop(context, true);
+                });
+              });
+
+          if (confirmed) {
+            _endChat();
+            navigator.pop();
+          }
 
           // 음성모드 초기화면으로 가기
         },
       ),
       // 전체 대화 텍스트 파일로 저장
       CupertinoActionSheetAction(
-        onPressed: () {
+        onPressed: () async {
           _saveAsText(fileName);
-          _endChat(context);
+
+          final confirmed = await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return customDialog("텍스트 파일 저장", "대화 내용을 파일에 저장하였습니다.", false,
+                    () {
+                  Navigator.pop(context, true);
+                });
+              });
+
+          if (confirmed) {
+            _endChat();
+            navigator.pop();
+          }
         },
-        child: Text('텍스트 파일로 저장하기'),
+        child: const Text('텍스트 파일로 저장하기'),
       ),
       // 종료하고 대화 초기화하기
       CupertinoActionSheetAction(
@@ -79,14 +96,15 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
           style: TextStyle(color: Colors.red),
         ),
         onPressed: () {
-          _endChat(context);
+          _endChat();
+          navigator.pop();
         },
       ),
     ],
     cancelButton: CupertinoActionSheetAction(
       child: Text('취소', style: TextStyle(color: kMain)),
       onPressed: () {
-        Navigator.pop(context);
+        navigator.pop();
       },
     ),
   );
