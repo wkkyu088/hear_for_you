@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:hear_for_you/modules/regular_module.dart' as rm;
 import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,18 +15,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isOpen = false;
   final TextEditingController textController = TextEditingController();
-  void setRegularMode() async {
-    // 상시모드 초기설정, 시작
-    rm.initRegularMode(context);
-    rm.repeatRecorder();
-  }
 
   static void setProfile(String name, int profileValue) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('name', name);
     pref.setInt('profileValue', profileValue);
     pref.setBool('regularValue', true);
-    pref.setDouble('dB', 70.0);
+    pref.setDouble('dB', dB);
     pref.setBool('darkMode', false);
     pref.setInt('selectedColor', 7);
     pref.setInt('fontSizeId', 1);
@@ -183,8 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (textController.text != "") {
                     name = textController.text;
                     setProfile(name, profileValue);
-                    setRegularMode();
-
                     Navigator.push(
                         context,
                         MaterialPageRoute(

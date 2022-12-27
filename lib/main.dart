@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/modules/voice_module.dart';
+import 'package:hear_for_you/modules/regular_module.dart' as rm;
+
 import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/screens/voice_screen.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/setting_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
-
 import 'constants.dart';
 
 void main() {
@@ -19,6 +21,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 상시모드 초기설정, 시작
+    rm.initRegularMode();
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: darkMode ? kBlack : kGrey1,
       systemNavigationBarIconBrightness:
@@ -58,7 +63,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 1;
   final screens = [
-    const VoiceScreen(),
+    const VoiceModule(),
     const RegularScreen(),
     const SettingScreen()
   ];

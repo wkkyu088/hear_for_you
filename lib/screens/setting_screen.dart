@@ -25,7 +25,8 @@ class _SettingScreenState extends State<SettingScreen> {
   void setRegularValue(bool regularValue) async {
     // 상시모드 초기설정, 시작
     if (regularValue) {
-      rm.initRegularMode(context);
+      rm.initRegularMode();
+      rm.start();
       setState(() {});
     } else {
       rm.disposeRegularMode();
