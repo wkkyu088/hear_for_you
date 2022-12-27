@@ -16,6 +16,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isOpen = false;
   final TextEditingController textController = TextEditingController();
+  void setRegularMode() async {
+    // 상시모드 초기설정, 시작
+    rm.initRegularMode(context);
+    rm.repeatRecorder();
+  }
 
   static void setProfile(String name, int profileValue) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -178,10 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (textController.text != "") {
                     name = textController.text;
                     setProfile(name, profileValue);
-
-                    // 상시모드 초기설정, 시작
-                    rm.initRegularMode();
-                    rm.repeatRecorder();
+                    setRegularMode();
 
                     Navigator.push(
                         context,
