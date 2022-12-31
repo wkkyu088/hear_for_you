@@ -23,18 +23,17 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   void setRegularValue(bool regularValue) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('regularValue', regularValue);
+
     // 상시모드 초기설정, 시작
     if (regularValue) {
-      rm.initRegularMode();
-      rm.start();
+      rm.initRegularMode(regularValue);
       setState(() {});
     } else {
       rm.disposeRegularMode();
       setState(() {});
     }
-
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setBool('regularValue', regularValue);
   }
 
   @override

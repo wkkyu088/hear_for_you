@@ -143,44 +143,6 @@ class _RegularScreenState extends State<RegularScreen>
               Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  // 2-1. 애니메이션 외부 (실제 돌아가는 부분)
-                  Container(
-                    width: screenWidth * 0.7,
-                    height: screenWidth * 0.7,
-                    margin: const EdgeInsets.only(top: 60),
-                    child: SfRadialGauge(
-                      axes: <RadialAxis>[
-                        RadialAxis(
-                          minimum: 0,
-                          maximum: 100,
-                          showLabels: false,
-                          showTicks: false,
-                          startAngle: 270,
-                          endAngle: 270,
-                          axisLineStyle: AxisLineStyle(
-                            thickness: 0.08,
-                            color: darkMode ? kGrey9 : kGrey2.withOpacity(0.6),
-                            thicknessUnit: GaugeSizeUnit.factor,
-                          ),
-                          pointers: <GaugePointer>[
-                            RangePointer(
-                              value: regularValue ? animation.value : 0,
-                              width: 0.08,
-                              sizeUnit: GaugeSizeUnit.factor,
-                              gradient: SweepGradient(
-                                colors: <Color>[kMain, kMain.withOpacity(0.5)],
-                                stops: const <double>[0.35, 0.85],
-                              ),
-                              cornerStyle: CornerStyle.bothCurve,
-                              enableAnimation: true,
-                              animationDuration: 100,
-                              animationType: AnimationType.linear,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
                   // 2-2. 애니메이션 내부 (웨이브폼이 그려져있는 이미지)
                   Container(
                       width: screenWidth * 0.55,
@@ -224,8 +186,8 @@ class _RegularScreenState extends State<RegularScreen>
                       // ),
                       child: regularValue
                           ? AudioWaveforms(
-                              waveStyle: const WaveStyle(
-                                waveColor: Colors.white,
+                              waveStyle: WaveStyle(
+                                waveColor: kGrey1,
                                 spacing: 8.0,
                                 extendWaveform: true,
                                 showMiddleLine: false,
@@ -234,7 +196,45 @@ class _RegularScreenState extends State<RegularScreen>
                                   MediaQuery.of(context).size.width, 200.0),
                               recorderController: rm.recorderController,
                             )
-                          : Container())
+                          : Container()),
+                  // 2-1. 애니메이션 외부 (실제 돌아가는 부분)
+                  Container(
+                    width: screenWidth * 0.7,
+                    height: screenWidth * 0.7,
+                    margin: const EdgeInsets.only(top: 60),
+                    child: SfRadialGauge(
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                          minimum: 0,
+                          maximum: 100,
+                          showLabels: false,
+                          showTicks: false,
+                          startAngle: 270,
+                          endAngle: 270,
+                          axisLineStyle: AxisLineStyle(
+                            thickness: 0.08,
+                            color: darkMode ? kGrey9 : kGrey2.withOpacity(0.6),
+                            thicknessUnit: GaugeSizeUnit.factor,
+                          ),
+                          pointers: <GaugePointer>[
+                            RangePointer(
+                              value: regularValue ? animation.value : 0,
+                              width: 0.08,
+                              sizeUnit: GaugeSizeUnit.factor,
+                              gradient: SweepGradient(
+                                colors: <Color>[kMain, kMain.withOpacity(0.5)],
+                                stops: const <double>[0.35, 0.85],
+                              ),
+                              cornerStyle: CornerStyle.bothCurve,
+                              enableAnimation: true,
+                              animationDuration: 100,
+                              animationType: AnimationType.linear,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 60),
