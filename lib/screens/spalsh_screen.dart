@@ -4,6 +4,8 @@ import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/service/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../service/notification.dart';
+import 'package:hear_for_you/modules/regular_module.dart' as rm;
+
 import 'dart:async';
 
 import '../constants.dart';
@@ -98,6 +100,9 @@ class _SplashScreenState extends State<SplashScreen> {
     print(cases);
     print(caseDetails);
     print("######################################");
+
+    // 상시모드 초기설정, 시작
+    rm.initRegularMode(regularValue);
   }
 
   @override

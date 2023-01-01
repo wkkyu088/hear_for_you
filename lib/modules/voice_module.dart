@@ -46,9 +46,11 @@ class _VoiceModuleState extends State<VoiceModule> {
         onError: errorListener, onStatus: statusListener);
   }
 
+  // 에러 종류에 따라 팝업 띄우기
+  // error_speech_timeout, error_busy, error_network, error_
   void errorListener(SpeechRecognitionError error) {
     debugPrint('onError: $error');
-    _isListening = false;
+    setState(() {});
   }
 
   // stt가 특정시간이 지나면 자동종료가 되기때문에 다시 시작해주는 코드 필요
@@ -67,9 +69,9 @@ class _VoiceModuleState extends State<VoiceModule> {
       });
       await _startListening();
     }
-    if (status == "notListening" && !_isListening) {
-      await _stopListening();
-    }
+    // if (status == "notListening" && !_isListening) {
+    //   await _stopListening();
+    // }
   }
 
   /// Each time to start a speech recognition session
@@ -97,7 +99,10 @@ class _VoiceModuleState extends State<VoiceModule> {
     }
     await _speechToText.stop();
     setState(() {
-      regularValue = true;
+      // 이전에 regularValue가 true였다면 다시켜기 ////////////////////////////////////////////////////////////////////////////////////
+      // 아니라면 켜지면 안됌
+      // if(regularValue)
+      // regularValue = true;
     });
   }
 
@@ -459,15 +464,23 @@ class _VoiceModuleState extends State<VoiceModule> {
                                   ],
                                 ),
                               ),
-                              Text(
-                                '_isListening $_isListening',
-                                style: TextStyle(
-                                  color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
-                                  fontSize: kXS,
-                                ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: _lastWords.isNotEmpty
+                                    ? bubble(
+                                        '$_lastWords $_currentWords', false)
+                                    : Text('lastWords is empty'),
                               ),
+
+                              // Text(
+                              //   '_isListening $_isListening',
+                              //   style: TextStyle(
+                              //     color: darkMode
+                              //         ? kWhite
+                              //         : const Color(0xFF434343),
+                              //     fontSize: kXS,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -478,12 +491,3 @@ class _VoiceModuleState extends State<VoiceModule> {
     );
   }
 }
-
-// Container(
-//   padding: EdgeInsets.symmetric(horizontal: 10),
-//   child: _lastWords.isNotEmpty
-//       ? bubble('$_lastWords $_currentWords', false, false)
-//       : _speechAvailable
-//           ? Text('Tap the microphone to start listening...')
-//           : Text('Speech not available'),
-// ),
