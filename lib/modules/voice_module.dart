@@ -21,6 +21,7 @@ class VoiceModule extends StatefulWidget {
 }
 
 class _VoiceModuleState extends State<VoiceModule> {
+  bool regularFlag = false;
   late bool isInput;
   bool isOpen = false;
 
@@ -31,6 +32,7 @@ class _VoiceModuleState extends State<VoiceModule> {
   initState() {
     super.initState();
     PermissionCheckClass.requestRecognitionPermission(context);
+
     isEmpty = false;
     isInput = true;
     _initSpeech();
@@ -51,9 +53,11 @@ class _VoiceModuleState extends State<VoiceModule> {
   // 에러 종류에 따라 팝업 띄우기
   // error_speech_timeout, error_busy, error_network, error_
   void errorListener(SpeechRecognitionError error) {
-    Toast.show(error.errorMsg,
-        duration: Toast.lengthShort, gravity: Toast.bottom);
-    setState(() {});
+    Toast.show(error.errorMsg, duration: Toast.lengthLong, gravity: Toast.top);
+    setState(() {
+      isInput = true;
+      _isListening = false;
+    });
   }
 
   // stt가 특정시간이 지나면 자동종료가 되기때문에 다시 시작해주는 코드 필요
@@ -81,7 +85,10 @@ class _VoiceModuleState extends State<VoiceModule> {
   Future _startListening() async {
     // await _stopListening();
     setState(() {
-      regularValue = false;
+      if (regularValue) {
+        regularFlag = true;
+        regularValue = false;
+      }
       _isListening = true;
     });
     await Future.delayed(const Duration(milliseconds: 1));
@@ -102,10 +109,12 @@ class _VoiceModuleState extends State<VoiceModule> {
     }
     await _speechToText.stop();
     setState(() {
-      // 이전에 regularValue가 true였다면 다시켜기 ////////////////////////////////////////////////////////////////////////////////////
+      // 이전에 regularValue가 true였다면 다시켜기
       // 아니라면 켜지면 안됌
-      // if(regularValue)
-      // regularValue = true;
+      if (regularFlag) {
+        regularValue = true;
+        regularFlag = false;
+      }
     });
   }
 
@@ -116,7 +125,6 @@ class _VoiceModuleState extends State<VoiceModule> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-
     // 채팅 메세지가 담길 버블
     Widget bubble(str, user) {
       return Row(
@@ -177,6 +185,8 @@ class _VoiceModuleState extends State<VoiceModule> {
         });
       }
     }
+
+    ToastContext().init(context);
 
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
