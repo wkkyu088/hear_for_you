@@ -16,11 +16,11 @@ var _decibelTimer;
 var _context;
 
 // 상시모드 켜기
-void initRegularMode(BuildContext context) async {
+void initRegularMode() async {
   print('--------------------- init regular mode');
-  var dir = await getExternalStorageDirectory();
+  // var dir = await getExternalStorageDirectory();
+  var dir = await getApplicationDocumentsDirectory();
   _path = "${dir!.path}/audio.aac";
-  _context = context;
   recorderController = RecorderController()
     ..androidEncoder = AndroidEncoder.aac
     ..androidOutputFormat = AndroidOutputFormat.mpeg4

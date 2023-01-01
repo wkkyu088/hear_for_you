@@ -51,10 +51,24 @@ class PopupState extends State<ModelPopup> {
       if (error.toString() == "SignalException") {
         setState(() {
           object = resultWidget("알 수 없는 소리입니다");
+          Timer.periodic(const Duration(seconds: 1), (timer) {
+            Navigator.pop(context);
+          });
+        });
+      } else if (error.toString() == "FileSystemException") {
+        setState(() {
+          object = errorWidget("audio.wav 파일이 없습니다");
+          Timer.periodic(const Duration(seconds: 1), (timer) {
+            Navigator.pop(context);
+          });
         });
       } else {
         setState(() {
-          object = errorWidget(error.toString());
+          object = errorWidget(
+              "Error : ${error.toString().split(" ")[0]}\nErrorCode : ${error.toString()}");
+          Timer.periodic(const Duration(seconds: 1), (timer) {
+            Navigator.pop(context);
+          });
         });
       }
     });

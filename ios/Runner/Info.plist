@@ -3,9 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app requires Mic's permission.</string>
+	<string>주변의 소리를 듣고 상황을 판단하기 위해 사용됩니다.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>This app requires Mic's permission.</string>
+	<string>사용자의 대화를 듣고 텍스트로 변환하기 위해 사용됩니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>대화를 사진첩에 저장하기 위해 사용됩니다.</string>
+	<key>PermissionGroupNotification</key>
+	<string>큰 소리가 난 경우에 알려드리기 위해 사용됩니다</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

@@ -11,6 +11,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../constants.dart';
 import '../widgets/custom_dialog.dart';
+import '../service/permission_check.dart';
 
 import 'package:hear_for_you/modules/regular_module.dart' as rm;
 // 상시모드 페이지
@@ -28,9 +29,13 @@ class _RegularScreenState extends State<RegularScreen>
       Tween(begin: 0.0, end: 100.0).animate(controller);
 
   // 애니메이션 시작
+  // ++ 12월 27일 알람설정 확인하는 부분도 추가 ++
   @override
   void initState() {
     super.initState();
+    PermissionCheckClass.requestAlertPermission(context);
+    // PermissionCheckClass.requestMicPermission(context);
+    // PermissionCheckClass.requestPhotoPermission(context);
     setState(() {});
     controller = AnimationController(
       duration: const Duration(seconds: 20),
