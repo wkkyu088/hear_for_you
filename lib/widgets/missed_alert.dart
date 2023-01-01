@@ -97,7 +97,9 @@ class _MissedAlertState extends State<MissedAlert> {
                 ),
                 const Spacer(),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    FunctionClass.showPopup(context);
+                  },
                   style: TextButton.styleFrom(
                     padding:
                         const EdgeInsets.symmetric(vertical: 6, horizontal: 12),

@@ -42,6 +42,9 @@ dependencies:
   image_gallery_saver: ^1.7.1
   shared_preferences: ^2.0.15
 
+  # checking permission
+  permission_handler: ^10.2.0
+
   # voice mode
   speech_to_text: ^6.1.0
   highlight_text: ^1.6.0
@@ -54,7 +57,6 @@ dependencies:
   flutter_animation_progress_bar: ^2.3.1
   flutter_local_notifications: ^12.0.4
   torch_light: ^1.0.0
-  permission_handler: ^10.2.0
   carousel_slider: ^4.2.1
   screenshot: ^1.2.3
 

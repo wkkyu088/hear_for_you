@@ -9,6 +9,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../constants.dart';
+import '../service/permission_check.dart';
 
 class VoiceModule extends StatefulWidget {
   const VoiceModule({Key? key}) : super(key: key);
@@ -27,7 +28,8 @@ class _VoiceModuleState extends State<VoiceModule> {
   @override
   initState() {
     super.initState();
-    isEmpty = true;
+    PermissionCheckClass.requestRecognitionPermission(context);
+    isEmpty = false;
     isInput = true;
     _initSpeech();
   }

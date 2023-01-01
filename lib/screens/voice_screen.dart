@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:screenshot/screenshot.dart';
 import '../constants.dart';
+import '../service/permission_check.dart';
 
 class VoiceScreen extends StatefulWidget {
   const VoiceScreen({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
   ScreenshotController screenshotController = ScreenshotController();
 
   // 변수 초기화
+  // 12월 27일 보이스 허용 팝업 추가
   @override
   initState() {
     super.initState();

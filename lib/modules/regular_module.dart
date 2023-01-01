@@ -18,7 +18,8 @@ var _context;
 void initRegularMode(bool rv) async {
   print(
       '------------------------------------------------------------------------------------ init regular mode');
-  var dir = await getExternalStorageDirectory();
+  // var dir = await getExternalStorageDirectory();
+  var dir = await getApplicationDocumentsDirectory();
   _path = "${dir!.path}/audio.aac";
   recorderController = RecorderController()
     ..androidEncoder = AndroidEncoder.aac
