@@ -6,11 +6,18 @@ import 'dart:async';
 
 import 'package:hear_for_you/constants.dart';
 
+import '../service/Functions.dart';
+
 // Regular Mode
 String _path = '';
 var recorderController;
 var _recordTimer;
 var _decibelTimer;
+bool needPopup = false;
+
+void setContext(BuildContext context) {
+  _context = context;
+}
 
 var _context;
 
@@ -20,7 +27,7 @@ void initRegularMode(bool rv) async {
       '------------------------------------------------------------------------------------ init regular mode');
   // var dir = await getExternalStorageDirectory();
   var dir = await getApplicationDocumentsDirectory();
-  _path = "${dir!.path}/audio.aac";
+  _path = "${dir.path}/audio.aac";
   recorderController = RecorderController()
     ..androidEncoder = AndroidEncoder.aac
     ..androidOutputFormat = AndroidOutputFormat.mpeg4
@@ -68,7 +75,7 @@ void checkDecibel() {
         if (decibel >= dB) {
           /////////////////////////////////////////////////////////////////// dB이상 소리 감지 후 행동
           save();
-          // FunctionClass.showPopup(_context);
+          FunctionClass.showPopup(_context);
           print(
               '------------------------------------------------------------------------------------ get classification');
         }

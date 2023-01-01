@@ -28,7 +28,7 @@ class _VoiceModuleState extends State<VoiceModule> {
   @override
   initState() {
     super.initState();
-    PermissionCheckClass.requestRecognitionPermission(context);
+    PermissionCheckClass.IOSrequestRecognitionPermission(context);
     isEmpty = false;
     isInput = true;
     _initSpeech();

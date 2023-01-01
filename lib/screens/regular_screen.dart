@@ -8,6 +8,7 @@ import 'package:hear_for_you/widgets/wave_form.dart';
 import 'package:hear_for_you/service/notification.dart';
 import 'package:hear_for_you/service/flash_light.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import '../modules/regular_module.dart';
 
 import '../constants.dart';
 import '../widgets/custom_dialog.dart';
@@ -19,24 +20,24 @@ import 'package:hear_for_you/modules/regular_module.dart' as rm;
 class RegularScreen extends StatefulWidget {
   const RegularScreen({Key? key}) : super(key: key);
   @override
-  State<RegularScreen> createState() => _RegularScreenState();
+  State<RegularScreen> createState() => RegularScreenState();
 }
 
-class _RegularScreenState extends State<RegularScreen>
+class RegularScreenState extends State<RegularScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation =
       Tween(begin: 0.0, end: 100.0).animate(controller);
+  static bool needPopup = false;
 
   // 애니메이션 시작
   // ++ 12월 27일 알람설정 확인하는 부분도 추가 ++
   @override
   void initState() {
     super.initState();
-    PermissionCheckClass.requestAlertPermission(context);
-    // PermissionCheckClass.requestMicPermission(context);
-    // PermissionCheckClass.requestPhotoPermission(context);
-    setState(() {});
+    PermissionCheckClass.IOSrequestAlertPermission(context);
+    PermissionCheckClass.IOSrequestMicPermission(context);
+    setContext(context);
     controller = AnimationController(
       duration: const Duration(seconds: 20),
       vsync: this,
@@ -148,6 +149,44 @@ class _RegularScreenState extends State<RegularScreen>
               Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
+                  // 2-1. 애니메이션 외부 (실제 돌아가는 부분)
+                  Container(
+                    width: screenWidth * 0.7,
+                    height: screenWidth * 0.7,
+                    margin: const EdgeInsets.only(top: 60),
+                    child: SfRadialGauge(
+                      axes: <RadialAxis>[
+                        RadialAxis(
+                          minimum: 0,
+                          maximum: 100,
+                          showLabels: false,
+                          showTicks: false,
+                          startAngle: 270,
+                          endAngle: 270,
+                          axisLineStyle: AxisLineStyle(
+                            thickness: 0.08,
+                            color: darkMode ? kGrey9 : kGrey2.withOpacity(0.6),
+                            thicknessUnit: GaugeSizeUnit.factor,
+                          ),
+                          pointers: <GaugePointer>[
+                            RangePointer(
+                              value: regularValue ? animation.value : 0,
+                              width: 0.08,
+                              sizeUnit: GaugeSizeUnit.factor,
+                              gradient: SweepGradient(
+                                colors: <Color>[kMain, kMain.withOpacity(0.5)],
+                                stops: const <double>[0.35, 0.85],
+                              ),
+                              cornerStyle: CornerStyle.bothCurve,
+                              enableAnimation: true,
+                              animationDuration: 100,
+                              animationType: AnimationType.linear,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                   // 2-2. 애니메이션 내부 (웨이브폼이 그려져있는 이미지)
                   Container(
                       width: screenWidth * 0.55,
@@ -191,8 +230,8 @@ class _RegularScreenState extends State<RegularScreen>
                       // ),
                       child: regularValue
                           ? AudioWaveforms(
-                              waveStyle: WaveStyle(
-                                waveColor: kGrey1,
+                              waveStyle: const WaveStyle(
+                                waveColor: Colors.white,
                                 spacing: 8.0,
                                 extendWaveform: true,
                                 showMiddleLine: false,
@@ -201,45 +240,7 @@ class _RegularScreenState extends State<RegularScreen>
                                   MediaQuery.of(context).size.width, 200.0),
                               recorderController: rm.recorderController,
                             )
-                          : Container()),
-                  // 2-1. 애니메이션 외부 (실제 돌아가는 부분)
-                  Container(
-                    width: screenWidth * 0.7,
-                    height: screenWidth * 0.7,
-                    margin: const EdgeInsets.only(top: 60),
-                    child: SfRadialGauge(
-                      axes: <RadialAxis>[
-                        RadialAxis(
-                          minimum: 0,
-                          maximum: 100,
-                          showLabels: false,
-                          showTicks: false,
-                          startAngle: 270,
-                          endAngle: 270,
-                          axisLineStyle: AxisLineStyle(
-                            thickness: 0.08,
-                            color: darkMode ? kGrey9 : kGrey2.withOpacity(0.6),
-                            thicknessUnit: GaugeSizeUnit.factor,
-                          ),
-                          pointers: <GaugePointer>[
-                            RangePointer(
-                              value: regularValue ? animation.value : 0,
-                              width: 0.08,
-                              sizeUnit: GaugeSizeUnit.factor,
-                              gradient: SweepGradient(
-                                colors: <Color>[kMain, kMain.withOpacity(0.5)],
-                                stops: const <double>[0.35, 0.85],
-                              ),
-                              cornerStyle: CornerStyle.bothCurve,
-                              enableAnimation: true,
-                              animationDuration: 100,
-                              animationType: AnimationType.linear,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                          : Container())
                 ],
               ),
               const SizedBox(height: 60),
