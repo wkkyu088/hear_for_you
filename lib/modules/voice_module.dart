@@ -1,14 +1,14 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/widgets/chat_modal.dart';
 import 'package:hear_for_you/widgets/voice_mode_select.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:toast/toast.dart';
 
 import '../constants.dart';
 import '../service/permission_check.dart';
@@ -21,7 +21,6 @@ class VoiceModule extends StatefulWidget {
 }
 
 class _VoiceModuleState extends State<VoiceModule> {
-  bool regularFlag = false;
   late bool isInput;
   bool isOpen = false;
 
@@ -31,7 +30,13 @@ class _VoiceModuleState extends State<VoiceModule> {
   @override
   initState() {
     super.initState();
-    PermissionCheckClass.IOSrequestRecognitionPermission(context);
+    if (Platform.isAndroid) {
+      // 안드로이드라면
+      PermissionCheckClass.AndroidRecognitionPermissionCheck(context);
+    } else {
+      // IOS 라면
+      PermissionCheckClass.IOSRecognitionPermissionCheck(context);
+    }
     isEmpty = false;
     isInput = true;
     _initSpeech();
@@ -52,11 +57,8 @@ class _VoiceModuleState extends State<VoiceModule> {
   // 에러 종류에 따라 팝업 띄우기
   // error_speech_timeout, error_busy, error_network, error_
   void errorListener(SpeechRecognitionError error) {
-    Toast.show(error.errorMsg, duration: Toast.lengthLong, gravity: Toast.top);
-    setState(() {
-      isInput = true;
-      _isListening = false;
-    });
+    debugPrint('onError: $error');
+    setState(() {});
   }
 
   // stt가 특정시간이 지나면 자동종료가 되기때문에 다시 시작해주는 코드 필요
@@ -84,10 +86,7 @@ class _VoiceModuleState extends State<VoiceModule> {
   Future _startListening() async {
     // await _stopListening();
     setState(() {
-      if (regularValue) {
-        regularFlag = true;
-        regularValue = false;
-      }
+      regularValue = false;
       _isListening = true;
     });
     await Future.delayed(const Duration(milliseconds: 1));
@@ -108,12 +107,10 @@ class _VoiceModuleState extends State<VoiceModule> {
     }
     await _speechToText.stop();
     setState(() {
-      // 이전에 regularValue가 true였다면 다시켜기
+      // 이전에 regularValue가 true였다면 다시켜기 ////////////////////////////////////////////////////////////////////////////////////
       // 아니라면 켜지면 안됌
-      if (regularFlag) {
-        regularValue = true;
-        regularFlag = false;
-      }
+      // if(regularValue)
+      // regularValue = true;
     });
   }
 
@@ -124,6 +121,7 @@ class _VoiceModuleState extends State<VoiceModule> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+
     // 채팅 메세지가 담길 버블
     Widget bubble(str, user) {
       return Row(
@@ -184,8 +182,6 @@ class _VoiceModuleState extends State<VoiceModule> {
         });
       }
     }
-
-    ToastContext().init(context);
 
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
@@ -446,81 +442,56 @@ class _VoiceModuleState extends State<VoiceModule> {
                         bottom: 80,
                         height: 80,
                         width: screenWidth,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.3),
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
                                 color: darkMode
                                     ? kBlack.withOpacity(0.65)
                                     : kWhite.withOpacity(0.85),
-                                child: LoadingAnimationWidget.staggeredDotsWave(
-                                  color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
-                                  size: 30.0,
-                                ),
+                                blurRadius: 20,
                               ),
+                            ],
+                            shape: BoxShape.circle,
+                          ),
+                          child: Column(
+                            children: [
                               const SizedBox(height: 10),
-                              Text(
-                                '대화를 듣고 있습니다',
-                                style: TextStyle(
-                                  color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
-                                  fontSize: kXS,
+                              SizedBox(
+                                height: 40,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    waveForm(6.0),
+                                    waveForm(6.0),
+                                    waveForm(6.0),
+                                    waveForm(6.0),
+                                    waveForm(6.0),
+                                  ],
                                 ),
                               ),
-                            ]),
-                        // Container(
-                        //   padding: EdgeInsets.symmetric(
-                        //       horizontal: screenWidth * 0.3),
-                        //   decoration: BoxDecoration(
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //         color: darkMode
-                        //             ? kBlack.withOpacity(0.65)
-                        //             : kWhite.withOpacity(0.85),
-                        //         blurRadius: 20,
-                        //       ),
-                        //     ],
-                        //     shape: BoxShape.circle,
-                        //   ),
-                        //   child: Column(
-                        //     children: [
-                        //       const SizedBox(height: 10),
-                        //       SizedBox(
-                        //         height: 40,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           children: [
-                        //            waveForm(6.0),
-                        //             waveForm(6.0),
-                        //             waveForm(6.0),
-                        //             waveForm(6.0),
-                        //             waveForm(6.0),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         padding: EdgeInsets.symmetric(horizontal: 10),
-                        //         child: _lastWords.isNotEmpty
-                        //             ? bubble(
-                        //                 '$_lastWords $_currentWords', false)
-                        //             : Text('lastWords is empty'),
-                        //       ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: _lastWords.isNotEmpty
+                                    ? bubble(
+                                        '$_lastWords $_currentWords', false)
+                                    : Text('lastWords is empty'),
+                              ),
 
-                        //       // Text(
-                        //       //   '_isListening $_isListening',
-                        //       //   style: TextStyle(
-                        //       //     color: darkMode
-                        //       //         ? kWhite
-                        //       //         : const Color(0xFF434343),
-                        //       //     fontSize: kXS,
-                        //       //   ),
-                        //       // ),
-                        //     ],
-                        //   ),
-                        // ),
+                              // Text(
+                              //   '_isListening $_isListening',
+                              //   style: TextStyle(
+                              //     color: darkMode
+                              //         ? kWhite
+                              //         : const Color(0xFF434343),
+                              //     fontSize: kXS,
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
                       ),
           ],
         ),

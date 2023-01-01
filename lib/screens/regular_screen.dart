@@ -1,5 +1,6 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -28,8 +29,15 @@ class RegularScreenState extends State<RegularScreen>
   @override
   void initState() {
     super.initState();
-    PermissionCheckClass.IOSrequestAlertPermission(context);
-    PermissionCheckClass.IOSrequestMicPermission(context);
+    // 현재 안드로이드면
+    if (Platform.isAndroid) {
+      PermissionCheckClass.AndroidAlertPermissionCheck(context);
+      PermissionCheckClass.AndroidRecognitionPermissionCheck(context);
+    } else {
+      // ios라면
+      PermissionCheckClass.IOSAlertPermissionCheck(context);
+      PermissionCheckClass.IOSMicPermissionCheck(context);
+    }
     rm.setContext(context);
     controller = AnimationController(
       duration: const Duration(seconds: 20),
