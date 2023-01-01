@@ -4,7 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class PermissionCheckClass {
-  static Future<bool> requestAlertPermission(BuildContext context) async {
+  static Future<bool> IOSrequestAlertPermission(BuildContext context) async {
     var result = await FlutterLocalNotificationsPlugin()
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
@@ -43,12 +43,11 @@ class PermissionCheckClass {
     return true;
   }
 
-  static Future<bool> requestMicPermission(BuildContext context) async {
-    var result = await Permission.microphone.request();
+  static Future<bool> IOSrequestMicPermission(BuildContext context) async {
+    var result = await Permission.microphone.isDenied;
 
-    print("마이크 확인결과 : ${result.isDenied}");
-
-    if (!result.isGranted) {
+    print("마이크 확인결과(denied) : $result");
+    if (result) {
       // 허용이 안된 경우
       showDialog(
           context: context,
@@ -78,7 +77,8 @@ class PermissionCheckClass {
     return true;
   }
 
-  static Future<bool> requestRecognitionPermission(BuildContext context) async {
+  static Future<bool> IOSrequestRecognitionPermission(
+      BuildContext context) async {
     bool result = await SpeechToText().initialize();
 
     print("음성인식 확인결과 : ${result}");
@@ -115,7 +115,7 @@ class PermissionCheckClass {
     return true;
   }
 
-  static Future<bool> requestPhotoPermission(BuildContext context) async {
+  static Future<bool> IOSrequestPhotoPermission(BuildContext context) async {
     var result = await Permission.photos.request();
 
     print("사진첩 확인결과 : ${result.isGranted}");

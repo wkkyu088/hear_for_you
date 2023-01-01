@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'functions.dart';
+import '../constants.dart' as settings;
 import 'package:flutter/material.dart';
 
 class SoundPage extends StatefulWidget {
@@ -51,14 +52,14 @@ class PopupState extends State<ModelPopup> {
       if (error.toString() == "SignalException") {
         setState(() {
           object = resultWidget("알 수 없는 소리입니다");
-          Timer.periodic(const Duration(seconds: 1), (timer) {
+          Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
         });
       } else if (error.toString() == "FileSystemException") {
         setState(() {
           object = errorWidget("audio.wav 파일이 없습니다");
-          Timer.periodic(const Duration(seconds: 1), (timer) {
+          Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
         });
@@ -66,7 +67,7 @@ class PopupState extends State<ModelPopup> {
         setState(() {
           object = errorWidget(
               "Error : ${error.toString().split(" ")[0]}\nErrorCode : ${error.toString()}");
-          Timer.periodic(const Duration(seconds: 1), (timer) {
+          Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
         });
@@ -83,13 +84,32 @@ class PopupState extends State<ModelPopup> {
 
 // 로딩중일 때 띄울 위젯
 Widget loadingWidget() {
-  return const Center(child: Text("분석중입니다"));
+  return Center(
+      child: Container(
+          width: double.infinity,
+          height: 50,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: settings.colorChart[settings.selectedColor],
+              border: Border.all(color: Colors.black, width: 1)),
+          child: const Center(
+              child: Text("분석중입니다",
+                  style: TextStyle(color: Colors.white, fontSize: 15)))));
 }
 
 // 분석이 완료되고 띄울 위젯
 Widget resultWidget(String result) {
   return Column(children: [
-    const Text("분석 결과"),
+    Container(
+        width: double.infinity,
+        height: 50,
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: settings.colorChart[settings.selectedColor],
+            border: Border.all(color: Colors.black, width: 1)),
+        child: const Center(
+            child: Text("분석 결과",
+                style: TextStyle(color: Colors.white, fontSize: 15)))),
     Text(result),
   ]);
 }
@@ -98,7 +118,16 @@ Widget resultWidget(String result) {
 Widget errorWidget(String result) {
   return Column(
     children: [
-      const Text("오류 발생"),
+      Container(
+          width: double.infinity,
+          height: 50,
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: settings.colorChart[settings.selectedColor],
+              border: Border.all(color: Colors.black, width: 1)),
+          child: const Center(
+              child: Text("오류 발생",
+                  style: TextStyle(color: Colors.white, fontSize: 15)))),
       Text(result),
     ],
   );
