@@ -59,6 +59,8 @@ dependencies:
   torch_light: ^1.0.0
   carousel_slider: ^4.2.1
   screenshot: ^1.2.3
+  loading_animation_widget: ^1.2.0+4
+  toast: ^0.3.0
 
   
 dev_dependencies:
