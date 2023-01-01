@@ -7,6 +7,7 @@ import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:hear_for_you/widgets/wave_form.dart';
 import 'package:hear_for_you/service/notification.dart';
 import 'package:hear_for_you/service/flash_light.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../constants.dart';
@@ -198,7 +199,7 @@ class _RegularScreenState extends State<RegularScreen>
                                 showMiddleLine: false,
                               ),
                               size: Size(
-                                  MediaQuery.of(context).size.width, 200.0),
+                                  MediaQuery.of(context).size.width, 450.0),
                               recorderController: rm.recorderController,
                             )
                           : Container()),
@@ -244,28 +245,53 @@ class _RegularScreenState extends State<RegularScreen>
               ),
               const SizedBox(height: 60),
               // 3. 소리를 듣고 있습니다. (큰 의미 없음, 보조 표식)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for (int i = 0; i < 5; i++)
-                    Container(
-                      width: 6,
-                      height: 6,
-                      margin: const EdgeInsets.all(3),
-                      decoration: BoxDecoration(
-                        color: darkMode ? kGrey4 : kGrey8,
-                        shape: BoxShape.circle,
-                      ),
-                    )
-                ],
-              ),
-              const SizedBox(height: 15),
-              Text(
-                regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
-                style:
-                    TextStyle(fontSize: kS, color: darkMode ? kGrey4 : kGrey8),
-              ),
-              const Spacer(),
+              regularValue
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                          Container(
+                            color: darkMode
+                                ? kBlack.withOpacity(0.65)
+                                : kWhite.withOpacity(0.85),
+                            child: LoadingAnimationWidget.waveDots(
+                              color:
+                                  darkMode ? kWhite : const Color(0xFF434343),
+                              size: 30.0,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '소리를 듣고 있습니다',
+                            style: TextStyle(
+                              color:
+                                  darkMode ? kWhite : const Color(0xFF434343),
+                              fontSize: kXS,
+                            ),
+                          ),
+                        ])
+                  : const Text('상시모드가 꺼져있습니다.'),
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         for (int i = 0; i < 5; i++)
+              //           Container(
+              //             width: 6,
+              //             height: 6,
+              //             margin: const EdgeInsets.all(3),
+              //             decoration: BoxDecoration(
+              //               color: darkMode ? kGrey4 : kGrey8,
+              //               shape: BoxShape.circle,
+              //             ),
+              //           )
+              //       ],
+              //     ),
+              //     const SizedBox(height: 15),
+              //     Text(
+              //       regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
+              //       style:
+              //           TextStyle(fontSize: kS, color: darkMode ? kGrey4 : kGrey8),
+              //     ),
+              //     const Spacer(),
             ],
           ),
           // 4. 미확인 알림 팝업 자리
