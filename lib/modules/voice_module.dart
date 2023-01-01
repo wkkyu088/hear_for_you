@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:hear_for_you/widgets/chat_modal.dart';
 import 'package:hear_for_you/widgets/voice_mode_select.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:toast/toast.dart';
 
 import '../constants.dart';
 import '../service/permission_check.dart';
@@ -49,7 +51,8 @@ class _VoiceModuleState extends State<VoiceModule> {
   // 에러 종류에 따라 팝업 띄우기
   // error_speech_timeout, error_busy, error_network, error_
   void errorListener(SpeechRecognitionError error) {
-    debugPrint('onError: $error');
+    Toast.show(error.errorMsg,
+        duration: Toast.lengthShort, gravity: Toast.bottom);
     setState(() {});
   }
 
@@ -434,56 +437,81 @@ class _VoiceModuleState extends State<VoiceModule> {
                         bottom: 80,
                         height: 80,
                         width: screenWidth,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.3),
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
                                 color: darkMode
                                     ? kBlack.withOpacity(0.65)
                                     : kWhite.withOpacity(0.85),
-                                blurRadius: 20,
-                              ),
-                            ],
-                            shape: BoxShape.circle,
-                          ),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                    waveForm(6.0),
-                                  ],
+                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                  color: darkMode
+                                      ? kWhite
+                                      : const Color(0xFF434343),
+                                  size: 30.0,
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: _lastWords.isNotEmpty
-                                    ? bubble(
-                                        '$_lastWords $_currentWords', false)
-                                    : Text('lastWords is empty'),
+                              const SizedBox(height: 10),
+                              Text(
+                                '대화를 듣고 있습니다',
+                                style: TextStyle(
+                                  color: darkMode
+                                      ? kWhite
+                                      : const Color(0xFF434343),
+                                  fontSize: kXS,
+                                ),
                               ),
+                            ]),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(
+                        //       horizontal: screenWidth * 0.3),
+                        //   decoration: BoxDecoration(
+                        //     boxShadow: [
+                        //       BoxShadow(
+                        //         color: darkMode
+                        //             ? kBlack.withOpacity(0.65)
+                        //             : kWhite.withOpacity(0.85),
+                        //         blurRadius: 20,
+                        //       ),
+                        //     ],
+                        //     shape: BoxShape.circle,
+                        //   ),
+                        //   child: Column(
+                        //     children: [
+                        //       const SizedBox(height: 10),
+                        //       SizedBox(
+                        //         height: 40,
+                        //         child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           children: [
+                        //            waveForm(6.0),
+                        //             waveForm(6.0),
+                        //             waveForm(6.0),
+                        //             waveForm(6.0),
+                        //             waveForm(6.0),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         padding: EdgeInsets.symmetric(horizontal: 10),
+                        //         child: _lastWords.isNotEmpty
+                        //             ? bubble(
+                        //                 '$_lastWords $_currentWords', false)
+                        //             : Text('lastWords is empty'),
+                        //       ),
 
-                              // Text(
-                              //   '_isListening $_isListening',
-                              //   style: TextStyle(
-                              //     color: darkMode
-                              //         ? kWhite
-                              //         : const Color(0xFF434343),
-                              //     fontSize: kXS,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
+                        //       // Text(
+                        //       //   '_isListening $_isListening',
+                        //       //   style: TextStyle(
+                        //       //     color: darkMode
+                        //       //         ? kWhite
+                        //       //         : const Color(0xFF434343),
+                        //       //     fontSize: kXS,
+                        //       //   ),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // ),
                       ),
           ],
         ),
