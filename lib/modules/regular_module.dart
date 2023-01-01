@@ -6,14 +6,13 @@ import 'dart:async';
 
 import 'package:hear_for_you/constants.dart';
 
-import '../service/Functions.dart';
+import '../service/functions.dart';
 
 // Regular Mode
 String _path = '';
 var recorderController;
 var _recordTimer;
 var _decibelTimer;
-bool needPopup = false;
 
 void setContext(BuildContext context) {
   _context = context;

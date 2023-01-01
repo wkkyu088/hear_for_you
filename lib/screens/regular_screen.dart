@@ -1,17 +1,9 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
-import 'package:hear_for_you/screens/alert_screen.dart';
-import 'package:hear_for_you/screens/tutorial_screen.dart';
-import 'package:hear_for_you/service/flash_light.dart';
 import 'package:hear_for_you/widgets/missed_alert.dart';
-import 'package:hear_for_you/widgets/wave_form.dart';
-import 'package:hear_for_you/service/notification.dart';
-import 'package:hear_for_you/service/flash_light.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import '../modules/regular_module.dart';
 
 import '../constants.dart';
-import '../widgets/custom_dialog.dart';
 import '../service/permission_check.dart';
 
 import 'package:hear_for_you/modules/regular_module.dart' as rm;
@@ -37,7 +29,7 @@ class RegularScreenState extends State<RegularScreen>
     super.initState();
     PermissionCheckClass.IOSrequestAlertPermission(context);
     PermissionCheckClass.IOSrequestMicPermission(context);
-    setContext(context);
+    rm.setContext(context);
     controller = AnimationController(
       duration: const Duration(seconds: 20),
       vsync: this,
