@@ -44,6 +44,8 @@ class _VoiceModuleState extends State<VoiceModule> {
         onError: errorListener, onStatus: statusListener);
   }
 
+  // 에러 종류에 따라 팝업 띄우기
+  // error_speech_timeout, error_busy, error_network, error_
   void errorListener(SpeechRecognitionError error) {
     debugPrint('onError: $error');
     setState(() {});
