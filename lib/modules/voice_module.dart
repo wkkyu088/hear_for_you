@@ -24,6 +24,7 @@ class VoiceModule extends StatefulWidget {
 class _VoiceModuleState extends State<VoiceModule> {
   late bool isInput;
   bool isOpen = false;
+  bool regularFlag = false;
 
   final TextEditingController textController = TextEditingController();
   ScreenshotController screenshotController = ScreenshotController();
@@ -40,6 +41,7 @@ class _VoiceModuleState extends State<VoiceModule> {
     }
     isEmpty = false;
     isInput = true;
+
     _initSpeech();
   }
 
@@ -87,7 +89,10 @@ class _VoiceModuleState extends State<VoiceModule> {
   Future _startListening() async {
     // await _stopListening();
     setState(() {
-      regularValue = false;
+      if (regularValue) {
+        regularValue = false;
+        regularFlag = true;
+      }
       _isListening = true;
     });
     await Future.delayed(const Duration(milliseconds: 1));
@@ -110,8 +115,10 @@ class _VoiceModuleState extends State<VoiceModule> {
     setState(() {
       // 이전에 regularValue가 true였다면 다시켜기 ////////////////////////////////////////////////////////////////////////////////////
       // 아니라면 켜지면 안됌
-      // if(regularValue)
-      // regularValue = true;
+      if (regularFlag) {
+        regularValue = true;
+        regularFlag = false;
+      }
     });
   }
 
