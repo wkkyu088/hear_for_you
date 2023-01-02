@@ -1,28 +1,29 @@
-import 'package:flutter/material.dart';
-import 'package:hear_for_you/widgets/curved_painter.dart';
 import 'dart:async';
 
-import '../constants.dart';
+import 'package:flutter/material.dart';
+import '../provider/alarm_state.dart';
+import '../view/curved_painter.dart';
+import 'package:provider/provider.dart';
 
-// 전체 화면 알림 페이지
+import '../../../constants.dart';
 
-class AlertScreen extends StatefulWidget {
-  const AlertScreen({Key? key}) : super(key: key);
+class AlarmScreen extends StatefulWidget {
+  const AlarmScreen({Key? key}) : super(key: key);
 
   @override
-  State<AlertScreen> createState() => _AlertScreenState();
+  State<AlarmScreen> createState() => _AlarmScreenState();
 }
 
-class _AlertScreenState extends State<AlertScreen> {
+class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   late DateTime now;
   late Timer _timer;
   int min = 0;
   int sec = 0;
 
-  // 알림이 발생된 시각 기록, 타이머 시작
   @override
-  initState() {
+  void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     now = DateTime.now();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -31,15 +32,34 @@ class _AlertScreenState extends State<AlertScreen> {
           sec = 0;
           min++;
         }
+        // 알람을 자동으로 끌 시간
+        if (min == 0 && sec == 10) {
+          _dismissAlarm();
+        }
       });
     });
   }
 
-  // 타이머 종료
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.paused:
+        _dismissAlarm();
+        break;
+      default:
+    }
+  }
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer.cancel();
     super.dispose();
+  }
+
+  void _dismissAlarm() async {
+    final alarmState = context.read<AlarmState>();
+    alarmState.dismiss();
   }
 
   @override
@@ -122,7 +142,7 @@ class _AlertScreenState extends State<AlertScreen> {
                 width: 180,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    _dismissAlarm();
                   },
                   style: TextButton.styleFrom(
                     primary: kBlack,

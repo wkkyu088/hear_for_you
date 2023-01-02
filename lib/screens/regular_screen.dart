@@ -1,12 +1,18 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
+import 'package:hear_for_you/service/full_screen_alert/service/alarm_scheduler.dart';
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import '../constants.dart';
+import '../service/flash_light.dart';
+import '../service/full_screen_alert/provider/alarm_provider.dart';
+import '../service/notification.dart';
 import '../service/permission_check.dart';
+import 'package:provider/provider.dart';
+
+import '../constants.dart';
 
 import 'package:hear_for_you/modules/regular_module.dart' as rm;
 // 상시모드 페이지
@@ -82,16 +88,27 @@ class RegularScreenState extends State<RegularScreen>
                         color: darkMode ? kWhite : kBlack,
                       ),
                       padding: const EdgeInsets.all(10),
-                      onPressed: () {
+                      onPressed: () async {
                         // 전체화면 알림
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (context) => const AlertScreen()));
+                        DateTime now = DateTime.now();
+                        DateTime time = DateTime(
+                          now.year,
+                          now.month,
+                          now.day,
+                          now.hour,
+                          now.minute,
+                          now.second,
+                        );
+                        context.read<AlarmProvider>().setAlarm(time);
+                        await AlarmScheduler.scheduleRepeatable(time);
 
                         // 안드로이드 notification + 플래시
-                        // showNotification("알림 제목", "알림이 왔습니다.");
-                        // FlashLight.startFlashLight(0);
+                        showNotification("알림 제목", "알림이 왔습니다.");
+                        FlashLight.startFlashLight(0);
 
                         // 커스텀 모달
                         // showDialog(
@@ -190,58 +207,60 @@ class RegularScreenState extends State<RegularScreen>
                   ),
                   // 2-2. 애니메이션 내부 (웨이브폼이 그려져있는 이미지)
                   Container(
-                      width: screenWidth * 0.55,
-                      height: screenWidth * 0.55,
-                      margin: const EdgeInsets.only(top: 60),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [kMain, kMain.withOpacity(0.5)]),
-                      ),
-                      // 2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
-                      // child: Stack(
-                      //   children: [
-                      //     CustomPaint(
-                      //       size: MediaQuery.of(context).size,
-                      //       painter: WaveForm(1, 1),
-                      //     ),
-                      //     regularValue
-                      //         ? Container(
-                      //             margin: EdgeInsets.only(
-                      //                 top: screenWidth * 0.55 * 0.4 * 0.5),
-                      //             child: CustomPaint(
-                      //               size: MediaQuery.of(context).size,
-                      //               painter: WaveForm(0.6, 0.6),
-                      //             ),
-                      //           )
-                      //         : const SizedBox(),
-                      //     regularValue
-                      //         ? Container(
-                      //             margin: EdgeInsets.only(
-                      //                 top: screenWidth * 0.55 * 0.8 * 0.5),
-                      //             child: CustomPaint(
-                      //               size: MediaQuery.of(context).size,
-                      //               painter: WaveForm(0.2, 0.2),
-                      //             ),
-                      //           )
-                      //         : const SizedBox(),
-                      //   ],
-                      // ),
-                      child: regularValue
-                          ? AudioWaveforms(
-                              waveStyle: const WaveStyle(
-                                waveColor: Colors.white,
-                                spacing: 8.0,
-                                extendWaveform: true,
-                                showMiddleLine: false,
-                              ),
-                              size: Size(
-                                  MediaQuery.of(context).size.width, 450.0),
-                              recorderController: rm.recorderController,
-                            )
-                          : Container())
+                    width: screenWidth * 0.55,
+                    height: screenWidth * 0.55,
+                    margin: const EdgeInsets.only(top: 60),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [kMain, kMain.withOpacity(0.5)]),
+                    ),
+                    // 2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
+                    // child: Stack(
+                    //   children: [
+                    //     CustomPaint(
+                    //       size: MediaQuery.of(context).size,
+                    //       painter: WaveForm(1, 1),
+                    //     ),
+                    //     regularValue
+                    //         ? Container(
+                    //             margin: EdgeInsets.only(
+                    //                 top: screenWidth * 0.55 * 0.4 * 0.5),
+                    //             child: CustomPaint(
+                    //               size: MediaQuery.of(context).size,
+                    //               painter: WaveForm(0.6, 0.6),
+                    //             ),
+                    //           )
+                    //         : const SizedBox(),
+                    //     regularValue
+                    //         ? Container(
+                    //             margin: EdgeInsets.only(
+                    //                 top: screenWidth * 0.55 * 0.8 * 0.5),
+                    //             child: CustomPaint(
+                    //               size: MediaQuery.of(context).size,
+                    //               painter: WaveForm(0.2, 0.2),
+                    //             ),
+                    //           )
+                    //         : const SizedBox(),
+                    //   ],
+                    // ),
+                    child: regularValue
+                        ? AudioWaveforms(
+                            waveStyle: WaveStyle(
+                              waveColor: darkMode ? kBlack : kGrey1,
+                              spacing: 10,
+                              extendWaveform: true,
+                              showMiddleLine: false,
+                              scaleFactor: 10,
+                            ),
+                            size: Size(screenWidth * 0.55, screenWidth * 0.55),
+                            recorderController: rm.recorderController,
+                          )
+                        : Container(),
+                  )
                 ],
               ),
               const SizedBox(height: 60),
@@ -251,9 +270,7 @@ class RegularScreenState extends State<RegularScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                           Container(
-                            color: darkMode
-                                ? kBlack.withOpacity(0.65)
-                                : kWhite.withOpacity(0.85),
+                            color: darkMode ? kBlack : kGrey1,
                             child: LoadingAnimationWidget.waveDots(
                               color:
                                   darkMode ? kWhite : const Color(0xFF434343),

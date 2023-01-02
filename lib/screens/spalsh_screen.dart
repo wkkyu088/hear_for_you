@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/screens/login_screen.dart';
+import 'package:hear_for_you/service/full_screen_alert/view/alarm_observer.dart';
+import 'package:hear_for_you/service/full_screen_alert/view/permission_request_screen.dart';
 import 'package:hear_for_you/service/notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../service/notification.dart';
@@ -22,8 +24,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  static void getProfile() async {
+  static getProfile() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    await pref.setBool("systemAlertWindowGranted", false);
+    final isGranted = pref.getBool("systemAlertWindowGranted");
+    print(isGranted.toString());
 
     try {
       initNotification();
@@ -81,8 +87,14 @@ class _SplashScreenState extends State<SplashScreen> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LoginScreen()))
           }
-        : Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const BottomNavBar()));
+        : Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PermissionRequestScreen(
+                child: AlarmObserver(child: BottomNavBar()),
+              ),
+            ),
+          );
   }
 
   @override
