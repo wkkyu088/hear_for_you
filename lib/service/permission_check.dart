@@ -7,7 +7,7 @@ class PermissionCheckClass {
   static void AndroidAlertPermissionCheck(BuildContext context) async {
     var result = await Permission.notification.isGranted;
 
-    print("알림 확인결과 : ${result}");
+    print("안드로이드 알림 확인결과 : ${result}");
 
     if (!result) {
       // 허용이 안된 경우
@@ -41,7 +41,7 @@ class PermissionCheckClass {
   static void AndroidMicPermissionCheck(BuildContext context) async {
     var result = await Permission.microphone.isGranted;
 
-    print("알림 확인결과 : ${result}");
+    print("안드로이드 마이크 확인결과 : ${result}");
 
     if (!result) {
       // 허용이 안된 경우
@@ -75,7 +75,7 @@ class PermissionCheckClass {
   static void AndroidRecognitionPermissionCheck(BuildContext context) async {
     var result = await Permission.speech.isGranted;
 
-    print("알림 확인결과 : ${result}");
+    print("안드로이드 음성 녹음 확인결과 : ${result}");
 
     if (!result) {
       // 허용이 안된 경우
@@ -112,7 +112,7 @@ class PermissionCheckClass {
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(alert: true, badge: true, sound: true);
 
-    print("알림 확인결과 : ${result}");
+    print("IOS 알람 확인결과 : ${result}");
 
     if (!(result!)) {
       // 허용이 안된 경우
@@ -146,7 +146,7 @@ class PermissionCheckClass {
   static void IOSMicPermissionCheck(BuildContext context) async {
     var result = await Permission.microphone.isGranted;
 
-    print("마이크 확인결과 : $result");
+    print("IOS 마이크 확인결과 : $result");
     if (!result) {
       // 허용이 안된 경우
       showDialog(
@@ -179,7 +179,7 @@ class PermissionCheckClass {
   static void IOSRecognitionPermissionCheck(BuildContext context) async {
     bool result = await SpeechToText().initialize();
 
-    print("음성인식 확인결과 : ${result}");
+    print("IOS 음성 녹음 확인결과 : ${result}");
 
     if (!result) {
       // 허용이 안된 경우

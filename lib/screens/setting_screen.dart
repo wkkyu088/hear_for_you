@@ -13,6 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hear_for_you/modules/regular_module.dart' as rm;
 
+import '../service/permission_check.dart';
+import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 // 설정 페이지
 
 class SettingScreen extends StatefulWidget {
@@ -185,12 +188,26 @@ class _SettingScreenState extends State<SettingScreen> {
                               child: CupertinoSwitch(
                                 activeColor: kMain,
                                 value: regularValue,
-                                onChanged: (bool value) {
+                                onChanged: (bool value) async {
                                   regularValue = value;
-                                  setState(() {
-                                    regularValue = value;
-                                    setRegularValue(regularValue);
-                                  });
+                                  var result =
+                                      await Permission.speech.isGranted;
+                                  if (result) {
+                                    setState(() async {
+                                      regularValue = value;
+                                      setRegularValue(regularValue);
+                                    });
+                                  } else {
+                                    if (Platform.isAndroid) {
+                                      PermissionCheckClass
+                                          .AndroidRecognitionPermissionCheck(
+                                              context);
+                                    } else {
+                                      PermissionCheckClass
+                                          .IOSRecognitionPermissionCheck(
+                                              context);
+                                    }
+                                  }
                                 },
                               ),
                             ),
