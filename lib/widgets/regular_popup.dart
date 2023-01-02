@@ -78,7 +78,7 @@ class PopupState extends State<ModelPopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        content: SizedBox(width: 200, height: 100, child: object));
+        content: SizedBox(width: 200, height: 200, child: object));
   }
 }
 
