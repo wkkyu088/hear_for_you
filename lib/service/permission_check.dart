@@ -97,10 +97,9 @@ class PermissionCheckClass {
                     child: Text("괜찮아요!")),
                 TextButton(
                     onPressed: () {
-                      openAppSettings(); // 앱 설정으로 이동
                       Navigator.pop(context);
                     },
-                    child: Text('설정하러 가기')),
+                    child: Text('설정했어요!')),
               ],
             );
           });
