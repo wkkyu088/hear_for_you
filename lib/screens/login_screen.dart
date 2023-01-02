@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
+import 'package:hear_for_you/service/full_screen_alert/view/alarm_observer.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
@@ -178,9 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     name = textController.text;
                     setProfile(name, profileValue);
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const BottomNavBar()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const AlarmObserver(child: BottomNavBar()),
+                      ),
+                    );
                   }
                 },
                 style: TextButton.styleFrom(

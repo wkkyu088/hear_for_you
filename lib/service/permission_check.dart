@@ -97,9 +97,44 @@ class PermissionCheckClass {
                     child: Text("괜찮아요!")),
                 TextButton(
                     onPressed: () {
+                      openAppSettings();
                       Navigator.pop(context);
                     },
-                    child: Text('설정했어요!')),
+                    child: Text('설정하러가기')),
+              ],
+            );
+          });
+    }
+  }
+
+  static void AndroidSystemAlertWindowPermissionCheck(
+      BuildContext context) async {
+    var result = await Permission.systemAlertWindow.isGranted;
+
+    print("안드로이드 화면 알림 확인결과 : ${result}");
+
+    if (!result) {
+      // 허용이 안된 경우
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(
+                  width: 200,
+                  height: 100,
+                  child: const Center(child: Text("다른 앱 위에 표시 사용을 허용해주세요!"))),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
+                    child: Text("괜찮아요!")),
+                TextButton(
+                    onPressed: () async {
+                      await Permission.systemAlertWindow.request();
+                      Navigator.pop(context);
+                    },
+                    child: Text('설정하러가기')),
               ],
             );
           });

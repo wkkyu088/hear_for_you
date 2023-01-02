@@ -67,11 +67,10 @@ void checkDecibel() {
     const Duration(seconds: 1),
     (timer) async {
       var decibel = await _getDecibel();
-      decibel = decibel! * 2;
       print(
-          '------------------------------------------------------------------------------------ decibel : ${decibel.ceil()}');
+          '------------------------------------------------------------------------------------ decibel : $decibel');
       try {
-        if (decibel >= dB) {
+        if (decibel! >= dB) {
           /////////////////////////////////////////////////////////////////// dB이상 소리 감지 후 행동
           save();
           FunctionClass.showPopup(_context);

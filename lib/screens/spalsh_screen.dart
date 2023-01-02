@@ -27,10 +27,6 @@ class _SplashScreenState extends State<SplashScreen> {
   static getProfile() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
 
-    await pref.setBool("systemAlertWindowGranted", false);
-    final isGranted = pref.getBool("systemAlertWindowGranted");
-    print(isGranted.toString());
-
     try {
       initNotification();
       name = pref.getString('name')!;
@@ -90,18 +86,14 @@ class _SplashScreenState extends State<SplashScreen> {
         : Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const PermissionRequestScreen(
-                child: AlarmObserver(child: BottomNavBar()),
-              ),
+              builder: (context) => const AlarmObserver(child: BottomNavBar()),
             ),
           );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getProfile();
-    startTime();
+  void initSplash() async {
+    await getProfile();
+    rm.initRegularMode(regularValue);
 
     print("################### START ###################");
     print(name);
@@ -114,8 +106,13 @@ class _SplashScreenState extends State<SplashScreen> {
     print(cases);
     print(caseDetails);
     print("######################################");
+  }
 
-    rm.initRegularMode(regularValue);
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+    initSplash();
   }
 
   @override

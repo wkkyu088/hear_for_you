@@ -25,16 +25,16 @@ void main() async {
   }
 
   final AlarmState alarmState = AlarmState();
-  final SharedPreferences preference = await SharedPreferences.getInstance();
+  // final SharedPreferences preference = await SharedPreferences.getInstance();
   AlarmPollingWorker().createPollingWorker(alarmState);
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => alarmState),
       ChangeNotifierProvider(create: (context) => AlarmProvider()),
-      ChangeNotifierProvider(
-        create: (context) => PermissionProvider(preference),
-      ),
+      // ChangeNotifierProvider(
+      //   create: (context) => PermissionProvider(preference),
+      // ),
     ],
     child: const MyApp(),
   ));

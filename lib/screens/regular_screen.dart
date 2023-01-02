@@ -38,6 +38,7 @@ class RegularScreenState extends State<RegularScreen>
     // 현재 안드로이드면
     if (Platform.isAndroid) {
       PermissionCheckClass.AndroidAlertPermissionCheck(context);
+      PermissionCheckClass.AndroidSystemAlertWindowPermissionCheck(context);
     } else {
       // ios라면
       PermissionCheckClass.IOSAlertPermissionCheck(context);
