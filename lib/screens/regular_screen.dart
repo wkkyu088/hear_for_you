@@ -102,7 +102,8 @@ class RegularScreenState extends State<RegularScreen>
                           now.minute,
                           now.second,
                         );
-                        context.read<AlarmProvider>().setAlarm(time);
+                        String alarmName = "소리소리소리";
+                        context.read<AlarmProvider>().setAlarm(time, alarmName);
                         await AlarmScheduler.scheduleRepeatable(time);
 
                         // 안드로이드 notification + 플래시

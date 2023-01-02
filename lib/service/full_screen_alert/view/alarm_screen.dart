@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class AlarmScreen extends StatefulWidget {
-  const AlarmScreen({Key? key}) : super(key: key);
+  final String alarmName;
+  const AlarmScreen({Key? key, required this.alarmName}) : super(key: key);
 
   @override
   State<AlarmScreen> createState() => _AlarmScreenState();
@@ -94,7 +95,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
               Center(
                 child: Container(
                   margin: EdgeInsets.only(top: screenHeight * 0.1),
-                  width: screenWidth * 0.58,
+                  width: screenWidth * 0.6,
                   child: Column(
                     children: [
                       // 알림 종류 아이콘
@@ -108,7 +109,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                       const SizedBox(height: 30),
                       // 알림 이름
                       Text(
-                        '사이렌 감지',
+                        '${widget.alarmName} 감지',
                         style: TextStyle(
                             color: kWhite,
                             fontSize: 38,
@@ -123,12 +124,12 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                       const SizedBox(height: 30),
                       // 알림 발생 시각과 부가 설명
                       Text(
-                        '${now.hour}시 ${now.minute}분 ${now.second}초에 사이렌 소리가 감지되었습니다.\n알림을 끄려면 확인 버튼을 눌러주세요.',
+                        '${now.hour}시 ${now.minute}분 ${now.second}초에 ${widget.alarmName}가 감지되었습니다.\n알림을 끄려면 확인 버튼을 눌러주세요.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: kWhite,
                             fontSize: kM,
-                            height: 1.3,
+                            height: 1.4,
                             fontFamily: 'PretendardLight'),
                       ),
                     ],
