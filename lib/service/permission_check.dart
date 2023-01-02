@@ -86,9 +86,9 @@ class PermissionCheckClass {
               content: Container(
                   width: 200,
                   height: 100,
-                  child: Center(
-                      child:
-                          Text("음성 녹음을 허용해주세요!\n다른 사람의 말을 글자로 바꿔드릴 수 있어요!"))),
+                  child: const Center(
+                      child: Text(
+                          "음성 녹음 사용을 허용해주세요!\n대화를 도와드리거나 주변 소리를 들을 수 있어요"))),
               actions: [
                 TextButton(
                     onPressed: (() {
