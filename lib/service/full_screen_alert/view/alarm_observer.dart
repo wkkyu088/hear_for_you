@@ -8,10 +8,7 @@ import '../view/alarm_screen.dart';
 class AlarmObserver extends StatefulWidget {
   final Widget child;
 
-  const AlarmObserver({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
+  const AlarmObserver({Key? key, required this.child}) : super(key: key);
 
   @override
   State<AlarmObserver> createState() => _AlarmObserverState();
@@ -50,12 +47,14 @@ class _AlarmObserverState extends State<AlarmObserver>
       if (state.isFired) {
         // final callbackId = state.callbackAlarmId!;
         // debugPrint("observer callbakId: $callbackId");
-        DateTime? time = context.read<AlarmProvider>().getAlarm();
+        List? alarmInfo = context.read<AlarmProvider>().getAlarm();
+        DateTime? time = alarmInfo![0];
+        String alarmName = alarmInfo[1];
         // debugPrint("observer isFired ${state.isFired}");
         debugPrint("observer time $time");
         if (time != null) {
           debugPrint("screen on time ${DateTime.now()}");
-          alarmScreen = const AlarmScreen();
+          alarmScreen = AlarmScreen(alarmName: alarmName);
         }
       }
       return IndexedStack(
