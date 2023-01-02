@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
@@ -7,10 +8,32 @@ import 'package:hear_for_you/screens/setting_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
 
 import 'package:hear_for_you/modules/voice_module.dart';
+import 'package:hear_for_you/service/full_screen_alert/provider/alarm_provider.dart';
+import 'package:hear_for_you/service/full_screen_alert/provider/alarm_state.dart';
+import 'package:hear_for_you/service/full_screen_alert/provider/permission_provider.dart';
+import 'package:hear_for_you/service/full_screen_alert/service/alarm_polling_worker.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
+
+  final AlarmState alarmState = AlarmState();
+  final SharedPreferences preference = await SharedPreferences.getInstance();
+  AlarmPollingWorker().createPollingWorker(alarmState);
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => alarmState),
+      ChangeNotifierProvider(create: (context) => AlarmProvider()),
+      ChangeNotifierProvider(
+        create: (context) => PermissionProvider(preference),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
