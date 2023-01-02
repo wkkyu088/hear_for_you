@@ -193,7 +193,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                   var result =
                                       await Permission.speech.isGranted;
                                   if (result) {
-                                    setState(() async {
+                                    setState(() {
                                       regularValue = value;
                                       setRegularValue(regularValue);
                                     });

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:hear_for_you/constants.dart';
+import '../service/functions.dart';
 
-import '../service/Functions.dart';
+import '../constants.dart' as constants;
 
 // 미확인 알림 팝업
 
@@ -17,6 +18,13 @@ class MissedAlert extends StatefulWidget {
 }
 
 class _MissedAlertState extends State<MissedAlert> {
+  late int missedAlertNum;
+  initState() {
+    missedAlertNum = FunctionClass.logsToShown();
+    print("값은 : $missedAlertNum");
+  }
+  //
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -48,7 +56,7 @@ class _MissedAlertState extends State<MissedAlert> {
             Row(
               children: [
                 Text(
-                  '미확인 알림',
+                  (missedAlertNum != -1) ? '최근 미확인 알림' : "미확인 알림이 없습니다",
                   style: TextStyle(fontSize: kXS, color: kGrey5),
                 ),
                 const Spacer(),
@@ -79,53 +87,61 @@ class _MissedAlertState extends State<MissedAlert> {
                   ),
                   children: [
                     TextSpan(
-                        text: widget.title, style: TextStyle(fontSize: kL)),
+                        text: missedAlertNum != -1
+                            ? constants.logList[missedAlertNum].split(",")[0]
+                            : "",
+                        style: TextStyle(fontSize: kL)),
                     TextSpan(
-                        text: ' (${widget.time.hour}시 ${widget.time.minute}분)'),
+                      text: missedAlertNum != -1
+                          ? constants.logList[missedAlertNum].split(",")[1]
+                          : "",
+                    )
                   ],
                 ),
               ),
             ),
             const Spacer(),
             // 4. 확인 버튼
-            Row(
-              children: [
-                Text(
-                  '확인하셨나요?',
-                  style: TextStyle(
-                      fontSize: kM, color: darkMode ? kWhite : kBlack),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    FunctionClass.showPopup(context);
-                  },
-                  style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    '네',
-                    style: TextStyle(fontSize: kS, color: kMain),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    '아니오',
-                    style: TextStyle(fontSize: kS, color: kGrey5),
-                  ),
-                ),
-              ],
-            )
+            missedAlertNum != -1
+                ? Row(
+                    children: [
+                      Text(
+                        '확인하셨나요?',
+                        style: TextStyle(
+                            fontSize: kM, color: darkMode ? kWhite : kBlack),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          FunctionClass.showPopup(context);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          '네',
+                          style: TextStyle(fontSize: kS, color: kMain),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 12),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          '아니오',
+                          style: TextStyle(fontSize: kS, color: kGrey5),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(),
           ],
         ),
       ),

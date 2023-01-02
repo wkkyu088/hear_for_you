@@ -15,10 +15,14 @@ import 'package:hear_for_you/service/full_screen_alert/service/alarm_polling_wor
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
+import 'dart:io';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
+
+  if (Platform.isAndroid) {
+    await AndroidAlarmManager.initialize();
+  }
 
   final AlarmState alarmState = AlarmState();
   final SharedPreferences preference = await SharedPreferences.getInstance();

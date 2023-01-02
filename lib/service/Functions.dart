@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:hear_for_you/service/regular_popup.dart';
+import '../widgets/regular_popup.dart';
 import 'package:wav/wav.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -44,6 +44,28 @@ class FunctionClass {
   */
 
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
+  static int logsToShown() {
+    List<num> numList;
+    for (int i = setting.logList.length - 1; i >= 0; i--) {
+      if (setting.logList[i].split(",")[0] != "unknown" &&
+          setting.logList[i].split(",")[2] == "false") {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  static void changeLogState(int index) async {
+    var pref = await SharedPreferences.getInstance();
+    var oldLogState = setting.logList[index].split(",");
+    var newLogState =
+        "${oldLogState[0]},${oldLogState[1]},true,${oldLogState[3]}";
+
+    setting.logList[index] = newLogState;
+
+    pref.setStringList("logList", setting.logList);
+  }
+
   static Future<String> getPrediction() async {
     try {
       var cuttedPath = await cutFile();
@@ -65,7 +87,7 @@ class FunctionClass {
 
   // 일정 데시벨 이상의 소리가 울렸을 때, 저장된 경로를 반환해주는 함수.
   // fileName에 아무 값도 넣지 않으면 초기 음원파일이 저장된 경로를 반환하고, 파일명이 들어온다면 해당 파일명을 넣어서 반환해준다.
-  static Future<String> getPath({fileName = "audio.wav"}) async {
+  static Future<String> getPath({fileName = "audio.aac"}) async {
     var appDirectory = await getApplicationDocumentsDirectory();
     return "${appDirectory.path}/$fileName";
   }
@@ -97,6 +119,8 @@ class FunctionClass {
       // 파일 저장하기
       path = await getPath(fileName: "cuttedFile.wav");
       print("cutFile : 저장할 경로는 $path입니다");
+
+      // 원래 파일이 존재했을수도 있으니 일단 삭제하고 재저장(결과가 꼬이지 않도록 하기 위해)
       File(path).delete();
 
       readedFile.writeFile(path);
@@ -161,6 +185,11 @@ class FunctionClass {
       // 갯수가 5개가 넘어가면 하나씩 지우기
       if (setting.logList.length > 5) {
         setting.logList.removeAt(0);
+      }
+
+      // 판단 이후 너무 자주 시끄럽다면 데시벨 10 높이기
+      if (raiseDecibelCheck()) {
+        setting.dB += 10;
       }
 
       // 이후 SharedPreference에 저장

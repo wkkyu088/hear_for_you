@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'functions.dart';
+import '../service/functions.dart';
 import '../constants.dart' as settings;
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class SoundPageState extends State<SoundPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text("테스트 페이지입니다.\n하단의 버튼을 누르면 서버와 데이터를 주고받습니다.",
+        const Text("테스트 페이지입니다.\n하단의 버튼을 누르면 서버와 데이터2를 주고받습니다.",
             style: TextStyle(
               fontSize: 25,
             )),
@@ -58,7 +58,7 @@ class PopupState extends State<ModelPopup> {
         });
       } else if (error.toString() == "FileSystemException") {
         setState(() {
-          object = errorWidget("audio.wav 파일이 없습니다");
+          object = errorWidget("audio.aac 파일이 없습니다");
           Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
