@@ -4,13 +4,115 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class PermissionCheckClass {
-  static Future<bool> IOSrequestAlertPermission(BuildContext context) async {
+  static void AndroidAlertPermissionCheck(BuildContext context) async {
+    var result = await Permission.notification.isGranted;
+
+    print("안드로이드 알림 확인결과 : ${result}");
+
+    if (!result) {
+      // 허용이 안된 경우
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(
+                  width: 200,
+                  height: 100,
+                  child:
+                      Center(child: Text("알람 권한을 허용해주세요!\n\n큰 소리가 나면 알려드릴게요"))),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
+                    child: Text("괜찮아요!")),
+                TextButton(
+                    onPressed: () {
+                      openAppSettings(); // 앱 설정으로 이동
+                      Navigator.pop(context);
+                    },
+                    child: Text('설정하러 가기')),
+              ],
+            );
+          });
+    }
+  }
+
+  static void AndroidMicPermissionCheck(BuildContext context) async {
+    var result = await Permission.microphone.isGranted;
+
+    print("안드로이드 마이크 확인결과 : ${result}");
+
+    if (!result) {
+      // 허용이 안된 경우
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(
+                  width: 200,
+                  height: 100,
+                  child: Center(
+                      child: Text("마이크 사용을 허용해주세요!\n주변 소리를 듣기 위해 필요해요"))),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
+                    child: Text("괜찮아요!")),
+                TextButton(
+                    onPressed: () {
+                      openAppSettings(); // 앱 설정으로 이동
+                      Navigator.pop(context);
+                    },
+                    child: Text('설정하러 가기')),
+              ],
+            );
+          });
+    }
+  }
+
+  static void AndroidRecognitionPermissionCheck(BuildContext context) async {
+    var result = await Permission.speech.isGranted;
+
+    print("안드로이드 음성 녹음 확인결과 : ${result}");
+
+    if (!result) {
+      // 허용이 안된 경우
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Container(
+                  width: 200,
+                  height: 100,
+                  child: const Center(
+                      child: Text(
+                          "음성 녹음 사용을 허용해주세요!\n대화를 도와드리거나 주변 소리를 들을 수 있어요"))),
+              actions: [
+                TextButton(
+                    onPressed: (() {
+                      Navigator.pop(context);
+                    }),
+                    child: Text("괜찮아요!")),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('설정했어요!')),
+              ],
+            );
+          });
+    }
+  }
+
+  static void IOSAlertPermissionCheck(BuildContext context) async {
     var result = await FlutterLocalNotificationsPlugin()
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(alert: true, badge: true, sound: true);
 
-    print("알림 확인결과 : ${result}");
+    print("IOS 알람 확인결과 : ${result}");
 
     if (!(result!)) {
       // 허용이 안된 경우
@@ -38,16 +140,14 @@ class PermissionCheckClass {
               ],
             );
           });
-      return false;
     }
-    return true;
   }
 
-  static Future<bool> IOSrequestMicPermission(BuildContext context) async {
-    var result = await Permission.microphone.isDenied;
+  static void IOSMicPermissionCheck(BuildContext context) async {
+    var result = await Permission.microphone.isGranted;
 
-    print("마이크 확인결과(denied) : $result");
-    if (result) {
+    print("IOS 마이크 확인결과 : $result");
+    if (!result) {
       // 허용이 안된 경우
       showDialog(
           context: context,
@@ -56,7 +156,8 @@ class PermissionCheckClass {
               content: Container(
                   width: 200,
                   height: 100,
-                  child: Center(child: Text("마이크 사용 권한을 허용해주세요!"))),
+                  child: Center(
+                      child: Text("마이크 사용 권한을 허용해주세요!\n주변 소리를 듣기 위해 필요해요"))),
               actions: [
                 TextButton(
                     onPressed: (() {
@@ -72,16 +173,13 @@ class PermissionCheckClass {
               ],
             );
           });
-      return false;
     }
-    return true;
   }
 
-  static Future<bool> IOSrequestRecognitionPermission(
-      BuildContext context) async {
+  static void IOSRecognitionPermissionCheck(BuildContext context) async {
     bool result = await SpeechToText().initialize();
 
-    print("음성인식 확인결과 : ${result}");
+    print("IOS 음성 녹음 확인결과 : ${result}");
 
     if (!result) {
       // 허용이 안된 경우
@@ -110,17 +208,15 @@ class PermissionCheckClass {
               ],
             );
           });
-      return false;
     }
-    return true;
   }
 
-  static Future<bool> IOSrequestPhotoPermission(BuildContext context) async {
-    var result = await Permission.photos.request();
+  static void IOSPhotoPermissionCheck(BuildContext context) async {
+    var result = await Permission.photos.isGranted;
 
-    print("사진첩 확인결과 : ${result.isGranted}");
+    print("사진첩 확인결과 : ${result}");
 
-    if (!result.isGranted) {
+    if (!result) {
       // 허용이 안된 경우
       showDialog(
           context: context,
@@ -145,8 +241,6 @@ class PermissionCheckClass {
               ],
             );
           });
-      return false;
     }
-    return true;
   }
 }

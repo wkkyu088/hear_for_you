@@ -10,6 +10,8 @@ import 'package:hear_for_you/modules/regular_module.dart' as rm;
 
 import 'dart:async';
 
+import 'package:permission_handler/permission_handler.dart';
+
 import '../constants.dart';
 
 // 스플래시 페이지
@@ -113,7 +115,6 @@ class _SplashScreenState extends State<SplashScreen> {
     print(caseDetails);
     print("######################################");
 
-    // 상시모드 초기설정, 시작
     rm.initRegularMode(regularValue);
   }
 
