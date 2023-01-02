@@ -24,13 +24,13 @@ var _context;
 void initRegularMode(bool rv) async {
   print(
       '------------------------------------------------------------------------------------ init regular mode');
-  // var dir = await getExternalStorageDirectory();
-  var dir = await getApplicationDocumentsDirectory();
-  _path = "${dir.path}/audio.aac";
+  var dir = await getExternalStorageDirectory();
+  // var dir = await getApplicationDocumentsDirectory();
+  _path = "${dir?.path}/audio.aac";
   recorderController = RecorderController()
     ..androidEncoder = AndroidEncoder.aac
     ..androidOutputFormat = AndroidOutputFormat.mpeg4
-    ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC;
+    ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC_ELD;
 
   // sharedPreference에서 regularValue=True인 경우
   if (rv) {
@@ -51,7 +51,7 @@ void disposeRegularMode() async {
 
 // 특정 데시벨 감지 후 저장
 // /storage/emulated/0/Android/data/com.example.hear_for_you/files/audio.wav
-void save() async {
+Future save() async {
   var path = await recorderController.stop();
   print(
       '------------------------------------------------------------------------------------ saved to $path');
@@ -72,7 +72,7 @@ void checkDecibel() {
       try {
         if (decibel! >= dB) {
           /////////////////////////////////////////////////////////////////// dB이상 소리 감지 후 행동
-          save();
+          await save();
           FunctionClass.showPopup(_context);
           print(
               '------------------------------------------------------------------------------------ get classification');
