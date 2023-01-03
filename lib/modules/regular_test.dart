@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 import 'regular_module_v2.dart';
 
 void main() {
@@ -35,84 +36,48 @@ class _RecordScreenState extends State<RecordScreen> {
   @override
   void initState() {
     context.read<RecordModule>().initState();
-
     super.initState();
   }
 
   @override
   void dispose() {
-    context.read<RecordModule>().dispose();
-
+    context.read<RecordModule>().disposeState();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    context.read<RecordModule>().setContext(context);
+    ToastContext().init(context);
+
     return Consumer<RecordModule>(builder: (context, state, child) {
       return Scaffold(
-          backgroundColor: Colors.blue,
-          appBar: AppBar(
-            title: const Text('Simple Recorder'),
+        appBar: AppBar(),
+        body: Center(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const SizedBox(
+            height: 10,
           ),
-          body: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.all(3),
-                padding: const EdgeInsets.all(3),
-                height: 80,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFAF0E6),
-                  border: Border.all(
-                    color: Colors.indigo,
-                    width: 3,
-                  ),
-                ),
-                child: Row(children: [
-                  ElevatedButton(
-                    onPressed: context.read<RecordModule>().getRecorderFn(),
-                    child:
-                        Text(state.mRecorder!.isRecording ? 'Stop' : 'Record'),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Text(state.mRecorder!.isRecording
-                      ? 'Recording in progress'
-                      : 'Recorder is stopped'),
-                ]),
-              ),
-              Container(
-                margin: const EdgeInsets.all(3),
-                padding: const EdgeInsets.all(3),
-                height: 80,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFAF0E6),
-                  border: Border.all(
-                    color: Colors.indigo,
-                    width: 3,
-                  ),
-                ),
-                child: Row(children: [
-                  ElevatedButton(
-                    onPressed: context.read<RecordModule>().getPlaybackFn(),
-                    //color: Colors.white,
-                    //disabledColor: Colors.grey,
-                    child: Text(state.mPlayer!.isPlaying ? 'Stop' : 'Play'),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Text(state.mPlayer!.isPlaying
-                      ? 'Playback in progress'
-                      : 'Player is stopped'),
-                ]),
-              ),
-            ],
-          ));
+          ElevatedButton(
+            onPressed: () {
+              Toast.show('5초 뒤 상시모드가 시작됩니다.',
+                  duration: Toast.lengthLong, gravity: Toast.top);
+              context.read<RecordModule>().record();
+            },
+            child: const Text('상시모드 켜기'),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await context.read<RecordModule>().stop();
+            },
+            child: const Text('상시모드 끄기'),
+          ),
+        ])),
+      );
     });
   }
 }
