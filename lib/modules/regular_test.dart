@@ -1,13 +1,14 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:hear_for_you/constants.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'dart:async';
+import 'package:provider/provider.dart';
+import 'regular_module_v2.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => RecordModule(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,162 +16,103 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Hear For You',
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-        fontFamily: 'PretendardMedium',
-      ),
-      home: const RegularScreenTest(),
+      home: RecordScreen(),
     );
   }
 }
 
-// Regular Mode
-String path = '';
-var recorderController;
-var recordTimer;
-var decibelTimer;
-
-// 상시모드 켜기
-void initRegularMode() async {
-  print('--------------------- init regular mode');
-  var dir = await getExternalStorageDirectory();
-  path = "${dir!.path}/audio.wav";
-
-  recorderController = RecorderController()
-    ..androidEncoder = AndroidEncoder.aac
-    ..androidOutputFormat = AndroidOutputFormat.mpeg4
-    ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC;
-  checkDecibel();
-  repeatRecorder();
-}
-
-// 상시모드 끄기 - 데시벨체커
-void disposeRegularMode() {
-  print('--------------------- dispose regular mode');
-
-  recorderController?.dispose();
-  recordTimer?.cancel();
-  decibelTimer?.cancel();
-}
-
-// 특정 데시벨 감지 후 저장
-void save() async {
-  var path = await recorderController.stop();
-  print('--------------------- saved to $path');
-}
-
-// 1초마다 데시벨 구하기
-Future<double?> _getDecibel() async =>
-    await AudioWaveformsInterface.instance.getDecibel();
-
-void checkDecibel() {
-  decibelTimer = Timer.periodic(
-    const Duration(seconds: 1),
-    (timer) async {
-      var decibel = await _getDecibel();
-      if (decibel == null) {
-        throw "Failed to get sound level";
-      }
-      if (decibel > dB) {
-        save();
-
-        // 여기에 모델 코드 작성하기
-        print('get classification');
-      }
-    },
-  );
-}
-
-// n분마다 녹음 초기화 + 재시작
-void repeatRecorder() {
-  // // 재시작
-  // if (regularValue) {
-  //   recordTimer?.cancel();
-  //   recorderController.stop();
-  // } else {}
-
-  recordTimer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-    print(DateTime.now());
-    save();
-    await recorderController.record(path);
-  });
-}
-
-class RegularScreenTest extends StatefulWidget {
-  const RegularScreenTest({super.key});
+/// Example app.
+class RecordScreen extends StatefulWidget {
+  const RecordScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => RegularScreenTestState();
+  _RecordScreenState createState() => _RecordScreenState();
 }
 
-class RegularScreenTestState extends State<RegularScreenTest> {
+class _RecordScreenState extends State<RecordScreen> {
+  @override
+  void initState() {
+    context.read<RecordModule>().initState();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    context.read<RecordModule>().dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        TextButton(
-          onPressed: (() {
-            regularValue ? disposeRegularMode() : initRegularMode();
-          }),
-          child: Text(
-            '상시보드 : $regularValue',
-            style: TextStyle(fontSize: 30),
+    return Consumer<RecordModule>(builder: (context, state, child) {
+      return Scaffold(
+          backgroundColor: Colors.blue,
+          appBar: AppBar(
+            title: const Text('Simple Recorder'),
           ),
-        ),
-        Container(
-            width: screenWidth * 0.55,
-            height: screenWidth * 0.55,
-            margin: const EdgeInsets.only(top: 60),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [kMain, kMain.withOpacity(0.5)]),
-            ),
-            child: regularValue
-                ? AudioWaveforms(
-                    waveStyle: const WaveStyle(
-                      waveColor: Colors.white,
-                      spacing: 8.0,
-                      extendWaveform: true,
-                      showMiddleLine: false,
-                    ),
-                    size: Size(MediaQuery.of(context).size.width, 200.0),
-                    recorderController: recorderController,
-                  )
-                : Container()),
-        const SizedBox(height: 60),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < 5; i++)
+          body: Column(
+            children: [
               Container(
-                width: 6,
-                height: 6,
                 margin: const EdgeInsets.all(3),
+                padding: const EdgeInsets.all(3),
+                height: 80,
+                width: double.infinity,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: darkMode ? kGrey4 : kGrey8,
-                  shape: BoxShape.circle,
+                  color: const Color(0xFFFAF0E6),
+                  border: Border.all(
+                    color: Colors.indigo,
+                    width: 3,
+                  ),
                 ),
-              )
-          ],
-        ),
-        const SizedBox(height: 15),
-        Text(
-          regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
-          style: TextStyle(fontSize: kS, color: darkMode ? kGrey4 : kGrey8),
-        ),
-      ],
-    ));
+                child: Row(children: [
+                  ElevatedButton(
+                    onPressed: context.read<RecordModule>().getRecorderFn(),
+                    child:
+                        Text(state.mRecorder!.isRecording ? 'Stop' : 'Record'),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(state.mRecorder!.isRecording
+                      ? 'Recording in progress'
+                      : 'Recorder is stopped'),
+                ]),
+              ),
+              Container(
+                margin: const EdgeInsets.all(3),
+                padding: const EdgeInsets.all(3),
+                height: 80,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFAF0E6),
+                  border: Border.all(
+                    color: Colors.indigo,
+                    width: 3,
+                  ),
+                ),
+                child: Row(children: [
+                  ElevatedButton(
+                    onPressed: context.read<RecordModule>().getPlaybackFn(),
+                    //color: Colors.white,
+                    //disabledColor: Colors.grey,
+                    child: Text(state.mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Text(state.mPlayer!.isPlaying
+                      ? 'Playback in progress'
+                      : 'Player is stopped'),
+                ]),
+              ),
+            ],
+          ));
+    });
   }
 }
