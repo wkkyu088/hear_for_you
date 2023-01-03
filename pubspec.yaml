@@ -39,28 +39,34 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.2.9
   syncfusion_flutter_gauges: ^20.3.49
-  image_gallery_saver: ^1.7.1
+  loading_animation_widget: ^1.2.0+4
+  provider: ^6.0.3
   shared_preferences: ^2.0.15
+
+  # tutorial
+  carousel_slider: ^4.2.1
 
   # checking permission
   permission_handler: ^10.2.0
 
   # voice mode
   speech_to_text: ^6.1.0
-  highlight_text: ^1.6.0
+  screenshot: ^1.2.3
+  image_gallery_saver: ^1.7.1
+  toast: ^0.3.0
 
   # regular mode
-  audio_waveforms: ^0.1.5+1
-  path_provider: ^2.0.11
-  noise_meter: ^3.1.0
-  intl: ^0.17.0
-  flutter_animation_progress_bar: ^2.3.1
+  audio_session: ^0.1.13
+  flutter_sound: ^9.2.13
+  flutter_sound_platform_interface: ^9.2.13
   flutter_local_notifications: ^12.0.4
+  audio_waveforms: ^1.0.0
+
+  path_provider: ^2.0.11
+  intl: ^0.17.0
+
+  # alert
   torch_light: ^1.0.0
-  carousel_slider: ^4.2.1
-  screenshot: ^1.2.3
-  loading_animation_widget: ^1.2.0+4
-  toast: ^0.3.0
 
   # full_screen_alert
   android_alarm_manager_plus:
@@ -68,8 +74,6 @@ dependencies:
       url: https://github.com/jja08111/plus_plugins.git
       path: packages/android_alarm_manager_plus
       ref: alarm_app
-  provider: ^6.0.3
-  json_annotation: ^4.5.0
 
   
 dev_dependencies:
