@@ -454,23 +454,22 @@ class _VoiceModuleState extends State<VoiceModule> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                color: darkMode
-                                    ? kBlack.withOpacity(0.65)
-                                    : kWhite.withOpacity(0.85),
-                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
                                   color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
+                                      ? kBlack.withOpacity(0.6)
+                                      : kGrey1.withOpacity(0.6),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: LoadingAnimationWidget.staggeredDotsWave(
+                                  color: darkMode ? kWhite : kBlack,
                                   size: 30.0,
                                 ),
                               ),
-                              const SizedBox(height: 10),
                               Text(
                                 '대화를 듣고 있습니다',
                                 style: TextStyle(
-                                  color: darkMode
-                                      ? kWhite
-                                      : const Color(0xFF434343),
+                                  color: darkMode ? kWhite : kBlack,
                                   fontSize: kXS,
                                 ),
                               ),
