@@ -6,6 +6,7 @@ import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import '../service/Functions.dart';
 import '../service/flash_light.dart';
 import '../service/full_screen_alert/provider/alarm_provider.dart';
 import '../service/notification.dart';
@@ -88,6 +89,8 @@ class RegularScreenState extends State<RegularScreen>
                       ),
                       padding: const EdgeInsets.all(10),
                       onPressed: () async {
+                        // 테스트용 임시 알림
+                        FunctionClass.showPopup(context);
                         // 전체화면 알림
                         // Navigator.push(
                         //     context,

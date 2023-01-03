@@ -36,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> {
       darkMode = pref.getBool('darkMode')!;
       selectedColor = pref.getInt('selectedColor')!;
       fontSizeId = pref.getInt('fontSizeId')!;
-      logList = pref.getStringList('logList') ?? [];
       for (var i = 0; i < 3; i++) {
         if (i == fontSizeId) {
           fontSizes[i] = true;
@@ -66,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
           pref.getBool('case3detail3')!
         ],
       ];
+      logList = pref.getStringList('logList')!;
     } catch (e) {
       print(e);
     }

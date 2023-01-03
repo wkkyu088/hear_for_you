@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:hear_for_you/constants.dart';
 
@@ -24,7 +25,13 @@ var _context;
 void initRegularMode(bool rv) async {
   print(
       '------------------------------------------------------------------------------------ init regular mode');
-  var dir = await getExternalStorageDirectory();
+  var dir;
+  if (Platform.isAndroid) {
+    dir = await getExternalStorageDirectory();
+  } else {
+    dir = await getApplicationDocumentsDirectory();
+  }
+
   // var dir = await getApplicationDocumentsDirectory();
   _path = "${dir?.path}/audio.aac";
   recorderController = RecorderController()
@@ -70,7 +77,7 @@ void checkDecibel() {
       print(
           '------------------------------------------------------------------------------------ decibel : $decibel');
       try {
-        if (decibel! >= dB) {
+        if (decibel!.abs() >= dB) {
           /////////////////////////////////////////////////////////////////// dB이상 소리 감지 후 행동
           await save();
           FunctionClass.showPopup(_context);
@@ -97,6 +104,9 @@ void repeatRecorder(bool restart) {
   _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
     print(
         '------------------------------------------------------------------------------------ recordTimer: ${DateTime.now().second}');
-    await recorderController.record(_path);
+    //ios에서 자꾸 오류.. 일단 수정해두었음!
+    if (Platform.isAndroid) {
+      await recorderController.record(_path);
+    }
   });
 }
