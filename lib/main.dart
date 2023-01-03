@@ -62,6 +62,13 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Hear For You',
+      // 기기의 폰트 크기 무시
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.grey,

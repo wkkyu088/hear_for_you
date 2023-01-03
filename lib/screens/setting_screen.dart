@@ -154,65 +154,64 @@ class _SettingScreenState extends State<SettingScreen> {
                 Column(
                   children: [
                     // 3-1. 상시모드 켜짐, 꺼짐 + 스위치
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 8),
-                      child: Row(
-                        children: [
-                          Text(
-                            '상시모드 ',
-                            style: settingTitleStyle,
-                          ),
-                          regularValue
-                              ? Text(
-                                  '켜짐',
-                                  style: TextStyle(
-                                    fontFamily: 'PretendardBold',
-                                    fontSize: kM,
-                                    color: kMain,
+                    InkWell(
+                      onTap: () {
+                        setState(() async {
+                          var result = await Permission.speech.isGranted;
+                          if (result) {
+                            regularValue = !regularValue;
+                            setRegularValue(regularValue);
+                          } else {
+                            if (Platform.isAndroid) {
+                              PermissionCheckClass
+                                  .AndroidRecognitionPermissionCheck(context);
+                            } else {
+                              PermissionCheckClass
+                                  .IOSRecognitionPermissionCheck(context);
+                            }
+                          }
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 14, horizontal: 8),
+                        child: Row(
+                          children: [
+                            Text(
+                              '상시모드 ',
+                              style: settingTitleStyle,
+                            ),
+                            regularValue
+                                ? Text(
+                                    '켜짐',
+                                    style: TextStyle(
+                                      fontFamily: 'PretendardBold',
+                                      fontSize: kM,
+                                      color: kMain,
+                                    ),
+                                  )
+                                : Text(
+                                    '꺼짐',
+                                    style: TextStyle(
+                                      fontFamily: 'PretendardBold',
+                                      fontSize: kM,
+                                      color: kGrey5,
+                                    ),
                                   ),
-                                )
-                              : Text(
-                                  '꺼짐',
-                                  style: TextStyle(
-                                    fontFamily: 'PretendardBold',
-                                    fontSize: kM,
-                                    color: kGrey5,
-                                  ),
+                            const Spacer(),
+                            Transform.scale(
+                              scale: 0.9,
+                              child: SizedBox(
+                                height: 10,
+                                child: CupertinoSwitch(
+                                  activeColor: kMain,
+                                  value: regularValue,
+                                  onChanged: (value) {},
                                 ),
-                          const Spacer(),
-                          Transform.scale(
-                            scale: 0.9,
-                            child: SizedBox(
-                              height: 10,
-                              child: CupertinoSwitch(
-                                activeColor: kMain,
-                                value: regularValue,
-                                onChanged: (bool value) async {
-                                  regularValue = value;
-                                  var result =
-                                      await Permission.speech.isGranted;
-                                  if (result) {
-                                    setState(() {
-                                      regularValue = value;
-                                      setRegularValue(regularValue);
-                                    });
-                                  } else {
-                                    if (Platform.isAndroid) {
-                                      PermissionCheckClass
-                                          .AndroidRecognitionPermissionCheck(
-                                              context);
-                                    } else {
-                                      PermissionCheckClass
-                                          .IOSRecognitionPermissionCheck(
-                                              context);
-                                    }
-                                  }
-                                },
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     spacer(const EdgeInsets.only(bottom: 2)),

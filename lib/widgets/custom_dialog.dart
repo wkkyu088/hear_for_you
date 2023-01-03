@@ -1,39 +1,120 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
 
-customDialog(title, content, hasCancel, onPressed) {
+// 단순 확인용으로 쓸 수 있는 버튼 1개 모달
+Widget oneButtonDialog(context, title, content, btn, onPressed,
+    {color = Colors.black}) {
+  final screenWidth = MediaQuery.of(context).size.width;
+
   return AlertDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     actionsAlignment: MainAxisAlignment.spaceEvenly,
-    contentPadding: const EdgeInsets.only(top: 30, bottom: 20),
-    // 다이얼로그 제목
-    title: Center(child: Text(title)),
-    // 다이얼로그 본문
-    content: Text(
-      content,
-      style: TextStyle(color: kBlack, fontSize: kM),
-      textAlign: TextAlign.center,
+    contentPadding: const EdgeInsets.only(top: 30),
+    insetPadding: EdgeInsets.zero,
+    content: SizedBox(
+      width: screenWidth * 0.7,
+      height: 200,
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: kL, color: kMain),
+          ),
+          Expanded(
+            child: Center(
+              child: Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: kM, height: 1.4, color: color),
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: onPressed,
+            style: TextButton.styleFrom(
+              primary: kWhite,
+              backgroundColor: kMain,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
+              minimumSize: const Size.fromHeight(50),
+            ),
+            child: Text(btn, style: TextStyle(color: kWhite, fontSize: kS)),
+          ),
+        ],
+      ),
     ),
-    // 하단 버튼 (취소 버튼이 필요하다면 hasCancel을 true로 설정)
-    actions: hasCancel
-        ? [
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(primary: kGrey4),
-              child: Text('취소', style: TextStyle(color: kGrey4, fontSize: kS)),
+  );
+}
+
+// 확인 혹은 취소 중 선택할 수 있는 버튼 2개 모달
+Widget twoButtonDialog(
+    context, title, content, btn1, btn2, onPressed1, onPressed2,
+    {isDelete = false}) {
+  final screenWidth = MediaQuery.of(context).size.width;
+
+  return AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    actionsAlignment: MainAxisAlignment.spaceEvenly,
+    contentPadding: const EdgeInsets.only(top: 30),
+    content: SizedBox(
+      width: screenWidth * 0.7,
+      height: 200,
+      child: Column(
+        children: [
+          Text(title,
+              style: TextStyle(
+                  fontSize: kL, color: isDelete ? Colors.red : kMain)),
+          Expanded(
+            child: Center(
+              child: Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: kM, height: 1.4),
+              ),
             ),
-            TextButton(
-              onPressed: onPressed,
-              style: TextButton.styleFrom(primary: kGrey4),
-              child: Text("확인", style: TextStyle(color: kGrey9, fontSize: kS)),
-            ),
-          ]
-        : [
-            TextButton(
-              onPressed: onPressed,
-              style: TextButton.styleFrom(primary: kGrey4),
-              child: Text("확인", style: TextStyle(color: kGrey9, fontSize: kS)),
-            )
-          ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: onPressed1,
+                  child: Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: kGrey4,
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10)),
+                    ),
+                    child: Text(btn1,
+                        style: TextStyle(color: kWhite, fontSize: kS)),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: onPressed2,
+                  child: Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: isDelete ? Colors.red : kMain,
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(10)),
+                    ),
+                    child: Text(btn2,
+                        style: TextStyle(color: kWhite, fontSize: kS)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
   );
 }

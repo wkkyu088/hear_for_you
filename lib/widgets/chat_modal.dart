@@ -54,10 +54,15 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
           final confirmed = await showDialog(
               context: context,
               builder: (BuildContext context) {
-                return customDialog("이미지 저장", "대화 내용을 갤러리에 저장하였습니다.", false,
-                    () {
-                  Navigator.pop(context, true);
-                });
+                return oneButtonDialog(
+                  context,
+                  "이미지 저장",
+                  "대화 내용을 갤러리에 저장하였습니다!",
+                  "확인",
+                  () {
+                    Navigator.pop(context, true);
+                  },
+                );
               });
 
           if (confirmed) {
@@ -76,10 +81,15 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
           final confirmed = await showDialog(
               context: context,
               builder: (BuildContext context) {
-                return customDialog("텍스트 파일 저장", "대화 내용을 파일에 저장하였습니다.", false,
-                    () {
-                  Navigator.pop(context, true);
-                });
+                return oneButtonDialog(
+                  context,
+                  "텍스트 파일 저장",
+                  "대화 내용을 파일에 저장하였습니다!",
+                  "확인",
+                  () {
+                    Navigator.pop(context, true);
+                  },
+                );
               });
 
           if (confirmed) {

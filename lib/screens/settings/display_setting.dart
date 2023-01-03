@@ -56,34 +56,36 @@ class _DisplaySettingState extends State<DisplaySetting> {
               // 2. 화면 스타일 설정 영역
               customCard(
                 '화면 스타일',
-                Row(
-                  children: [
-                    Text(
-                      '다크 모드',
-                      style: TextStyle(
-                        fontSize: kM,
-                        color: darkMode ? kWhite : kBlack,
-                      ),
-                    ),
-                    const Spacer(),
-                    Transform.scale(
-                      scale: 0.9,
-                      child: SizedBox(
-                        height: 10,
-                        child: CupertinoSwitch(
-                          activeColor: kMain,
-                          value: darkMode,
-                          onChanged: (bool value) {
-                            darkMode = value;
-                            setState(() {
-                              darkMode = value;
-                              setDarkMode(darkMode);
-                            });
-                          },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      darkMode = !darkMode;
+                      setDarkMode(darkMode);
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        '다크 모드',
+                        style: TextStyle(
+                          fontSize: kM,
+                          color: darkMode ? kWhite : kBlack,
                         ),
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      Transform.scale(
+                        scale: 0.9,
+                        child: SizedBox(
+                          height: 10,
+                          child: CupertinoSwitch(
+                            activeColor: kMain,
+                            value: darkMode,
+                            onChanged: (value) {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 10),
               ),

@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/service/permission_check.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
@@ -35,37 +39,64 @@ class _NotificationSettingState extends State<NotificationSetting> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              detailTitle[n],
-              style: TextStyle(
-                fontSize: kM,
-                color: darkMode ? kWhite : kBlack,
-              ),
-            ),
-            const Spacer(),
-            Transform.scale(
-              scale: 0.9,
-              child: SizedBox(
-                height: 10,
-                child: CupertinoSwitch(
-                  activeColor: cases[widget.num] ? kMain : kGrey5,
-                  value: caseDetails[widget.num][n],
-                  onChanged: cases[widget.num]
-                      ? (bool value) {
-                          caseDetails[widget.num][n] = value;
-                          setState(() {
-                            caseDetails[widget.num][n] = value;
-                            // 여기에 setCaseDetails
-                            setCaseDetails(widget.num, n, value);
-                          });
+        InkWell(
+          onTap: cases[widget.num]
+              ? () async {
+                  if (n == 2) {
+                    if (caseDetails[widget.num][n] == false) {
+                      var result = await Permission.systemAlertWindow.isGranted;
+                      if (result) {
+                        setState(() {
+                          caseDetails[widget.num][n] =
+                              !caseDetails[widget.num][n];
+                          setCaseDetails(
+                              widget.num, n, caseDetails[widget.num][n]);
+                        });
+                      } else {
+                        if (Platform.isAndroid) {
+                          PermissionCheckClass
+                              .AndroidSystemAlertWindowPermissionCheck(context);
                         }
-                      : null,
+                      }
+                    } else {
+                      setState(() {
+                        caseDetails[widget.num][n] =
+                            !caseDetails[widget.num][n];
+                        setCaseDetails(
+                            widget.num, n, caseDetails[widget.num][n]);
+                      });
+                    }
+                  } else {
+                    setState(() {
+                      caseDetails[widget.num][n] = !caseDetails[widget.num][n];
+                      setCaseDetails(widget.num, n, caseDetails[widget.num][n]);
+                    });
+                  }
+                }
+              : null,
+          child: Row(
+            children: [
+              Text(
+                detailTitle[n],
+                style: TextStyle(
+                  fontSize: kM,
+                  color: darkMode ? kWhite : kBlack,
                 ),
               ),
-            ),
-          ],
+              const Spacer(),
+              Transform.scale(
+                scale: 0.9,
+                child: SizedBox(
+                  height: 10,
+                  child: CupertinoSwitch(
+                    activeColor: cases[widget.num] ? kMain : kGrey5,
+                    value: caseDetails[widget.num][n],
+                    onChanged: (value) {},
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -101,35 +132,36 @@ class _NotificationSettingState extends State<NotificationSetting> {
               // 2. 알림 끄기, 켜기 설정 영역
               customCard(
                 '',
-                Row(
-                  children: [
-                    Text(
-                      cases[widget.num] ? '알림 끄기' : '알림 켜기',
-                      style: TextStyle(
-                        fontSize: kM,
-                        color: darkMode ? kWhite : kBlack,
-                      ),
-                    ),
-                    const Spacer(),
-                    Transform.scale(
-                      scale: 0.9,
-                      child: SizedBox(
-                        height: 10,
-                        child: CupertinoSwitch(
-                          activeColor: kMain,
-                          value: cases[widget.num],
-                          onChanged: (bool value) {
-                            cases[widget.num] = value;
-                            setState(() {
-                              cases[widget.num] = value;
-                              // 여기에 setCases
-                              setCases(widget.num, value);
-                            });
-                          },
+                InkWell(
+                  onTap: () async {
+                    setState(() {
+                      cases[widget.num] = !cases[widget.num];
+                      setCases(widget.num, cases[widget.num]);
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        cases[widget.num] ? '알림 끄기' : '알림 켜기',
+                        style: TextStyle(
+                          fontSize: kM,
+                          color: darkMode ? kWhite : kBlack,
                         ),
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      Transform.scale(
+                        scale: 0.9,
+                        child: SizedBox(
+                          height: 10,
+                          child: CupertinoSwitch(
+                            activeColor: kMain,
+                            value: cases[widget.num],
+                            onChanged: (value) {},
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 10),
                 nontitle: true,
@@ -142,8 +174,12 @@ class _NotificationSettingState extends State<NotificationSetting> {
                     noti(0, '휴대폰 진동으로 알림을 줍니다.'),
                     spacer(const EdgeInsets.symmetric(vertical: 15)),
                     noti(1, '휴대폰 플래시로 알림을 줍니다.'),
-                    spacer(const EdgeInsets.symmetric(vertical: 15)),
-                    noti(2, '휴대폰에 전체 화면으로 알림을 줍니다.'),
+                    Platform.isAndroid
+                        ? spacer(const EdgeInsets.symmetric(vertical: 15))
+                        : Container(),
+                    Platform.isAndroid
+                        ? noti(2, '휴대폰에 전체 화면으로 알림을 줍니다.')
+                        : Container(),
                   ],
                 ),
                 const EdgeInsets.only(top: 15, bottom: 15, left: 15, right: 10),
