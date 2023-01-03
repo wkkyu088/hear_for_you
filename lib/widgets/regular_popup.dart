@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:hear_for_you/widgets/custom_dialog.dart';
+
 import '../service/functions.dart';
 import '../constants.dart' as settings;
 import 'package:flutter/material.dart';
@@ -38,35 +40,40 @@ class ModelPopup extends StatefulWidget {
 }
 
 class PopupState extends State<ModelPopup> {
-  Widget object = loadingWidget();
+  String object = "분석중입니다.";
+  Color color = Colors.black;
   @override
   initState() {
     super.initState();
     Future<String> prediction = FunctionClass.getPrediction();
     prediction.then((val) {
       setState(() {
-        object = resultWidget(val);
+        object = "분석 결과: $val";
+        color = Colors.green;
       });
     }).catchError((error) {
       // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
       if (error.toString() == "SignalException") {
         setState(() {
-          object = resultWidget("알 수 없는 소리입니다");
+          object = "알 수 없는 소리입니다";
+          color = Colors.red;
           Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
         });
       } else if (error.toString() == "FileSystemException") {
         setState(() {
-          object = errorWidget("audio.aac 파일이 없습니다");
+          object = "audio.aac 파일이 없습니다";
+          color = Colors.red;
           Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
         });
       } else {
         setState(() {
-          object = errorWidget(
-              "Error : ${error.toString().split(" ")[0]}\nErrorCode : ${error.toString()}");
+          object =
+              "Error : ${error.toString().split(" ")[0]}\n\nErrorCode : ${error.toString()}";
+          color = Colors.red;
           Timer.periodic(const Duration(seconds: 2), (timer) {
             Navigator.pop(context);
           });
@@ -77,8 +84,9 @@ class PopupState extends State<ModelPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-        content: SizedBox(width: 200, height: 200, child: object));
+    return oneButtonDialog(context, "분석 결과", object, "확인", () {}, color: color);
+    // return AlertDialog(
+    //     content: SizedBox(width: 200, height: 100, child: object));
   }
 }
 
