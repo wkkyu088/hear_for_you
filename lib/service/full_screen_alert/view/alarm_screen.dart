@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../../Functions.dart';
 import '../provider/alarm_state.dart';
 import '../view/curved_painter.dart';
 import 'package:provider/provider.dart';
@@ -143,6 +144,9 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                 width: 180,
                 child: TextButton(
                   onPressed: () {
+                    //// 확인버튼을 누른 알람은 로그에 등장하지 않도록 조치
+                    // print("확인버튼 눌림");
+                    // FunctionClass.changeLogState(logList.length - 1);
                     _dismissAlarm();
                   },
                   style: TextButton.styleFrom(

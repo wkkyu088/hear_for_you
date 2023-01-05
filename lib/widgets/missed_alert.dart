@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:hear_for_you/constants.dart';
@@ -113,7 +115,10 @@ class _MissedAlertState extends State<MissedAlert> {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
-                          FunctionClass.showPopup(context);
+                          FunctionClass.changeLogState(missedAlertNum);
+                          Timer(Duration(milliseconds: 50), () {
+                            missedAlertNum = FunctionClass.logsToShown();
+                          });
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(

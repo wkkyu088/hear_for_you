@@ -155,8 +155,24 @@ class _SettingScreenState extends State<SettingScreen> {
                   children: [
                     // 3-1. 상시모드 켜짐, 꺼짐 + 스위치
                     InkWell(
-                      onTap: () {
-                        setState(() async {
+                      onTap: () async {
+                        if (Platform.isAndroid) {
+                          setState(() async {
+                            var result = await Permission.speech.isGranted;
+                            if (result) {
+                              regularValue = !regularValue;
+                              setRegularValue(regularValue);
+                            } else {
+                              if (Platform.isAndroid) {
+                                PermissionCheckClass
+                                    .AndroidRecognitionPermissionCheck(context);
+                              } else {
+                                PermissionCheckClass
+                                    .IOSRecognitionPermissionCheck(context);
+                              }
+                            }
+                          });
+                        } else {
                           var result = await Permission.speech.isGranted;
                           if (result) {
                             regularValue = !regularValue;
@@ -170,7 +186,8 @@ class _SettingScreenState extends State<SettingScreen> {
                                   .IOSRecognitionPermissionCheck(context);
                             }
                           }
-                        });
+                          setState(() {});
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

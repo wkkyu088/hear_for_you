@@ -43,6 +43,8 @@ class FunctionClass {
   
   */
 
+  static bool dB_raised = false;
+
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
   static int logsToShown() {
     List<num> numList;
@@ -62,6 +64,10 @@ class FunctionClass {
         "${oldLogState[0]},${oldLogState[1]},true,${oldLogState[3]}";
 
     setting.logList[index] = newLogState;
+    print("######################## 로그 현황 ########################");
+    for (int i = 0; i < setting.logList.length; i++) {
+      print("$i : ${setting.logList[i]}");
+    }
 
     pref.setStringList("logList", setting.logList);
   }
@@ -182,14 +188,19 @@ class FunctionClass {
       singleLog += "${getMinuteValue(DateTime.now())}";
       setting.logList.add(singleLog);
 
-      // 갯수가 5개가 넘어가면 하나씩 지우기
-      if (setting.logList.length > 5) {
+      // 갯수가 10개가 넘어가면 하나씩 지우기
+      if (setting.logList.length > 10) {
         setting.logList.removeAt(0);
       }
 
       // 판단 이후 너무 자주 시끄럽다면 데시벨 10 높이기
-      if (raiseDecibelCheck()) {
+      // 이제 자주 시끄럽지 않다면 데시벨 10 다시 내리기
+      if (raiseDecibelCheck() && !dB_raised) {
+        dB_raised = true;
         setting.dB += 10;
+      } else if (!raiseDecibelCheck() && dB_raised) {
+        dB_raised = false;
+        setting.dB -= 10;
       }
 
       // 이후 SharedPreference에 저장
@@ -226,7 +237,6 @@ class FunctionClass {
       }
     } catch (e) {
       // 에러가 났을 경우에는 기록된 것이 5개 이하인 경우일 것이므로 false 반환
-      print("decibelCheck에서 에러 : $e");
       return false;
     }
   }
