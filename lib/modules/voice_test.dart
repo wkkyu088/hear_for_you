@@ -47,6 +47,7 @@ class _VoiceModuleTestState extends State<VoiceModuleTest> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+    final double navigationBarHeight = MediaQuery.of(context).padding.bottom;
 
     // 채팅 메세지가 담길 버블
     Widget bubble(str, user) {
@@ -86,19 +87,6 @@ class _VoiceModuleTestState extends State<VoiceModuleTest> {
       );
     }
 
-    // 소리를 듣고 있다는 표시
-    Widget waveForm(height) {
-      return Container(
-        width: 6,
-        height: height,
-        margin: const EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: darkMode ? kWhite : const Color(0xFF434343),
-        ),
-      );
-    }
-
     // 입력 필드 전송 관리, 사용자 발화 추가
     void _handleSubmitted(String text) {
       textController.clear();
@@ -134,35 +122,40 @@ class _VoiceModuleTestState extends State<VoiceModuleTest> {
                     )
                   : Column(
                       children: [
-                        SizedBox(width: screenWidth, height: 20),
+                        SizedBox(width: screenWidth, height: 50),
                         Flexible(
                             child: SingleChildScrollView(
                           reverse: true,
                           child: Screenshot(
                             controller: screenshotController,
-                            child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                reverse: true,
-                                itemCount: voiceScreenChat.length,
-                                itemBuilder: (BuildContext context, idx) {
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    margin: EdgeInsets.only(
-                                        bottom: (idx + 1 <
-                                                    voiceScreenChat.length) &&
-                                                (voiceScreenChat[idx][1] !=
-                                                    voiceScreenChat[idx + 1][1])
-                                            ? 10
-                                            : 5),
-                                    alignment: voiceScreenChat[idx][1]
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                    child: bubble(voiceScreenChat[idx][0],
-                                        voiceScreenChat[idx][1]),
-                                  );
-                                }),
+                            child: Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              color: darkMode ? kBlack : kGrey1,
+                              child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  reverse: true,
+                                  itemCount: voiceScreenChat.length,
+                                  itemBuilder: (BuildContext context, idx) {
+                                    return Container(
+                                      padding: EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          bottom: (idx + 1 <
+                                                      voiceScreenChat.length) &&
+                                                  (voiceScreenChat[idx][1] !=
+                                                      voiceScreenChat[idx + 1]
+                                                          [1])
+                                              ? 10
+                                              : 5),
+                                      alignment: voiceScreenChat[idx][1]
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
+                                      child: bubble(voiceScreenChat[idx][0],
+                                          voiceScreenChat[idx][1]),
+                                    );
+                                  }),
+                            ),
                           ),
                         )),
                         Container(
@@ -175,6 +168,7 @@ class _VoiceModuleTestState extends State<VoiceModuleTest> {
               isEmpty
                   ? const SizedBox()
                   : Container(
+                      height: 50,
                       color: darkMode ? kBlack : kGrey1,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
