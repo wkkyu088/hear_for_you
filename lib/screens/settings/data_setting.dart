@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
+import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 
@@ -86,7 +89,35 @@ class _DataSettingState extends State<DataSetting> {
             customCard(
               '',
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return twoButtonDialog(
+                          context,
+                          "잠시만요!",
+                          "$name님의 모든 정보가 초기화됩니다.\n정말 삭제하시나요?",
+                          "아니요",
+                          "네, 삭제할래요",
+                          () {
+                            Navigator.of(context).pop();
+                          },
+                          () async {
+                            // 모든 SharedPrefrences 초기화
+                            final SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.clear();
+
+                            if (!mounted) return;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
+                          isDelete: true,
+                        );
+                      });
+                },
                 style: TextButton.styleFrom(
                   primary: kGrey5,
                 ),
