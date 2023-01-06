@@ -4,6 +4,8 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hear_for_you/modules/regular_module.dart';
+import 'package:hear_for_you/modules/voice_test.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/setting_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
@@ -11,12 +13,9 @@ import 'package:hear_for_you/screens/spalsh_screen.dart';
 import 'package:hear_for_you/modules/voice_module.dart';
 import 'package:hear_for_you/service/full_screen_alert/provider/alarm_provider.dart';
 import 'package:hear_for_you/service/full_screen_alert/provider/alarm_state.dart';
-import 'package:hear_for_you/service/full_screen_alert/provider/permission_provider.dart';
 import 'package:hear_for_you/service/full_screen_alert/service/alarm_polling_worker.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
-import 'dart:io';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,16 +25,14 @@ void main() async {
   }
 
   final AlarmState alarmState = AlarmState();
-  // final SharedPreferences preference = await SharedPreferences.getInstance();
   AlarmPollingWorker().createPollingWorker(alarmState);
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => alarmState),
       ChangeNotifierProvider(create: (context) => AlarmProvider()),
-      // ChangeNotifierProvider(
-      //   create: (context) => PermissionProvider(preference),
-      // ),
+      ChangeNotifierProvider(create: (context) => RecordModule()),
+      ChangeNotifierProvider(create: (context) => VoiceModule()),
     ],
     child: const MyApp(),
   ));
@@ -83,10 +80,8 @@ class MyApp extends StatelessWidget {
 }
 
 class BottomNavBar extends StatefulWidget {
-  // const BottomNavBar({Key? key, this.selectedIndex = 1}) : super(key: key);
-  const BottomNavBar({Key? key}) : super(key: key);
-
-  // int selectedIndex;
+  int selectedIndex;
+  BottomNavBar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -95,7 +90,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 1;
   final screens = [
-    const VoiceModule(),
+    const VoiceModuleTest(),
     const RegularScreen(),
     const SettingScreen()
   ];
@@ -103,69 +98,65 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
+    selectedIndex = widget.selectedIndex;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    // selectedIndex = widget.selectedIndex;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     Widget bottomNavBar() {
-      return SizedBox(
-        child: BottomNavigationBar(
-          backgroundColor: kWhite,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          // showSelectedLabels: false,
-          // showUnselectedLabels: false,
-          currentIndex: selectedIndex,
-          selectedItemColor: kMain,
-          unselectedItemColor: darkMode ? kWhite : kGrey8,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.keyboard_voice_rounded,
-                size: 26,
-                color: selectedIndex == 0
-                    ? kMain
-                    : darkMode
-                        ? kWhite
-                        : kGrey8,
-              ),
-              label: '음성모드',
+      return BottomNavigationBar(
+        backgroundColor: darkMode ? kBlack : kGrey1,
+        elevation: 0,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: selectedIndex,
+        selectedItemColor: kMain,
+        unselectedItemColor: darkMode ? kWhite : kGrey8,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.keyboard_voice_rounded,
+              size: 26,
+              color: selectedIndex == 0
+                  ? kMain
+                  : darkMode
+                      ? kWhite
+                      : kGrey8,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_filled,
-                size: 26,
-                color: selectedIndex == 1
-                    ? kMain
-                    : darkMode
-                        ? kWhite
-                        : kGrey8,
-              ),
-              label: '상시모드',
+            label: '음성모드',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_filled,
+              size: 26,
+              color: selectedIndex == 1
+                  ? kMain
+                  : darkMode
+                      ? kWhite
+                      : kGrey8,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings_rounded,
-                size: 26,
-                color: selectedIndex == 2
-                    ? kMain
-                    : darkMode
-                        ? kWhite
-                        : kGrey8,
-              ),
-              label: '설정',
+            label: '상시모드',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings_rounded,
+              size: 26,
+              color: selectedIndex == 2
+                  ? kMain
+                  : darkMode
+                      ? kWhite
+                      : kGrey8,
             ),
-          ],
-          onTap: (int index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
-        ),
+            label: '설정',
+          ),
+        ],
+        onTap: (int index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
       );
     }
 

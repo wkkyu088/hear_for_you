@@ -82,7 +82,8 @@ class _SplashScreenState extends State<SplashScreen> {
         : Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AlarmObserver(child: BottomNavBar()),
+              builder: (context) =>
+                  AlarmObserver(child: BottomNavBar(selectedIndex: 1)),
             ),
           );
   }

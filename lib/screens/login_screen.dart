@@ -181,8 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const AlarmObserver(child: BottomNavBar()),
+                        builder: (context) => AlarmObserver(
+                            child: BottomNavBar(selectedIndex: 1)),
                       ),
                     );
                   }

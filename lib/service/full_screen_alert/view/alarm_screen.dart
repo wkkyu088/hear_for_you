@@ -170,8 +170,8 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              const AlarmObserver(child: BottomNavBar()),
+                          builder: (context) => AlarmObserver(
+                              child: BottomNavBar(selectedIndex: 1)),
                         ),
                       );
                       _dismissAlarm();
