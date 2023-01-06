@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hear_for_you/constants.dart';
+import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
+import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -58,10 +60,32 @@ class _DisplaySettingState extends State<DisplaySetting> {
                 '화면 스타일',
                 InkWell(
                   onTap: () {
-                    setState(() {
-                      darkMode = !darkMode;
-                      setDarkMode(darkMode);
-                    });
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return twoButtonDialog(
+                          context,
+                          "화면 설정",
+                          darkMode ? "다크모드를 해제합니다." : "다크모드를 설정합니다.",
+                          "취소",
+                          "확인",
+                          () {
+                            Navigator.pop(context);
+                          },
+                          () {
+                            setState(() {
+                              darkMode = !darkMode;
+                              setDarkMode(darkMode);
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomNavBar(selectedIndex: 2)));
+                          },
+                        );
+                      },
+                    );
                   },
                   child: Row(
                     children: [
@@ -135,16 +159,39 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                 )
                               ],
                               onPressed: (index) {
-                                setState(() {
-                                  for (int i = 0; i < 3; i++) {
-                                    if (i == index) {
-                                      fontSizes[i] = true;
-                                      setFontSizeId(i);
-                                    } else {
-                                      fontSizes[i] = false;
-                                    }
-                                  }
-                                });
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return twoButtonDialog(
+                                      context,
+                                      "화면 설정",
+                                      "폰트 사이즈를 변경합니다.",
+                                      "취소",
+                                      "확인",
+                                      () {
+                                        Navigator.pop(context);
+                                      },
+                                      () {
+                                        setState(() {
+                                          for (int i = 0; i < 3; i++) {
+                                            if (i == index) {
+                                              fontSizes[i] = true;
+                                              setFontSizeId(i);
+                                            } else {
+                                              fontSizes[i] = false;
+                                            }
+                                          }
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomNavBar(
+                                                        selectedIndex: 2)));
+                                      },
+                                    );
+                                  },
+                                );
                               },
                             ),
                           ],
@@ -197,18 +244,40 @@ class _DisplaySettingState extends State<DisplaySetting> {
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
-                          selectedColor = index;
-                          kMain = colorChart[index];
-                          for (int i = 0; i < checked.length; i++) {
-                            if (i == index) {
-                              checked[i] = true;
-                            } else {
-                              checked[i] = false;
-                            }
-                          }
-                          setSelectedColor(selectedColor);
-                        });
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return twoButtonDialog(
+                              context,
+                              "화면 설정",
+                              "메인 색상을 변경합니다.",
+                              "취소",
+                              "확인",
+                              () {
+                                Navigator.pop(context);
+                              },
+                              () {
+                                setState(() {
+                                  selectedColor = index;
+                                  kMain = colorChart[index];
+                                  for (int i = 0; i < checked.length; i++) {
+                                    if (i == index) {
+                                      checked[i] = true;
+                                    } else {
+                                      checked[i] = false;
+                                    }
+                                  }
+                                  setSelectedColor(selectedColor);
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BottomNavBar(selectedIndex: 2)));
+                              },
+                            );
+                          },
+                        );
                       },
                       child: Stack(
                         children: [
