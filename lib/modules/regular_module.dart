@@ -1,112 +1,116 @@
-// ignore_for_file: avoid_print
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'dart:async';
-import 'dart:io';
-
+import 'package:audio_session/audio_session.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:hear_for_you/constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../service/functions.dart';
 
-// Regular Mode
-String _path = '';
-var recorderController;
-var _recordTimer;
-var _decibelTimer;
+// import '../service/functions.dart';
 
-void setContext(BuildContext context) {
-  _context = context;
-}
+class RecordModule extends ChangeNotifier {
+  var _context;
+  var _recordTimer;
+  var theSource = AudioSource.microphone;
 
-var _context;
+  String _mPath = '';
+  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
+  bool _mRecorderIsInited = false;
+  late StreamSubscription<RecordingDisposition> _recorderSubscription;
 
-// 상시모드 켜기
-void initRegularMode(bool rv) async {
-  print(
-      '------------------------------------------------------------------------------------ init regular mode');
-  var dir;
-  if (Platform.isAndroid) {
-    dir = await getExternalStorageDirectory();
-  } else {
-    dir = await getApplicationDocumentsDirectory();
+  Future<void> initState() async {
+    debugPrint('debugging : 상시모드 init');
+
+    // var dir = getApplicationDocumentsDirectory();
+    var dir = await getExternalStorageDirectory();
+    _mPath = "${dir?.path}/audio${DateTime.now().second}.wav";
+    openTheRecorder().then((value) {
+      _mRecorderIsInited = true;
+      mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));
+      notifyListeners();
+    });
   }
 
-  // var dir = await getApplicationDocumentsDirectory();
-  _path = "${dir?.path}/audio.aac";
-  recorderController = RecorderController()
-    ..androidEncoder = AndroidEncoder.aac
-    ..androidOutputFormat = AndroidOutputFormat.mpeg4
-    ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC_ELD;
-
-  // sharedPreference에서 regularValue=True인 경우
-  if (rv) {
-    checkDecibel();
-    repeatRecorder(false);
+  Future<void> disposeState() async {
+    debugPrint('debugging : 상시모드 off');
+    await stop();
+    await mRecorder!.closeRecorder();
+    notifyListeners();
   }
-}
 
-// 상시모드 끄기 - 데시벨체커
-void disposeRegularMode() async {
-  print(
-      '------------------------------------------------------------------------------------ dispose regular mode');
-
-  await recorderController?.dispose();
-  await _recordTimer?.cancel();
-  await _decibelTimer?.cancel();
-}
-
-// 특정 데시벨 감지 후 저장
-// /storage/emulated/0/Android/data/com.example.hear_for_you/files/audio.wav
-Future save() async {
-  var path = await recorderController.stop();
-  print(
-      '------------------------------------------------------------------------------------ saved to $path');
-  repeatRecorder(true);
-}
-
-// 1초마다 데시벨 구하기
-Future<double?> _getDecibel() async =>
-    await AudioWaveformsInterface.instance.getDecibel();
-
-void checkDecibel() {
-  _decibelTimer = Timer.periodic(
-    const Duration(seconds: 1),
-    (timer) async {
-      var decibel = await _getDecibel();
-      print(
-          '------------------------------------------------------------------------------------ decibel : $decibel');
-      try {
-        if (decibel!.abs() >= dB) {
-          /////////////////////////////////////////////////////////////////// dB이상 소리 감지 후 행동
-          await save();
-          FunctionClass.showPopup(_context);
-          print(
-              '------------------------------------------------------------------------------------ get classification');
-        }
-      } catch (e) {
-        throw "Failed to get sound level";
-      }
-    },
-  );
-}
-
-// n분마다 녹음 초기화 + 재시작
-void repeatRecorder(bool restart) {
-  // 재시작
-  if (restart) {
-    _recordTimer?.cancel();
-    print(
-        '------------------------------------------------------------------------------------ restart recordTimer');
-  }
-  print(
-      '------------------------------------------------------------------------------------ 5초 뒤 녹음이 시작됩니다 : ${DateTime.now().second}');
-  _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-    print(
-        '------------------------------------------------------------------------------------ recordTimer: ${DateTime.now().second}');
-    //ios에서 자꾸 오류.. 일단 수정해두었음!
-    if (Platform.isAndroid) {
-      await recorderController.record(_path);
+  Future<void> openTheRecorder() async {
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      throw RecordingPermissionException('Microphone permission not granted');
     }
-  });
+
+    await mRecorder!.openRecorder();
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
+      avAudioSessionCategoryOptions:
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
+      avAudioSessionMode: AVAudioSessionMode.spokenAudio,
+      avAudioSessionRouteSharingPolicy:
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.speech,
+        flags: AndroidAudioFlags.none,
+        usage: AndroidAudioUsage.voiceCommunication,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      androidWillPauseWhenDucked: true,
+    ));
+    _mRecorderIsInited = true;
+  }
+
+  void setContext(BuildContext context) {
+    _context = context;
+  }
+
+  void onData(RecordingDisposition event) async {
+    double? decibel = event.decibels;
+    debugPrint('debugging : decibel $decibel');
+    if (decibel! >= dB) {
+      debugPrint('debugging : get classification');
+      await stop();
+      FunctionClass.showPopup(_context);
+      await record();
+    }
+  }
+
+  // ----------------------  Here is the code for recording and playback -------
+
+  Future<void> record() async {
+    debugPrint('debugging : 상시모드 on');
+    _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      debugPrint('debugging : recordTimer ${DateTime.now().second}');
+      // 녹음 시작
+      await mRecorder!.startRecorder(toFile: _mPath).then((value) {
+        notifyListeners();
+        try {
+          _recorderSubscription = mRecorder!.onProgress!.listen(onData);
+          notifyListeners();
+        } catch (err) {
+          debugPrint('debugging : _recorderSubscription $err');
+        }
+        notifyListeners();
+      });
+    });
+  }
+
+  Future<void> stop() async {
+    debugPrint('debugging : stop recording');
+    const Duration(milliseconds: 500);
+    await mRecorder!.stopRecorder().then((value) {
+      _recordTimer?.cancel();
+      _recorderSubscription.cancel();
+      notifyListeners();
+    });
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
-import 'regular_module_v2.dart';
+import 'regular_module.dart';
 
 void main() {
   runApp(

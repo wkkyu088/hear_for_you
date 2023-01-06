@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hear_for_you/main.dart';
 import 'package:hear_for_you/screens/login_screen.dart';
 import 'package:hear_for_you/service/full_screen_alert/view/alarm_observer.dart';
-import 'package:hear_for_you/service/full_screen_alert/view/permission_request_screen.dart';
 import 'package:hear_for_you/service/notification.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../service/notification.dart';
-import 'package:hear_for_you/modules/regular_module.dart' as rm;
 
 import 'dart:async';
-
-import 'package:permission_handler/permission_handler.dart';
-
 import '../constants.dart';
+import '../modules/regular_module.dart';
 
 // 스플래시 페이지
 
@@ -93,7 +89,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initSplash() async {
     await getProfile();
-    rm.initRegularMode(regularValue);
 
     print("################### START ###################");
     print(name);
@@ -113,21 +108,24 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     startTime();
     initSplash();
+    context.read<RecordModule>().initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-        backgroundColor: darkMode ? kBlack : kWhite,
-        body: Center(
-          child: SizedBox(
-            width: screenWidth * 0.6,
-            child: darkMode
-                ? Image.asset('lib/assets/images/splash_image2.png')
-                : Image.asset('lib/assets/images/splash_image.png'),
-          ),
-        ));
+    return Consumer<RecordModule>(builder: (context, state, child) {
+      return Scaffold(
+          backgroundColor: darkMode ? kBlack : kWhite,
+          body: Center(
+            child: SizedBox(
+              width: screenWidth * 0.6,
+              child: darkMode
+                  ? Image.asset('lib/assets/images/splash_image2.png')
+                  : Image.asset('lib/assets/images/splash_image.png'),
+            ),
+          ));
+    });
   }
 }
