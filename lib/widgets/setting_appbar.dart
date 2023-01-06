@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../constants.dart';
+import '../main.dart';
 
 // 설정 페이지들의 커스텀 앱바
 PreferredSizeWidget settingAppbar(title, context, {isLeading = true}) {

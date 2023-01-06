@@ -30,7 +30,9 @@ Widget oneButtonDialog(context, title, content, btn, onPressed,
             ),
           ),
           TextButton(
-            onPressed: onPressed,
+            onPressed: (() {
+              Navigator.pop(context);
+            }),
             style: TextButton.styleFrom(
               primary: kWhite,
               backgroundColor: kMain,
