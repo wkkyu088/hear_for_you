@@ -110,24 +110,21 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     startTime();
     initSplash();
-    context.read<RecordModule>().initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    return Consumer<RecordModule>(builder: (context, state, child) {
-      return Scaffold(
-          backgroundColor: darkMode ? kBlack : kWhite,
-          body: Center(
-            child: SizedBox(
-              width: screenWidth * 0.6,
-              child: darkMode
-                  ? Image.asset('lib/assets/images/splash_image2.png')
-                  : Image.asset('lib/assets/images/splash_image.png'),
-            ),
-          ));
-    });
+    return Scaffold(
+        backgroundColor: darkMode ? kBlack : kWhite,
+        body: Center(
+          child: SizedBox(
+            width: screenWidth * 0.6,
+            child: darkMode
+                ? Image.asset('lib/assets/images/splash_image2.png')
+                : Image.asset('lib/assets/images/splash_image.png'),
+          ),
+        ));
   }
 }

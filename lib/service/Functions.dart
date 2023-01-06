@@ -79,9 +79,10 @@ class FunctionClass {
       return result;
     } catch (e) {
       if (e.toString().split(" ")[0] == "DioError") {
-        print("dioError 발생");
+        print("dioError 발생 : $e");
         return getPrediction();
       } else if (e.toString().split(":")[0] == "FileSystemException") {
+        print("FileSystemException 발생 : $e");
         throw "FileSystemException";
       }
       print("getPrediction 함수에서 에러 처리");
@@ -93,8 +94,13 @@ class FunctionClass {
 
   // 일정 데시벨 이상의 소리가 울렸을 때, 저장된 경로를 반환해주는 함수.
   // fileName에 아무 값도 넣지 않으면 초기 음원파일이 저장된 경로를 반환하고, 파일명이 들어온다면 해당 파일명을 넣어서 반환해준다.
-  static Future<String> getPath({fileName = "audio.aac"}) async {
-    var appDirectory = await getApplicationDocumentsDirectory();
+  static Future<String> getPath({fileName = "audio.wav"}) async {
+    var appDirectory;
+    if (Platform.isAndroid) {
+      appDirectory = await getExternalStorageDirectory();
+    } else {
+      appDirectory = await getApplicationDocumentsDirectory();
+    }
     return "${appDirectory.path}/$fileName";
   }
 
@@ -254,7 +260,7 @@ class FunctionClass {
   /// Example --------------------------------------------------------
   /// ["사이렌 소리가 17시 30분 24초에 발생하였습니다. 확인하셨나요?",
   /// "차량 급정거 소리가 18시 31분 02초에 발생하였습니다. 확인하셨나요?"]
-  /// ----------------------------------------------------------------
+  /// ————————————————————————————————
   static List<String> getLogString() {
     List<String> logList = [];
     for (int i = 0; i < setting.logList.length; i++) {

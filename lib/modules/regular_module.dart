@@ -6,6 +6,7 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:hear_for_you/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:toast/toast.dart';
 
 import '../service/functions.dart';
 
@@ -26,7 +27,7 @@ class RecordModule extends ChangeNotifier {
 
     // var dir = getApplicationDocumentsDirectory();
     var dir = await getExternalStorageDirectory();
-    _mPath = "${dir?.path}/audio${DateTime.now().second}.wav";
+    _mPath = "${dir?.path}/audio.wav";
     openTheRecorder().then((value) {
       _mRecorderIsInited = true;
       mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));
@@ -87,6 +88,8 @@ class RecordModule extends ChangeNotifier {
   // ----------------------  Here is the code for recording and playback -------
 
   Future<void> record() async {
+    Toast.show('5초 뒤 상시모드가 시작됩니다.',
+        duration: Toast.lengthLong, gravity: Toast.top);
     debugPrint('debugging : 상시모드 on');
     _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       debugPrint('debugging : recordTimer ${DateTime.now().second}');

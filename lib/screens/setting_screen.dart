@@ -152,22 +152,17 @@ class _SettingScreenState extends State<SettingScreen> {
                     children: [
                       // 3-1. 상시모드 켜짐, 꺼짐 + 스위치
                       InkWell(
-                        onTap: () {
-                          setState(() async {
-                            var result = await Permission.speech.isGranted;
+                        onTap: () async {
+                          var result = await Permission.speech.isGranted;
+                          setState(() {
                             if (result) {
                               regularValue = !regularValue;
                               setRegularValue(regularValue);
                               if (regularValue) {
-                                Toast.show('5초 뒤 상시모드가 시작됩니다.',
-                                    duration: Toast.lengthLong,
-                                    gravity: Toast.top);
                                 context.read<RecordModule>().initState();
                                 context.read<RecordModule>().record();
                               } else {
-                                await context
-                                    .read<RecordModule>()
-                                    .disposeState();
+                                context.read<RecordModule>().disposeState();
                               }
                             } else {
                               if (Platform.isAndroid) {
