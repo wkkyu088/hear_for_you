@@ -11,6 +11,7 @@ Widget oneButtonDialog(context, title, content, btn, onPressed,
     actionsAlignment: MainAxisAlignment.spaceEvenly,
     contentPadding: const EdgeInsets.only(top: 30),
     insetPadding: EdgeInsets.zero,
+    backgroundColor: darkMode ? kGrey8 : kWhite,
     content: SizedBox(
       width: screenWidth * 0.7,
       height: 200,
@@ -25,14 +26,16 @@ Widget oneButtonDialog(context, title, content, btn, onPressed,
               child: Text(
                 content,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: kM, height: 1.4, color: color),
+                style: TextStyle(
+                  fontSize: kM,
+                  height: 1.4,
+                  color: darkMode ? kWhite : color,
+                ),
               ),
             ),
           ),
           TextButton(
-            onPressed: (() {
-              Navigator.pop(context);
-            }),
+            onPressed: onPressed,
             style: TextButton.styleFrom(
               primary: kWhite,
               backgroundColor: kMain,
@@ -62,6 +65,7 @@ Widget twoButtonDialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     actionsAlignment: MainAxisAlignment.spaceEvenly,
     contentPadding: const EdgeInsets.only(top: 30),
+    backgroundColor: darkMode ? kGrey8 : kWhite,
     content: SizedBox(
       width: screenWidth * 0.7,
       height: 200,
@@ -75,7 +79,11 @@ Widget twoButtonDialog(
               child: Text(
                 content,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: kM, height: 1.4),
+                style: TextStyle(
+                  fontSize: kM,
+                  height: 1.4,
+                  color: darkMode ? kWhite : kBlack,
+                ),
               ),
             ),
           ),
@@ -88,7 +96,7 @@ Widget twoButtonDialog(
                     height: 50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: kGrey4,
+                      color: darkMode ? kGrey7 : kGrey4,
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(10)),
                     ),
