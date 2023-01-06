@@ -68,6 +68,9 @@ dependencies:
   # alert
   torch_light: ^1.0.0
 
+  # Test
+  colorful_safe_area: ^0.3.0
+
   # full_screen_alert
   android_alarm_manager_plus:
     git:

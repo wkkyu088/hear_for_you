@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
@@ -6,7 +8,7 @@ import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-import '../service/Functions.dart';
+import '../service/functions.dart';
 import '../service/flash_light.dart';
 import '../service/full_screen_alert/provider/alarm_provider.dart';
 import '../service/notification.dart';
@@ -91,28 +93,9 @@ class RegularScreenState extends State<RegularScreen>
                       onPressed: () async {
                         // 테스트용 임시 알림
                         FunctionClass.showPopup(context);
-                        // 전체화면 알림
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const AlertScreen()));
-                        DateTime now = DateTime.now();
-                        DateTime time = DateTime(
-                          now.year,
-                          now.month,
-                          now.day,
-                          now.hour,
-                          now.minute,
-                          now.second,
-                        );
-                        String alarmName = "소리소리소리";
-                        context.read<AlarmProvider>().setAlarm(time, alarmName);
-                        await AlarmScheduler.scheduleRepeatable(time);
-
-                        // 안드로이드 notification + 플래시
-                        showNotification("알림 제목", "알림이 왔습니다.");
-                        FlashLight.startFlashLight(0);
-
+                        Timer(const Duration(seconds: 1), () {
+                          setState(() {});
+                        });
                         // 커스텀 모달
                         // showDialog(
                         //     context: context,
