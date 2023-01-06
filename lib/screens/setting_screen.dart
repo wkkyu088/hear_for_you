@@ -166,6 +166,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               }
                             } else {
                               if (Platform.isAndroid) {
+                                PermissionCheckClass.AndroidMicPermissionCheck(
+                                    context);
                                 PermissionCheckClass
                                     .AndroidRecognitionPermissionCheck(context);
                               } else {

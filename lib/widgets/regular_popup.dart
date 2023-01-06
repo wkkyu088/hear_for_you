@@ -75,7 +75,7 @@ class PopupState extends State<ModelPopup> {
       } else if (error.toString() == "FileSystemException") {
         setState(() {
           title = "파일 에러";
-          object = "audio.aac 파일이 없습니다";
+          object = "audio.wav 파일이 없습니다";
           color = Colors.red;
           returnWidget = oneButtonDialog(context, title, object, "확인", () {},
               color: color);

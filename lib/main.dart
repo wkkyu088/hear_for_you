@@ -17,6 +17,8 @@ import 'package:hear_for_you/service/full_screen_alert/service/alarm_polling_wor
 import 'package:provider/provider.dart';
 import 'constants.dart';
 
+import 'modules/voice_test.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,6 +31,8 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(create: (context) => VoiceModule()),
+      ChangeNotifierProvider(create: (context) => RecordModule()),
       ChangeNotifierProvider(create: (context) => alarmState),
       ChangeNotifierProvider(create: (context) => AlarmProvider()),
       ChangeNotifierProvider(create: (context) => RecordModule()),

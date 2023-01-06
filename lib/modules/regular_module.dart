@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -24,10 +25,14 @@ class RecordModule extends ChangeNotifier {
 
   Future<void> initState() async {
     debugPrint('debugging : 상시모드 init');
+    var dir;
 
-    // var dir = getApplicationDocumentsDirectory();
-    var dir = await getExternalStorageDirectory();
-    _mPath = "${dir?.path}/audio.wav";
+    if (Platform.isAndroid) {
+      dir = await getExternalStorageDirectory();
+    } else {
+      dir = await getApplicationDocumentsDirectory();
+    }
+    _mPath = "${dir?.path}/audio${DateTime.now().second}.wav";
     openTheRecorder().then((value) {
       _mRecorderIsInited = true;
       mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));

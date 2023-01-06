@@ -37,10 +37,12 @@ class RegularScreenState extends State<RegularScreen>
   void initState() {
     super.initState();
     // 현재 안드로이드면
-    context.read<RecordModule>().initState();
     if (Platform.isAndroid) {
       PermissionCheckClass.AndroidAlertPermissionCheck(context);
       PermissionCheckClass.AndroidSystemAlertWindowPermissionCheck(context);
+      // // Mic, Recognition 체크
+      // PermissionCheckClass.AndroidMicPermissionCheck(context);
+      // PermissionCheckClass.AndroidRecognitionPermissionCheck(context);
     } else {
       // ios라면
       PermissionCheckClass.IOSAlertPermissionCheck(context);
