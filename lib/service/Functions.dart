@@ -57,6 +57,17 @@ class FunctionClass {
     return -1;
   }
 
+  static int howManyLogsLeft() {
+    int returnValue = 0;
+    for (int i = setting.logList.length - 1; i >= 0; i--) {
+      if (setting.logList[i].split(",")[0] != "unknown" &&
+          setting.logList[i].split(",")[2] == "false") {
+        returnValue += 1;
+      }
+    }
+    return returnValue;
+  }
+
   static void changeLogState(int index) async {
     var pref = await SharedPreferences.getInstance();
     var oldLogState = setting.logList[index].split(",");
@@ -74,7 +85,7 @@ class FunctionClass {
 
   static Future<String> getPrediction() async {
     try {
-      var cuttedPath = await cutFile();
+      await cutFile();
       var result = await uploadFile();
       return result;
     } catch (e) {
@@ -85,7 +96,7 @@ class FunctionClass {
         print("FileSystemException 발생 : $e");
         throw "FileSystemException";
       }
-      print("getPrediction 함수에서 에러 처리");
+      print("getPrediction 함수에서 에러 처리 : $e");
       // 처리 과정 중 에러가 발생했으면 여기서도 에러 반환
       rethrow;
       // throw e.toString();
