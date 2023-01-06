@@ -16,16 +16,26 @@ class MissedAlert extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<MissedAlert> createState() => _MissedAlertState();
+  State<MissedAlert> createState() => MissedAlertState();
 }
 
-class _MissedAlertState extends State<MissedAlert> {
+class MissedAlertState extends State<MissedAlert> {
   late int missedAlertNum;
+
+  @override
   initState() {
+    super.initState();
     missedAlertNum = FunctionClass.logsToShown();
-    print("값은 : $missedAlertNum");
+    print("출력할 로그는 $missedAlertNum 번째 값입니다");
   }
-  //
+
+  // 로그가 새로 생기면 정보 갱신 필요. 그에 따라 정보를 갱신하고 setState를 수행하는 함수 추가!
+  void renewMissedAlarm() {
+    Timer(const Duration(milliseconds: 50), () {
+      missedAlertNum = FunctionClass.logsToShown();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

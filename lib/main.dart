@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hear_for_you/screens/regular_screen.dart';
@@ -82,7 +83,10 @@ class MyApp extends StatelessWidget {
 }
 
 class BottomNavBar extends StatefulWidget {
+  // const BottomNavBar({Key? key, this.selectedIndex = 1}) : super(key: key);
   const BottomNavBar({Key? key}) : super(key: key);
+
+  // int selectedIndex;
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
@@ -104,6 +108,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    // selectedIndex = widget.selectedIndex;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     Widget bottomNavBar() {
@@ -166,7 +171,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
     }
 
     return Scaffold(
-      body: Stack(
+        body: ColorfulSafeArea(
+      color: darkMode ? kBlack : kGrey1,
+      bottom: true,
+      child: Stack(
         children: [
           screens[selectedIndex],
           Positioned(
@@ -177,6 +185,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

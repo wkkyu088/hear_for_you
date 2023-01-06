@@ -105,6 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print(fontSizes);
     print(cases);
     print(caseDetails);
+    print("logs : ${logList}");
     print("######################################");
   }
 
