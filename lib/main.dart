@@ -113,9 +113,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     Widget bottomNavBar() {
       return SizedBox(
-        height: bottomHeight,
         child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: kWhite,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
           // showSelectedLabels: false,

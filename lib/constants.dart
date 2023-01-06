@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-double bottomHeight = 100.0;
+double bottomHeight = 500.0;
 
 // Shared_Preference에 들어가는 변수들
 String name = '';
