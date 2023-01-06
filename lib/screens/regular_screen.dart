@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:hear_for_you/service/full_screen_alert/service/alarm_scheduler.dart';
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:siri_wave/siri_wave.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../service/functions.dart';
@@ -69,6 +70,13 @@ class RegularScreenState extends State<RegularScreen>
     final double screenWidth = MediaQuery.of(context).size.width;
 
     context.read<RecordModule>().setContext(context);
+
+    final waveController = SiriWaveController(
+      amplitude: regularValue ? 1 : 0,
+      frequency: 6,
+      speed: 0.09,
+      color: kWhite,
+    );
 
     return Consumer<RecordModule>(builder: (context, state, child) {
       return Scaffold(
@@ -233,33 +241,14 @@ class RegularScreenState extends State<RegularScreen>
                             colors: [kMain, kMain.withOpacity(0.5)]),
                       ),
                       //2-2-1. 웨이브폼 (상시모드 상태에 따라 모양 달라짐)
-                      child: Stack(
-                        children: [
-                          CustomPaint(
-                            size: MediaQuery.of(context).size,
-                            painter: WaveForm(1, 1),
-                          ),
-                          regularValue
-                              ? Container(
-                                  margin: EdgeInsets.only(
-                                      top: screenWidth * 0.55 * 0.4 * 0.5),
-                                  child: CustomPaint(
-                                    size: MediaQuery.of(context).size,
-                                    painter: WaveForm(0.6, 0.6),
-                                  ),
-                                )
-                              : const SizedBox(),
-                          regularValue
-                              ? Container(
-                                  margin: EdgeInsets.only(
-                                      top: screenWidth * 0.55 * 0.8 * 0.5),
-                                  child: CustomPaint(
-                                    size: MediaQuery.of(context).size,
-                                    painter: WaveForm(0.2, 0.2),
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ],
+                      child: SiriWave(
+                        controller: waveController,
+                        options: SiriWaveOptions(
+                          width: screenWidth * 0.55,
+                          height: screenWidth * 0.55,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        style: SiriWaveStyle.ios_7,
                       ),
                     )
                   ],
@@ -289,37 +278,10 @@ class RegularScreenState extends State<RegularScreen>
                             ),
                           ])
                     : const Text('상시모드가 꺼져있습니다.'),
-                //     Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         for (int i = 0; i < 5; i++)
-                //           Container(
-                //             width: 6,
-                //             height: 6,
-                //             margin: const EdgeInsets.all(3),
-                //             decoration: BoxDecoration(
-                //               color: darkMode ? kGrey4 : kGrey8,
-                //               shape: BoxShape.circle,
-                //             ),
-                //           )
-                //       ],
-                //     ),
-                //     const SizedBox(height: 15),
-                //     Text(
-                //       regularValue ? '소리를 듣고 있습니다...' : '상시모드가 꺼져있습니다.',
-                //       style:
-                //           TextStyle(fontSize: kS, color: darkMode ? kGrey4 : kGrey8),
-                //     ),
-                //     const Spacer(),
               ],
             ),
             // 4. 미확인 알림 팝업 자리
-            missedAlertOpen
-                ? MissedAlert(
-                    title: '사이렌 소리',
-                    time: DateTime(2022, 9, 7, 17, 30),
-                  )
-                : Container(),
+            const MissedAlert(),
           ],
         ),
       );

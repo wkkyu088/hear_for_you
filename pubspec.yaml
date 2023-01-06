@@ -77,6 +77,7 @@ dependencies:
       url: https://github.com/jja08111/plus_plugins.git
       path: packages/android_alarm_manager_plus
       ref: alarm_app
+  siri_wave: ^0.2.2
 
   
 dev_dependencies:
