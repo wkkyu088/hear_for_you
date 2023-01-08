@@ -295,6 +295,7 @@ class _VoiceModuleTestState extends State<VoiceModuleTest> {
                               setState(() {
                                 isInput = true;
                                 isEmpty = false;
+                                context.read<VoiceModule>().stopListening();
                               });
                             },
                             isRight: true,

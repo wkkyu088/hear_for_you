@@ -37,6 +37,8 @@ class RegularScreenState extends State<RegularScreen>
   @override
   void initState() {
     super.initState();
+    context.read<RecordModule>().initState();
+
     // 현재 안드로이드면
     if (Platform.isAndroid) {
       PermissionCheckClass.AndroidAlertPermissionCheck(context);

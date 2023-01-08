@@ -7,16 +7,21 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:hear_for_you/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+
 import 'package:toast/toast.dart';
 
 import '../service/functions.dart';
 
-// import '../service/functions.dart';
-
 class RecordModule extends ChangeNotifier {
   var _context;
   var _recordTimer;
+  var _currentWords;
+
   var theSource = AudioSource.microphone;
+
+  SpeechToText regular_stt = SpeechToText();
 
   String _mPath = '';
   FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
@@ -83,7 +88,8 @@ class RecordModule extends ChangeNotifier {
     double? decibel = event.decibels;
     debugPrint('debugging : decibel $decibel');
     if (decibel! >= dB) {
-      debugPrint('debugging : get classification');
+      debugPrint('debugging : over $dB dB');
+
       await stop();
       FunctionClass.showPopup(_context);
       await record();
@@ -110,6 +116,19 @@ class RecordModule extends ChangeNotifier {
         notifyListeners();
       });
     });
+    regular_stt.listen(
+        onResult: (SpeechRecognitionResult result) {
+          _currentWords = " ${result.recognizedWords}";
+          notifyListeners();
+        },
+        onSoundLevelChange: (level) {
+          if (level >= dB) {
+            print('debugging : $level -> ${regular_stt.lastRecognizedWords}');
+          }
+        },
+        localeId: 'ko_KR',
+        partialResults: false,
+        listenMode: ListenMode.confirmation);
   }
 
   Future<void> stop() async {
