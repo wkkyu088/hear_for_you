@@ -5,19 +5,19 @@ import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hear_for_you/modules/regular_module.dart';
-import 'package:hear_for_you/modules/voice_test.dart';
+import 'package:hear_for_you/modules/voice_module.dart';
+
 import 'package:hear_for_you/screens/regular_screen.dart';
 import 'package:hear_for_you/screens/setting_screen.dart';
 import 'package:hear_for_you/screens/spalsh_screen.dart';
+import 'package:hear_for_you/screens/voice_screen.dart';
 
-import 'package:hear_for_you/modules/voice_module.dart';
 import 'package:hear_for_you/service/full_screen_alert/provider/alarm_provider.dart';
 import 'package:hear_for_you/service/full_screen_alert/provider/alarm_state.dart';
 import 'package:hear_for_you/service/full_screen_alert/service/alarm_polling_worker.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 import 'constants.dart';
-
-import 'modules/voice_test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,7 +88,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int selectedIndex = 1;
   final screens = [
-    const VoiceModuleTest(),
+    const VoiceScreen(),
     const RegularScreen(),
     const SettingScreen()
   ];
@@ -97,6 +97,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void initState() {
     super.initState();
     selectedIndex = widget.selectedIndex;
+    setState(() {});
+
+    ToastContext().init(context);
+
+    if (isInit) {
+      context.read<RecordModule>().initState();
+      if (regularValue) {
+        context.read<RecordModule>().record();
+      }
+    }
+
     setState(() {});
   }
 
@@ -163,6 +174,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
             selectedIndex = index;
             if (selectedIndex != 0) {
               context.read<VoiceModule>().stopListening();
+              if (regularValue && !context.read<RecordModule>().isRecording) {
+                Toast.show('5초 뒤 상시모드가 다시 시작됩니다.',
+                    duration: Toast.lengthLong, gravity: Toast.top);
+                debugPrint('debugging : 상시모드 재접근 rV $regularValue');
+
+                context.read<RecordModule>().record();
+              }
+            }
+            if (selectedIndex == 0) {
+              debugPrint('debugging : 음성모드 접근 rV $regularValue');
+
+              if (regularValue) {
+                Toast.show(
+                  '상시모드가 잠시 중단됩니다.',
+                  duration: Toast.lengthLong,
+                  gravity: Toast.top,
+                );
+                context.read<RecordModule>().stop();
+              }
             }
           });
         },

@@ -17,10 +17,8 @@ class RecordModule extends ChangeNotifier {
   var _context;
   var _recordTimer;
   var _currentWords;
-
+  bool isRecording = false;
   var theSource = AudioSource.microphone;
-
-  SpeechToText regular_stt = SpeechToText();
 
   String _mPath = '';
   FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
@@ -100,12 +98,11 @@ class RecordModule extends ChangeNotifier {
 
   Future<void> record() async {
     debugPrint('debugging : 상시모드 on');
-    Toast.show('5초 뒤 상시모드가 시작됩니다.',
-        duration: Toast.lengthLong, gravity: Toast.top);
+    isRecording = true;
     _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       debugPrint('debugging : recordTimer ${DateTime.now().second}');
       // 녹음 시작
-      await mRecorder!.startRecorder(toFile: _mPath).then((value) {
+      await mRecorder!.startRecorder(toFile: _mPath).then((value) async {
         notifyListeners();
         try {
           _recorderSubscription = mRecorder!.onProgress!.listen(onData);
@@ -116,23 +113,11 @@ class RecordModule extends ChangeNotifier {
         notifyListeners();
       });
     });
-    regular_stt.listen(
-        onResult: (SpeechRecognitionResult result) {
-          _currentWords = " ${result.recognizedWords}";
-          notifyListeners();
-        },
-        onSoundLevelChange: (level) {
-          if (level >= dB) {
-            print('debugging : $level -> ${regular_stt.lastRecognizedWords}');
-          }
-        },
-        localeId: 'ko_KR',
-        partialResults: false,
-        listenMode: ListenMode.confirmation);
   }
 
   Future<void> stop() async {
     debugPrint('debugging : stop recording');
+    isRecording = false;
     const Duration(milliseconds: 500);
     await mRecorder!.stopRecorder().then((value) {
       _recordTimer?.cancel();

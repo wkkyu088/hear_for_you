@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/modules/regular_module.dart';
 import 'dart:io' show Platform;
-import 'package:hear_for_you/service/full_screen_alert/service/alarm_scheduler.dart';
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:siri_wave/siri_wave.dart';
@@ -9,14 +8,10 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:toast/toast.dart';
 
 import '../service/functions.dart';
-import '../service/flash_light.dart';
-import '../service/full_screen_alert/provider/alarm_provider.dart';
-import '../service/notification.dart';
 import '../service/permission_check.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
-import '../widgets/wave_form.dart';
 
 // 상시모드 페이지
 
@@ -38,14 +33,6 @@ class RegularScreenState extends State<RegularScreen>
   @override
   void initState() {
     super.initState();
-    ToastContext().init(context);
-
-    if (isInit) {
-      context.read<RecordModule>().initState();
-      if (regularValue) {
-        context.read<RecordModule>().record();
-      }
-    }
 
     // 현재 안드로이드면
     if (Platform.isAndroid) {
