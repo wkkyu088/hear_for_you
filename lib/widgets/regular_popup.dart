@@ -4,6 +4,7 @@ import 'package:hear_for_you/modules/regular_module.dart';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../service/flash_light.dart';
 import '../service/full_screen_alert/provider/alarm_provider.dart';
 import '../service/full_screen_alert/service/alarm_scheduler.dart';
@@ -65,7 +66,7 @@ class PopupState extends State<ModelPopup> {
       if (error.toString() == "SignalException") {
         if (Platform.isAndroid) {
           returnWidget = const AlarmScreen(alarmName: "큰 소리");
-          // FlashLight.startFlashLight(0);
+          FlashLight.startFlashLight(0);
         } else {
           setState(() {
             title = "분석 실패";
@@ -91,20 +92,14 @@ class PopupState extends State<ModelPopup> {
             Navigator.pop(context);
             // 여기
             context.read<RecordModule>().record();
+            });
           });
-        });
+        }
       } else {
-        setState(() {
-          title = "오류 발생";
-          object =
-              "Error : ${error.toString().split(" ")[0]}\n\nErrorContent : ${error.toString()}";
-          color = Colors.red;
-          returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-              color: color);
-          Timer.periodic(const Duration(seconds: 2), (timer) {
-            Navigator.pop(context);
-          });
-        });
+        print("analyzing : 에러가 발생했습니다 : $error");
+        logToServer.add("analyzing : 에러가 발생했습니다 : $error");
+        FunctionClass.sendLogToServer();
+        Navigator.pop(context);
       }
     });
   }
