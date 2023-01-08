@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +22,13 @@ class _DisplaySettingState extends State<DisplaySetting> {
   @override
   initState() {
     super.initState();
-    checked[selectedColor] = true;
+    for (int i = 0; i < checked.length; i++) {
+      if (i == selectedColor) {
+        checked[i] = true;
+      } else {
+        checked[i] = false;
+      }
+    }
   }
 
   static void setDarkMode(bool darkMode) async {
@@ -92,12 +96,8 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                     ? Brightness.light
                                     : Brightness.dark,
                                 statusBarBrightness: darkMode
-                                    ? Platform.isIOS
-                                        ? Brightness.dark
-                                        : Brightness.light
-                                    : Platform.isIOS
-                                        ? Brightness.light
-                                        : Brightness.dark,
+                                    ? Brightness.dark
+                                    : Brightness.light,
                               ));
                               Navigator.push(
                                   context,

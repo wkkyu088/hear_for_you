@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/services.dart';
 import 'package:hear_for_you/constants.dart';
+import 'package:hear_for_you/main.dart';
+import 'package:hear_for_you/service/full_screen_alert/view/alarm_observer.dart';
 
 class TutorialScreen extends StatefulWidget {
   const TutorialScreen({Key? key}) : super(key: key);
@@ -15,6 +18,15 @@ class _TutorialScreenState extends State<TutorialScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: darkMode ? kBlack : kGrey1,
+      systemNavigationBarIconBrightness:
+          darkMode ? Brightness.light : Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
+    ));
+
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
     var items = [1, 2, 3, 4, 5].map((i) {
@@ -46,7 +58,14 @@ class _TutorialScreenState extends State<TutorialScreen> {
                   right: 0,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AlarmObserver(
+                              child: BottomNavBar(selectedIndex: 1)),
+                        ),
+                        (route) => false,
+                      );
                     },
                     child: Text("건너뛰기"),
                   ),

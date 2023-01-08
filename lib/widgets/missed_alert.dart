@@ -18,11 +18,13 @@ class MissedAlert extends StatefulWidget {
 
 class MissedAlertState extends State<MissedAlert> {
   late int missedAlertNum;
+  late int logCount;
 
   @override
   initState() {
     super.initState();
     missedAlertNum = FunctionClass.logsToShown();
+    logCount = FunctionClass.howManyLogsLeft();
     print("출력할 로그는 $missedAlertNum 번째 값입니다");
   }
 
@@ -30,6 +32,7 @@ class MissedAlertState extends State<MissedAlert> {
   void renewMissedAlarm() {
     Timer(const Duration(milliseconds: 50), () {
       missedAlertNum = FunctionClass.logsToShown();
+      logCount = FunctionClass.howManyLogsLeft();
       setState(() {});
     });
   }
@@ -38,8 +41,14 @@ class MissedAlertState extends State<MissedAlert> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
+    Timer(const Duration(milliseconds: 50), () {
+      missedAlertNum = FunctionClass.logsToShown();
+      logCount = FunctionClass.howManyLogsLeft();
+      setState(() {});
+    });
+
     return Stack(children: [
-      missedAlertNum > 1
+      logCount > 1
           ? Positioned(
               left: 25,
               right: 25,
@@ -140,6 +149,7 @@ class MissedAlertState extends State<MissedAlert> {
                             FunctionClass.changeLogState(missedAlertNum);
                             Timer(const Duration(milliseconds: 50), () {
                               missedAlertNum = FunctionClass.logsToShown();
+                              logCount = FunctionClass.howManyLogsLeft();
                             });
                             setState(() {});
                           },
@@ -161,12 +171,12 @@ class MissedAlertState extends State<MissedAlert> {
           ),
         ),
       ),
-      missedAlertNum > 0
+      logCount > 0
           ? Positioned(
               right: 10,
               bottom: 190,
               child: Container(
-                width: missedAlertNum < 10 ? 30 : null,
+                width: logCount < 10 ? 30 : null,
                 height: 30,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -183,7 +193,7 @@ class MissedAlertState extends State<MissedAlert> {
                   ],
                 ),
                 child: Text(
-                  "$missedAlertNum",
+                  "$logCount",
                   style: TextStyle(color: kWhite, fontSize: kM),
                 ),
               ),

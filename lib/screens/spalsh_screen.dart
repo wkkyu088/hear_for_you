@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        backgroundColor: darkMode ? kBlack : kWhite,
+        backgroundColor: darkMode ? kBlack : kGrey1,
         body: Center(
           child: SizedBox(
             width: screenWidth * 0.6,

@@ -53,13 +53,7 @@ class MyApp extends StatelessWidget {
           darkMode ? Brightness.light : Brightness.dark,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
-      statusBarBrightness: darkMode
-          ? Platform.isIOS
-              ? Brightness.dark
-              : Brightness.light
-          : Platform.isIOS
-              ? Brightness.light
-              : Brightness.dark,
+      statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
     ));
 
     return MaterialApp(
@@ -109,6 +103,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: darkMode ? kBlack : kGrey1,
+      systemNavigationBarIconBrightness:
+          darkMode ? Brightness.light : Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
+    ));
 
     Widget bottomNavBar() {
       return BottomNavigationBar(

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hear_for_you/main.dart';
+import 'package:hear_for_you/screens/tutorial_screen.dart';
 import 'package:hear_for_you/service/full_screen_alert/view/alarm_observer.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,32 +19,77 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isOpen = false;
   final TextEditingController textController = TextEditingController();
 
-  static void setProfile(String name, int profileValue) async {
+  @override
+  void initState() {
+    regularValue = false;
+    name = name;
+    profileValue = profileValue;
+    regularValue = false;
+    dB = 60;
+    darkMode = false;
+    selectedColor = 7;
+    fontSizes = [false, true, false];
+    fontSizeId = 1;
+    cases = [true, true, true];
+    caseDetails = [
+      [true, true, true],
+      [true, true, true],
+      [true, true, true]
+    ];
+
+    super.initState();
+  }
+
+  static setProfile(String name, int profileValue) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('name', name);
-    pref.setInt('profileValue', profileValue);
-    pref.setBool('regularValue', true);
-    pref.setDouble('dB', dB);
-    pref.setBool('darkMode', false);
-    pref.setInt('selectedColor', 7);
-    pref.setInt('fontSizeId', 1);
-    pref.setBool('case1', true);
-    pref.setBool('case2', false);
-    pref.setBool('case3', false);
-    pref.setBool('case1detail1', true);
-    pref.setBool('case1detail2', false);
-    pref.setBool('case1detail3', true);
-    pref.setBool('case2detail1', false);
-    pref.setBool('case2detail2', true);
-    pref.setBool('case2detail3', true);
-    pref.setBool('case3detail1', false);
-    pref.setBool('case3detail2', false);
-    pref.setBool('case3detail3', true);
+    await pref.setString('name', name);
+    await pref.setInt('profileValue', profileValue);
+    await pref.setBool('regularValue', false);
+    await pref.setDouble('dB', 60);
+    await pref.setBool('darkMode', false);
+    await pref.setInt('selectedColor', 7);
+    await pref.setInt('fontSizeId', 1);
+    await pref.setBool('case1', true);
+    await pref.setBool('case2', true);
+    await pref.setBool('case3', true);
+    await pref.setBool('case1detail1', true);
+    await pref.setBool('case1detail2', true);
+    await pref.setBool('case1detail3', true);
+    await pref.setBool('case2detail1', true);
+    await pref.setBool('case2detail2', true);
+    await pref.setBool('case2detail3', true);
+    await pref.setBool('case3detail1', true);
+    await pref.setBool('case3detail2', true);
+    await pref.setBool('case3detail3', true);
+
+    name = name;
+    profileValue = profileValue;
+    regularValue = false;
+    dB = 60;
+    darkMode = false;
+    selectedColor = 7;
+    fontSizes = [false, true, false];
+    fontSizeId = 1;
+    cases = [true, true, true];
+    caseDetails = [
+      [true, true, true],
+      [true, true, true],
+      [true, true, true]
+    ];
+    kMain = colorChart[selectedColor];
   }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: darkMode ? kBlack : kGrey1,
+      systemNavigationBarIconBrightness:
+          darkMode ? Brightness.light : Brightness.dark,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: darkMode ? Brightness.light : Brightness.dark,
+      statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
+    ));
 
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
@@ -118,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {},
                               icon: Icon(
                                 Icons.help_rounded,
-                                color: kMain,
+                                color: colorChart[7],
                                 size: 20,
                               ),
                               padding:
@@ -174,22 +221,22 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: EdgeInsets.only(
                   bottom: isOpen ? 15 : 30, left: 20, right: 20),
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   if (textController.text != "") {
                     name = textController.text;
                     setProfile(name, profileValue);
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AlarmObserver(
-                            child: BottomNavBar(selectedIndex: 1)),
+                        builder: (context) => const TutorialScreen(),
                       ),
+                      (route) => false,
                     );
                   }
                 },
                 style: TextButton.styleFrom(
                   primary: kWhite,
-                  backgroundColor: kMain,
+                  backgroundColor: colorChart[7],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
