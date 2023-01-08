@@ -45,8 +45,8 @@ class FunctionClass {
 
   static bool dB_raised = false;
   // 서버 주소! 달라지면 여기서 바꾸면 됨
-  // static const address = "http://3.39.56.58:8000";
-  static const address = "http://127.0.0.1:8000";
+  static const address = "http://3.39.56.58:8000";
+  // static const address = "http://127.0.0.1:8000";
 
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
   static int logsToShown() {
