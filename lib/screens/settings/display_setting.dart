@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,12 +78,33 @@ class _DisplaySettingState extends State<DisplaySetting> {
                             setState(() {
                               darkMode = !darkMode;
                               setDarkMode(darkMode);
+                              SystemChrome.setSystemUIOverlayStyle(
+                                  SystemUiOverlayStyle(
+                                systemNavigationBarColor:
+                                    darkMode ? kBlack : kGrey1,
+                                systemNavigationBarDividerColor:
+                                    Colors.transparent,
+                                systemNavigationBarIconBrightness: darkMode
+                                    ? Brightness.light
+                                    : Brightness.dark,
+                                statusBarColor: Colors.transparent,
+                                statusBarIconBrightness: darkMode
+                                    ? Brightness.light
+                                    : Brightness.dark,
+                                statusBarBrightness: darkMode
+                                    ? Platform.isIOS
+                                        ? Brightness.dark
+                                        : Brightness.light
+                                    : Platform.isIOS
+                                        ? Brightness.light
+                                        : Brightness.dark,
+                              ));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BottomNavBar(selectedIndex: 1)));
                             });
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        BottomNavBar(selectedIndex: 2)));
                           },
                         );
                       },
@@ -171,7 +194,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                       () {
                                         Navigator.pop(context);
                                       },
-                                      () {
+                                      () async {
                                         setState(() {
                                           for (int i = 0; i < 3; i++) {
                                             if (i == index) {
@@ -182,12 +205,26 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                             }
                                           }
                                         });
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BottomNavBar(
-                                                        selectedIndex: 2)));
+                                        final confirmed = await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return oneButtonDialog(
+                                                  context,
+                                                  "폰트 크기 설정",
+                                                  "폰트 크기 설정은\n앱을 완전히 껐다 켜면 적용됩니다.",
+                                                  "확인", () {
+                                                Navigator.pop(context, true);
+                                              });
+                                            });
+                                        if (confirmed) {
+                                          if (!mounted) return;
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BottomNavBar(
+                                                          selectedIndex: 1)));
+                                        }
                                       },
                                     );
                                   },
@@ -273,7 +310,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            BottomNavBar(selectedIndex: 2)));
+                                            BottomNavBar(selectedIndex: 1)));
                               },
                             );
                           },
