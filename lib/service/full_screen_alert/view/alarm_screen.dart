@@ -66,7 +66,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   void _dismissAlarm() async {
     final alarmState = context.read<AlarmState>();
     alarmState.dismiss();
-    context.read<RecordModule>().record();
+    await context.read<RecordModule>().record();
   }
 
   @override

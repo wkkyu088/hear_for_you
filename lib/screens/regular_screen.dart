@@ -6,6 +6,7 @@ import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:siri_wave/siri_wave.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:toast/toast.dart';
 
 import '../service/functions.dart';
 import '../service/flash_light.dart';
@@ -37,7 +38,14 @@ class RegularScreenState extends State<RegularScreen>
   @override
   void initState() {
     super.initState();
-    context.read<RecordModule>().initState();
+    ToastContext().init(context);
+
+    if (isInit) {
+      context.read<RecordModule>().initState();
+      if (regularValue) {
+        context.read<RecordModule>().record();
+      }
+    }
 
     // 현재 안드로이드면
     if (Platform.isAndroid) {
@@ -70,7 +78,6 @@ class RegularScreenState extends State<RegularScreen>
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
-
     context.read<RecordModule>().setContext(context);
 
     final waveController = SiriWaveController(
