@@ -7,8 +7,6 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 class VoiceModule extends ChangeNotifier {
   final SpeechToText _speechToText = SpeechToText();
-
-  late bool regularFlag = false;
   bool _isListening = false;
   String _lastWords = '';
   String _currentWords = '';
@@ -62,13 +60,6 @@ class VoiceModule extends ChangeNotifier {
   Future startListening() async {
     debugPrint('debugging : 음성모드 on');
 
-    // await _stopListening();
-    if (regularValue) {
-      debugPrint('debugging : 상시모드 잠시 멈추기');
-      regularValue = false;
-      regularFlag = true;
-      notifyListeners();
-    }
     _isListening = true;
     notifyListeners();
     await Future.delayed(const Duration(seconds: 1));
@@ -90,14 +81,6 @@ class VoiceModule extends ChangeNotifier {
       _isListening = false;
     }
     await _speechToText.stop();
-    // 이전에 regularValue가 true였다면 다시켜기 아니라면 켜지면 안됌
-    if (regularFlag) {
-      debugPrint('debugging : 상시모드 다시 켜기');
-
-      regularValue = true;
-      regularFlag = false;
-      notifyListeners();
-    }
     notifyListeners();
   }
 }
