@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:hear_for_you/modules/regular_module.dart';
+import 'package:hear_for_you/service/full_screen_alert/provider/alarm_state.dart';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -56,8 +57,8 @@ class PopupState extends State<ModelPopup> {
           await AlarmScheduler.scheduleRepeatable(time);
         });
       } else {
-          returnWidget = AlarmScreen(alarmName: val);
-          setState(() {});
+        returnWidget = AlarmScreen(alarmName: val);
+        setState(() {});
       }
     }).catchError((error) {
       // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
@@ -91,6 +92,11 @@ class PopupState extends State<ModelPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return returnWidget;
+    return Consumer<AlarmState>(builder: (context, state, child) {
+      if (state.isFired) {
+        Navigator.pop(context);
+      }
+      return returnWidget;
+    });
   }
 }
