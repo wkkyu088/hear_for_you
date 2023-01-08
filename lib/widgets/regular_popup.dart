@@ -94,7 +94,6 @@ class PopupState extends State<ModelPopup> {
             context.read<RecordModule>().record();
             });
           });
-        }
       } else {
         print("analyzing : 에러가 발생했습니다 : $error");
         logToServer.add("analyzing : 에러가 발생했습니다 : $error");
