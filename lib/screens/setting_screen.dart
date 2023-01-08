@@ -160,6 +160,9 @@ class _SettingScreenState extends State<SettingScreen> {
                               setRegularValue(regularValue);
                               if (regularValue) {
                                 context.read<RecordModule>().initState();
+                                Toast.show('5초 뒤 상시모드가 시작됩니다.',
+                                    duration: Toast.lengthLong,
+                                    gravity: Toast.top);
                                 context.read<RecordModule>().record();
                               } else {
                                 context.read<RecordModule>().disposeState();

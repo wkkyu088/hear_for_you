@@ -37,12 +37,18 @@ class RecordModule extends ChangeNotifier {
     } else {
       dir = await getApplicationDocumentsDirectory();
     }
-    _mPath = "${dir?.path}/audio${DateTime.now().second}.wav";
+    _mPath = "${dir?.path}/audio.wav";
     openTheRecorder().then((value) {
       _mRecorderIsInited = true;
       mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));
       notifyListeners();
     });
+
+    if (regularValue) {
+      Toast.show('5초 뒤 상시모드가 시작됩니다.',
+          duration: Toast.lengthLong, gravity: Toast.top);
+      await record();
+    }
   }
 
   Future<void> disposeState() async {
@@ -89,18 +95,16 @@ class RecordModule extends ChangeNotifier {
     debugPrint('debugging : decibel $decibel');
     if (decibel! >= dB) {
       debugPrint('debugging : over $dB dB');
+      debugPrint('debugging : 저장 경로 $_mPath');
 
       await stop();
       FunctionClass.showPopup(_context);
-      await record();
     }
   }
 
   // ----------------------  Here is the code for recording and playback -------
 
   Future<void> record() async {
-    Toast.show('5초 뒤 상시모드가 시작됩니다.',
-        duration: Toast.lengthLong, gravity: Toast.top);
     debugPrint('debugging : 상시모드 on');
     _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       debugPrint('debugging : recordTimer ${DateTime.now().second}');
