@@ -107,12 +107,30 @@ class _DataSettingState extends State<DataSetting> {
                             final SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             pref.clear();
+                            // constants 초기화
+                            name = '';
+                            profileValue = 0;
+                            regularValue = false;
+                            dB = 60;
+                            darkMode = false;
+                            selectedColor = 7;
+                            fontSizes = [true, true, true];
+                            fontSizeId = 1;
+                            cases = [true, true, true];
+                            caseDetails = [
+                              [true, true, true],
+                              [true, true, true],
+                              [true, true, true]
+                            ];
+                            kMain = colorChart[selectedColor];
 
                             if (!mounted) return;
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()));
+                                  builder: (context) => const LoginScreen()),
+                              (route) => false,
+                            );
                           },
                           isDelete: true,
                         );

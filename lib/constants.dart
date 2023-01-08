@@ -11,11 +11,11 @@ bool darkMode = false;
 int selectedColor = 7;
 List<bool> fontSizes = [false, true, false];
 int fontSizeId = 1;
-List<bool> cases = [true, false, false];
+List<bool> cases = [true, true, true];
 List<List<bool>> caseDetails = [
-  [true, false, true],
-  [false, true, true],
-  [false, false, true]
+  [true, true, true],
+  [true, true, true],
+  [true, true, true]
 ];
 /*
     로그는 SharedPreference에 저장하기 위해 List<String> 형태이다.
