@@ -30,27 +30,32 @@ class VoiceModule extends ChangeNotifier {
 
   // stt가 특정시간이 지나면 자동종료가 되기때문에 다시 시작해주는 코드 필요
   void statusListener(String status) async {
-    debugPrint('debugging : $status / _isListening $_isListening');
+    if (!_isListening) {
+      debugPrint('debugging : not for STT');
+      stopListening();
+    } else {
+      debugPrint('debugging : $status / _isListening $_isListening');
 
-    // 갱신하고 다시 재인식
-    if (status == "done" && _isListening) {
-      _lastWords += " $_currentWords";
-      if (_lastWords.isNotEmpty && _lastWords != " ") {
-        voiceScreenChat.insert(0, [_lastWords, false]);
-        debugPrint('debugging : $_lastWords');
+      // 갱신하고 다시 재인식
+      if (status == "done" && _isListening) {
+        _lastWords += " $_currentWords";
+        if (_lastWords.isNotEmpty && _lastWords != " ") {
+          voiceScreenChat.insert(0, [_lastWords, false]);
+          debugPrint('debugging : $_lastWords');
 
+          notifyListeners();
+        }
+        _lastWords = "";
+        _currentWords = "";
+        notifyListeners();
+
+        await startListening();
         notifyListeners();
       }
-      _lastWords = "";
-      _currentWords = "";
-      notifyListeners();
-
-      await startListening();
-      notifyListeners();
+      // if (status == "notListening" && !_isListening) {
+      //   await _stopListening();
+      // }
     }
-    // if (status == "notListening" && !_isListening) {
-    //   await _stopListening();
-    // }
   }
 
   /// Each time to start a speech recognition session

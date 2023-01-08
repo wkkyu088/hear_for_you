@@ -159,6 +159,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
         onTap: (int index) {
           setState(() {
             selectedIndex = index;
+            if (selectedIndex != 0) {
+              context.read<VoiceModule>().stopListening();
+            }
           });
         },
       );

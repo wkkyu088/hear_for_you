@@ -103,6 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print(caseDetails);
     print("logs : ${logList}");
     print("######################################");
+    debugPrint("debugging : $regularValue");
   }
 
   @override
