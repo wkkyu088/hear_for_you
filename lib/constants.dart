@@ -28,6 +28,7 @@ List<List<bool>> caseDetails = [
               ]
 */
 List<String> logList = [];
+List<String> logToServer = [];
 
 final profileItems = [
   "중증 청각장애 (2~3급)",

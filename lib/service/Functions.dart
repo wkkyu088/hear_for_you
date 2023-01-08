@@ -44,6 +44,9 @@ class FunctionClass {
   */
 
   static bool dB_raised = false;
+  // 서버 주소! 달라지면 여기서 바꾸면 됨
+  // static const address = "http://3.39.56.58:8000";
+  static const address = "http://127.0.0.1:8000";
 
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
   static int logsToShown() {
@@ -90,14 +93,15 @@ class FunctionClass {
       return result;
     } catch (e) {
       if (e.toString().split(" ")[0] == "DioError") {
-        print("dioError 발생 : $e");
+        print("analyzing : dioError 발생하여 재실행");
+        setting.logToServer.add("analyzing : dioError 발생하여 재실행");
         return getPrediction();
       } else if (e.toString().split(":")[0] == "FileSystemException") {
-        print("FileSystemException 발생 : $e");
+        // print("analyzing : FileSystemException 발생, 던짐");
+        // setting.logToServer.add("analyzing : FileSystemException 발생, 던짐");
         throw "FileSystemException";
       }
-      print("getPrediction 함수에서 에러 처리 : $e");
-      // 처리 과정 중 에러가 발생했으면 여기서도 에러 반환
+      // 처리 과정 중 에러가 발생했으면 여기서도 그대로 던지기
       rethrow;
       // throw e.toString();
     }
@@ -119,7 +123,8 @@ class FunctionClass {
   static Future<String> cutFile() async {
     try {
       String path = await getPath();
-      print("cutFile : 읽어올 경로는 $path입니다");
+      print("analyzing : 읽어올 경로는 $path입니다");
+      setting.logToServer.add("analyzing : 읽어올 경로는 $path입니다");
 
       // wav package를 이용하여 경로의 파일을 읽기
       var readedFile = await Wav.readFile(path);
@@ -141,7 +146,8 @@ class FunctionClass {
 
       // 파일 저장하기
       path = await getPath(fileName: "cuttedFile.wav");
-      print("cutFile : 저장할 경로는 $path입니다");
+      print("anaylzing : 저장할 경로는 $path입니다");
+      setting.logToServer.add("anaylzing : 저장할 경로는 $path입니다");
 
       // 원래 파일이 존재했을수도 있으니 일단 삭제하고 재저장(결과가 꼬이지 않도록 하기 위해)
       File(path).delete();
@@ -151,6 +157,34 @@ class FunctionClass {
       return path;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  // 서버에 로그를 전송한다
+  static Future<void> sendLogToServer() async {
+    try {
+      var dio = Dio();
+      // 에러를 전송하려 한다는 메세지 추가
+      print("analyzing : 로그 서버로 전송 시도");
+      setting.logToServer.add("analyzing : 로그 서버로 전송 시도");
+
+      print("@@@@@@@@ 전송하려는 데이터 @@@@@@@@@@@");
+      for (int i = 0; i < setting.logToServer.length; i++) {
+        print(setting.logToServer[i]);
+      }
+      print("@@@@@@@@ 전송하려는 데이터 끝@@@@@@@@@@@");
+
+      var formData = FormData.fromMap({
+        'logList': setting.logToServer,
+        'userName': setting.name,
+      });
+
+      var response = await dio.post("$address/uploadLog", data: formData);
+      print("analyzing : 서버와 통신에 성공했습니다");
+      setting.logToServer.add("analyzing : 서버와 통신에 성공했습니다");
+    } catch (e) {
+      print("analyzing : 서버와 통신도 실패.. $e");
+      setting.logToServer.add("analyzing : 서버와 통신도 실패.. $e");
     }
   }
 
@@ -164,23 +198,20 @@ class FunctionClass {
       // dio 생성 (http request를 수행해줌)
       var dio = Dio();
       var target = await getPath(fileName: "cuttedFile.wav");
-      print("uploadFile : 전송할 파일은 $target");
-
-      // 접속할 주소 설정, 만약 외부 서버를 쓴다면 외부 서버의 ip를 입력해주면 됨!
-      const address = "http://3.39.56.58:8000";
-      // const address = "http://127.0.0.1:8000";
+      print("analyzing : 전송할 파일은 $target");
+      setting.logToServer.add("analyzing : 전송할 파일은 $target");
 
       // 파일 경로를 통해 전달할 데이터를 생성함
       // 현재는 파일과 유저명을 전달하는데, 유저명이 겹칠 수 있으므로 유저번호?를 사용해도 좋을 듯!
       var formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(target),
-        // 이거 유저네임을 어떻게 받아오는지?..
         'userName': setting.name
       });
 
       // dio객체를 이용해서 서버와 상호작용하는 부분
       var response = await dio.post("$address/uploadFile", data: formData);
-      print("uploadFile : 서버와 통신에 성공했습니다.");
+      print("analyzing : 서버와 통신에 성공했습니다.");
+      setting.logToServer.add("analyzing : 서버와 통신에 성공했습니다.");
 
       // 통신에 성공했으면 기존 객체 삭제하기
       File(target).delete();

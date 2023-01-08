@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../service/flash_light.dart';
 import '../service/full_screen_alert/provider/alarm_provider.dart';
 import '../service/full_screen_alert/service/alarm_scheduler.dart';
@@ -56,41 +57,25 @@ class PopupState extends State<ModelPopup> {
       // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
       if (error.toString() == "SignalException") {
         if (Platform.isAndroid) {
+          returnWidget = const AlarmScreen(alarmName: "큰 소리");
           FlashLight.startFlashLight(0);
+        } else {
+          setState(() {
+            title = "분석 실패";
+            object = "알 수 없는 소리입니다";
+            color = Colors.red;
+            returnWidget = oneButtonDialog(context, title, object, "확인", () {},
+                color: color);
+            Timer(const Duration(seconds: 2), () {
+              Navigator.pop(context);
+            });
+          });
         }
-        setState(() {
-          title = "분석 실패";
-          object = "알 수 없는 소리입니다";
-          color = Colors.red;
-          returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-              color: color);
-          Timer.periodic(const Duration(seconds: 2), (timer) {
-            Navigator.pop(context);
-          });
-        });
-      } else if (error.toString() == "FileSystemException") {
-        setState(() {
-          title = "파일 에러";
-          object = "audio.wav 파일이 없습니다";
-          color = Colors.red;
-          returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-              color: color);
-          Timer.periodic(const Duration(seconds: 2), (timer) {
-            Navigator.pop(context);
-          });
-        });
       } else {
-        setState(() {
-          title = "오류 발생";
-          object =
-              "Error : ${error.toString().split(" ")[0]}\n\nErrorContent : ${error.toString()}";
-          color = Colors.red;
-          returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-              color: color);
-          Timer.periodic(const Duration(seconds: 2), (timer) {
-            Navigator.pop(context);
-          });
-        });
+        print("analyzing : 에러가 발생했습니다 : $error");
+        logToServer.add("analyzing : 에러가 발생했습니다 : $error");
+        FunctionClass.sendLogToServer();
+        Navigator.pop(context);
       }
     });
   }
