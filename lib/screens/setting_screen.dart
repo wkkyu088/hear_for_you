@@ -33,6 +33,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     context.read<RecordModule>().setContext(context);
 
     // 설정 타이틀의 스타일
@@ -67,8 +68,6 @@ class _SettingScreenState extends State<SettingScreen> {
         ),
       );
     }
-
-    ToastContext().init(context);
 
     return Consumer<RecordModule>(builder: (context, state, child) {
       return Scaffold(
@@ -160,9 +159,6 @@ class _SettingScreenState extends State<SettingScreen> {
                               setRegularValue(regularValue);
                               if (regularValue) {
                                 context.read<RecordModule>().initState();
-                                Toast.show('5초 뒤 상시모드가 시작됩니다.',
-                                    duration: Toast.lengthLong,
-                                    gravity: Toast.top);
                                 context.read<RecordModule>().record();
                               } else {
                                 context.read<RecordModule>().disposeState();
