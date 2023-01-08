@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'flash_light.dart';
 
 final notifications = FlutterLocalNotificationsPlugin();
 
@@ -26,6 +30,9 @@ initNotification() async {
 
 //2. 이 함수를 필요한 곳에서 실행하면 알림이 나옴. content에는 원하는 알림 내용 넣기!
 showNotification(var alarmID, var content) async {
+  if (Platform.isAndroid) {
+    FlashLight.startFlashLight(0);
+  }
   var androidDetails = const AndroidNotificationDetails(
     '유니크한 알림 채널 ID',
     '알림종류 설명',

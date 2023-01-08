@@ -102,31 +102,31 @@ class RegularScreenState extends State<RegularScreen>
                         ),
                         padding: const EdgeInsets.all(10),
                         onPressed: () async {
-                          // 테스트용 임시 알림
+                          // showPopup 내부에서 안드로이드, IOS에 필요한 동작 수행
                           FunctionClass.showPopup(context);
                           // 전체화면 알림
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
                           //         builder: (context) => const AlertScreen()));
-                          DateTime now = DateTime.now();
-                          DateTime time = DateTime(
-                            now.year,
-                            now.month,
-                            now.day,
-                            now.hour,
-                            now.minute,
-                            now.second,
-                          );
-                          String alarmName = "소리소리소리";
-                          context
-                              .read<AlarmProvider>()
-                              .setAlarm(time, alarmName);
-                          await AlarmScheduler.scheduleRepeatable(time);
+                          // DateTime now = DateTime.now();
+                          // DateTime time = DateTime(
+                          //   now.year,
+                          //   now.month,
+                          //   now.day,
+                          //   now.hour,
+                          //   now.minute,
+                          //   now.second,
+                          // );
+                          // String alarmName = "소리소리소리";
+                          // context
+                          //     .read<AlarmProvider>()
+                          //     .setAlarm(time, alarmName);
+                          // await AlarmScheduler.scheduleRepeatable(time);
 
-                          // 안드로이드 notification + 플래시
-                          showNotification("알림 제목", "알림이 왔습니다.");
-                          FlashLight.startFlashLight(0);
+                          // // 안드로이드 notification + 플래시
+                          // showNotification("알림 제목", "알림이 왔습니다.");
+                          // FlashLight.startFlashLight(0);
 
                           // 커스텀 모달
                           // showDialog(

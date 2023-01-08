@@ -44,13 +44,9 @@ class PopupState extends State<ModelPopup> {
           );
           context.read<AlarmProvider>().setAlarm(time, val);
           await AlarmScheduler.scheduleRepeatable(time);
-
-          // 안드로이드 notification + 플래시
-          FlashLight.startFlashLight(0);
         });
       } else {
         setState(() {
-          // showNotification("긴급 알림", "$val가 들립니다");
           returnWidget = AlarmScreen(alarmName: val);
           // object = "분석 결과: $val";
           color = Colors.green;
