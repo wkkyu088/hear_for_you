@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
-
 import 'package:toast/toast.dart';
 
 import '../service/functions.dart';
@@ -32,6 +31,7 @@ class RecordModule extends ChangeNotifier {
     debugPrint('debugging : 상시모드 init');
     var dir;
 
+    isInit = false;
     if (Platform.isAndroid) {
       dir = await getExternalStorageDirectory();
     } else {
@@ -43,12 +43,6 @@ class RecordModule extends ChangeNotifier {
       mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));
       notifyListeners();
     });
-
-    if (regularValue) {
-      Toast.show('5초 뒤 상시모드가 시작됩니다.',
-          duration: Toast.lengthLong, gravity: Toast.top);
-      await record();
-    }
   }
 
   Future<void> disposeState() async {
@@ -106,6 +100,8 @@ class RecordModule extends ChangeNotifier {
 
   Future<void> record() async {
     debugPrint('debugging : 상시모드 on');
+    Toast.show('5초 뒤 상시모드가 시작됩니다.',
+        duration: Toast.lengthLong, gravity: Toast.top);
     _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       debugPrint('debugging : recordTimer ${DateTime.now().second}');
       // 녹음 시작

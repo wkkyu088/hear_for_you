@@ -26,15 +26,16 @@ class PopupState extends State<ModelPopup> {
   String object = "분석중입니다";
   String title = "소리 감지";
   String message = "닫기";
-  void Function()? onPressed() {
+  void Function()? defaultPress() {
     Navigator.pop(context);
     context.read<RecordModule>().record();
     return null;
   }
 
   Color color = Colors.black;
-  late Widget returnWidget =
-      oneButtonDialog(context, title, object, message, onPressed, color: color);
+  late Widget returnWidget = oneButtonDialog(
+      context, title, object, message, defaultPress,
+      color: color);
   @override
   initState() {
     super.initState();
@@ -68,33 +69,30 @@ class PopupState extends State<ModelPopup> {
           returnWidget = const AlarmScreen(alarmName: "큰 소리");
           FlashLight.startFlashLight(0);
         } else {
-          setState(() {
-            title = "분석 실패";
-            object = "알 수 없는 소리입니다";
-            color = Colors.red;
-            // returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-            //     color: color);
-            // Timer(const Duration(seconds: 2), () {
-            //   Navigator.pop(context);
-            //   // 여기
-            // });
-            returnWidget = const AlarmScreen(alarmName: "큰 소리");
-          });
+          title = "분석 실패";
+          object = "알 수 없는 소리입니다";
+          color = Colors.red;
+          // returnWidget = oneButtonDialog(context, title, object, "확인", () {},
+          //     color: color);
+          // Timer(const Duration(seconds: 2), () {
+          //   Navigator.pop(context);
+          //   // 여기
+          // });
+          returnWidget = const AlarmScreen(alarmName: "큰 소리");
+          setState(() {});
         }
       } else if (error.toString() == "FileSystemException") {
-        setState(() {
-          title = "파일 에러";
-          object = "audio.wav 파일이 없습니다";
-          color = Colors.red;
-          returnWidget = oneButtonDialog(context, title, object, "확인", () {},
-              color: color);
-          Timer(const Duration(seconds: 2), () {
-            Navigator.pop(context);
-            // 여기
-            context.read<RecordModule>().record();
-            });
-          });
-        }
+        title = "파일 에러";
+        object = "audio.wav 파일이 없습니다";
+        color = Colors.red;
+        returnWidget =
+            oneButtonDialog(context, title, object, "확인", () {}, color: color);
+        Timer(const Duration(seconds: 2), () {
+          Navigator.pop(context);
+          // 여기
+          context.read<RecordModule>().record();
+        });
+        setState(() {});
       } else {
         print("analyzing : 에러가 발생했습니다 : $error");
         logToServer.add("analyzing : 에러가 발생했습니다 : $error");
