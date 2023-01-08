@@ -9,6 +9,7 @@ import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../modules/regular_module.dart';
 import 'alarm_observer.dart';
 
 class AlarmScreen extends StatefulWidget {
@@ -65,6 +66,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
   void _dismissAlarm() async {
     final alarmState = context.read<AlarmState>();
     alarmState.dismiss();
+    context.read<RecordModule>().record();
   }
 
   @override
