@@ -114,7 +114,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
               Center(
                 child: Container(
                   margin: EdgeInsets.only(top: screenHeight * 0.1),
-                  width: screenWidth * 0.6,
+                  width: screenWidth * 0.8,
                   child: Column(
                     children: [
                       // 알림 종류 아이콘
