@@ -63,7 +63,7 @@ class PopupState extends State<ModelPopup> {
           returnWidget = AlarmScreen(alarmName: val);
           setState(() {});
         }
-      } else if (!cases[2]) {
+      } else {
         title = "분석 완료";
         returnWidget = oneButtonDialog(
             context, title, val, message, defaultPress,
@@ -101,13 +101,13 @@ class PopupState extends State<ModelPopup> {
                 AlarmScreen(alarmName: "${int.parse(dB.toString())} dB 이상의 소리");
             setState(() {});
           }
+        } else {
+          title = "분석 완료";
+          returnWidget = oneButtonDialog(
+              context, title, "${dB.round()} dB 이상의 소리", message, defaultPress,
+              color: Colors.green);
+          setState(() {});
         }
-      } else if (!cases[2]) {
-        title = "분석 완료";
-        returnWidget = oneButtonDialog(
-            context, title, "${dB.round()} dB 이상의 소리", message, defaultPress,
-            color: Colors.green);
-        setState(() {});
       } else {
         print("analyzing : 에러가 발생했습니다 : $error");
         logToServer.add("analyzing : 에러가 발생했습니다 : $error");

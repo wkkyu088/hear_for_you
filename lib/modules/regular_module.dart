@@ -84,16 +84,16 @@ class RecordModule extends ChangeNotifier {
   void onData(RecordingDisposition event) async {
     double? decibel = event.decibels;
     debugPrint('debugging : decibel $decibel');
-    if (decibel == beforeDb) {
+    if (decibel == beforeDb && isRecording) {
       debugPrint('debugging : 동일 데시벨 $beforeDb');
       return;
-    } else if (decibel! >= dB) {
+    } else if (decibel! >= dB && isRecording) {
       beforeDb = decibel;
       debugPrint('debugging : over $dB dB');
       debugPrint('debugging : 저장 경로 $_mPath');
 
       await stop();
-      FunctionClass.showPopup(_context);
+      FunctionClass.showPopupTEMP(_context);
     }
   }
 

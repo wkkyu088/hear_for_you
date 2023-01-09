@@ -2,12 +2,20 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../constants.dart';
+import '../modules/regular_module.dart';
+import '../widgets/custom_dialog.dart';
+import '../widgets/missed_alert.dart';
 import '../widgets/regular_popup.dart';
 import 'package:wav/wav.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart' as setting;
+import 'full_screen_alert/provider/alarm_provider.dart';
+import 'full_screen_alert/service/alarm_scheduler.dart';
+import 'full_screen_alert/view/alarm_screen.dart';
 import 'notification.dart' as notification;
 
 class FunctionClass {
@@ -93,12 +101,10 @@ class FunctionClass {
       return result;
     } catch (e) {
       if (e.toString().split(" ")[0] == "DioError") {
-        print("analyzing : dioError 발생하여 재실행");
+        print("analyzing : dioError 발생하여 재실행 : $e");
         setting.logToServer.add("analyzing : dioError 발생하여 재실행");
         return getPrediction();
       } else if (e.toString().split(":")[0] == "FileSystemException") {
-        // print("analyzing : FileSystemException 발생, 던짐");
-        // setting.logToServer.add("analyzing : FileSystemException 발생, 던짐");
         throw "FileSystemException";
       }
       // 처리 과정 중 에러가 발생했으면 여기서도 그대로 던지기
@@ -130,11 +136,6 @@ class FunctionClass {
       var readedFile = await Wav.readFile(path);
 
       // 읽어오기에 성공했다면 원본 파일을 삭제하여 중복전송 방지
-      try {
-        File(path).delete();
-      } catch (e) {
-        true;
-      }
 
       // 잘린 파일의 channel을 보니 두개이다! 왼쪽,오른쪽이라고 하는데 첫번째것만 남기기
 
@@ -222,16 +223,6 @@ class FunctionClass {
       var result = response.data['prediction'];
       var message = response.data['message'];
 
-      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 알람 보내는 부분
-      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 안드로이드에서 알람 방식을 바꾸려는 경우 showNotification을 다른 함수로 바꾸면 됨
-      // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ result == unknown인 경우가 서버에서 무슨 소리인지 분석에 실패했을 경우임!
-      if (result == "unknown") {
-        notification.showNotification(
-            "소리 알림", "${setting.dB.round()} dB 이상의 소리가 발생했습니다. 주변을 확인하세요");
-      } else {
-        notification.showNotification("소리 알림", "$result가 들립니다. 주의하세요");
-      }
-
       // 로그에 분석 결과와 분석 시간 삽입, 확인 여부는 일단 False로 하고 넣기
       singleLog += "$result,";
       singleLog += "${DateFormat("HH시 mm분 ss초").format(DateTime.now())},";
@@ -258,8 +249,11 @@ class FunctionClass {
       pref.setStringList("logList", setting.logList);
       //반환된 값이 null이라면 분석에 실패한 것이므로 exception을 반환
       if (result == "unknown") {
+        notification.showNotification(
+            "소리 알림", "${setting.dB.round()} dB 이상의 소리가 발생했습니다. 주변을 확인하세요");
         throw SignalException;
       } else {
+        notification.showNotification("소리 알림", "$result가 들립니다. 주의하세요");
         return result.toString();
       }
     } catch (e) {
@@ -325,5 +319,133 @@ class FunctionClass {
         builder: (BuildContext context) {
           return const ModelPopup();
         });
+  }
+
+  static void showPopupTEMP(BuildContext context) {
+    String object = "분석중입니다";
+    String title = "소리 감지";
+    String message = "닫기";
+    void Function()? defaultPress() {
+      Navigator.pop(context);
+      context.read<RecordModule>().record();
+      return null;
+    }
+
+    Color color = Colors.black;
+    late Widget returnWidget = oneButtonDialog(
+        context, title, object, message, defaultPress,
+        color: color);
+    showDialog(
+        context: context,
+        barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+        builder: (BuildContext context) {
+          return returnWidget;
+        });
+    Future<String> prediction = FunctionClass.getPrediction();
+    prediction.then((val) async {
+      // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
+      MissedAlertState.onScreen = false;
+      title = "분석 완료";
+      returnWidget = oneButtonDialog(
+          context, title, "결과를 출력하는 중입니다", message, defaultPress,
+          color: Colors.green);
+      if (cases[2]) {
+        if (Platform.isAndroid) {
+          DateTime now = DateTime.now();
+          DateTime time = DateTime(
+            now.year,
+            now.month,
+            now.day,
+            now.hour,
+            now.minute,
+            now.second,
+          );
+          context.read<AlarmProvider>().setAlarm(time, val);
+          await AlarmScheduler.scheduleRepeatable(time);
+        } else {
+          returnWidget = AlarmScreen(alarmName: val);
+          Navigator.pop(context);
+          showDialog(
+              context: context,
+              barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+              builder: (BuildContext context) {
+                return returnWidget;
+              });
+        }
+      } else {
+        title = "분석 완료";
+        returnWidget = oneButtonDialog(
+            context, title, val, message, defaultPress,
+            color: Colors.green);
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+            builder: (BuildContext context) {
+              return returnWidget;
+            });
+      }
+    }).catchError((error) async {
+      // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
+      MissedAlertState.onScreen = false;
+      if (error.toString() == "SignalException") {
+        title = "분석 완료";
+        returnWidget = oneButtonDialog(
+            context, title, "결과를 출력하는 중입니다", message, defaultPress,
+            color: Colors.green);
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+            builder: (BuildContext context) {
+              return returnWidget;
+            });
+        if (cases[2]) {
+          if (Platform.isAndroid) {
+            DateTime now = DateTime.now();
+            DateTime time = DateTime(
+              now.year,
+              now.month,
+              now.day,
+              now.hour,
+              now.minute,
+              now.second,
+            );
+            context
+                .read<AlarmProvider>()
+                .setAlarm(time, "${dB.round()} dB 이상의 소리");
+            await AlarmScheduler.scheduleRepeatable(time);
+            title = "분석 완료";
+          } else {
+            returnWidget =
+                AlarmScreen(alarmName: "${int.parse(dB.toString())} dB 이상의 소리");
+            Navigator.pop(context);
+            showDialog(
+                context: context,
+                barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+                builder: (BuildContext context) {
+                  return returnWidget;
+                });
+          }
+        } else {
+          title = "분석 완료";
+          returnWidget = oneButtonDialog(
+              context, title, "${dB.round()} dB 이상의 소리", message, defaultPress,
+              color: Colors.green);
+          Navigator.pop(context);
+          showDialog(
+              context: context,
+              barrierDismissible: true, // 창 바깥쪽을 클릭하면 사라짐
+              builder: (BuildContext context) {
+                return returnWidget;
+              });
+        }
+      } else {
+        print("analyzing : 에러가 발생했습니다 : $error");
+        logToServer.add("analyzing : 에러가 발생했습니다 : $error");
+        FunctionClass.sendLogToServer();
+        defaultPress();
+      }
+    });
   }
 }
