@@ -32,24 +32,26 @@ class MissedAlertState extends State<MissedAlert> {
   }
 
   // 로그가 새로 생기면 정보 갱신 필요. 그에 따라 정보를 갱신하고 setState를 수행하는 함수 추가!
-  void renewMissedAlarm() {
-    Timer(const Duration(milliseconds: 50), () {
-      if (onScreen) {
-        missedAlertNum = FunctionClass.logsToShown();
-        logCount = FunctionClass.howManyLogsLeft();
-        setState(() {});
-      }
-    });
-  }
+  // void renewMissedAlarm() {
+  //   Timer(const Duration(milliseconds: 50), () async {
+  //     if (onScreen) {
+  //       missedAlertNum = FunctionClass.logsToShown();
+  //       logCount = FunctionClass.howManyLogsLeft();
+  //       setState(() {});
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     Timer(const Duration(milliseconds: 50), () {
-      missedAlertNum = FunctionClass.logsToShown();
-      logCount = FunctionClass.howManyLogsLeft();
-      setState(() {});
+      if (onScreen) {
+        missedAlertNum = FunctionClass.logsToShown();
+        logCount = FunctionClass.howManyLogsLeft();
+        setState(() {});
+      }
     });
 
     return Stack(children: [
