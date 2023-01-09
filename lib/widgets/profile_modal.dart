@@ -10,7 +10,7 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
     "중증 청각장애 (2~3급)",
     "경증 청각장애 (4~6급)",
     "청각중복장애 (시각 등)",
-    "직접 설정",
+    // "직접 설정",
   ];
 
   return CupertinoActionSheet(
