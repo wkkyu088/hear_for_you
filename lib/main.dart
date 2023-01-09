@@ -31,8 +31,6 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => VoiceModule()),
-      ChangeNotifierProvider(create: (context) => RecordModule()),
       ChangeNotifierProvider(create: (context) => alarmState),
       ChangeNotifierProvider(create: (context) => AlarmProvider()),
       ChangeNotifierProvider(create: (context) => RecordModule()),
@@ -217,21 +215,24 @@ class _BottomNavBarState extends State<BottomNavBar> {
       );
     }
 
-    return Scaffold(
-        body: ColorfulSafeArea(
-      color: darkMode ? kBlack : kGrey1,
-      bottom: true,
-      child: Stack(
-        children: [
-          screens[selectedIndex],
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: keyboardHeight == 0 ? bottomNavBar() : Container(height: 0),
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            body: ColorfulSafeArea(
+          color: darkMode ? kBlack : kGrey1,
+          bottom: true,
+          child: Stack(
+            children: [
+              screens[selectedIndex],
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child:
+                    keyboardHeight == 0 ? bottomNavBar() : Container(height: 0),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        )));
   }
 }
