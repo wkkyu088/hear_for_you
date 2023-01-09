@@ -123,11 +123,18 @@ class FunctionClass {
   static Future<String> cutFile() async {
     try {
       String path = await getPath();
-      print("analyzing : 읽어올 경로는 $path입니다");
-      setting.logToServer.add("analyzing : 읽어올 경로는 $path입니다");
+      print("analyzing : 읽어올 경로는 $path");
+      setting.logToServer.add("analyzing : 읽어올 경로는 $path");
 
       // wav package를 이용하여 경로의 파일을 읽기
       var readedFile = await Wav.readFile(path);
+
+      // 읽어오기에 성공했다면 원본 파일을 삭제하여 중복전송 방지
+      try {
+        File(path).delete();
+      } catch (e) {
+        true;
+      }
 
       // 잘린 파일의 channel을 보니 두개이다! 왼쪽,오른쪽이라고 하는데 첫번째것만 남기기
 
@@ -150,6 +157,7 @@ class FunctionClass {
       setting.logToServer.add("anaylzing : 저장할 경로는 $path입니다");
 
       // 원래 파일이 존재했을수도 있으니 일단 삭제하고 재저장(결과가 꼬이지 않도록 하기 위해)
+      // 원본 파일도 삭제하여 중복전송 방지
       try {
         File(path).delete();
       } catch (e) {
@@ -157,6 +165,7 @@ class FunctionClass {
       }
 
       readedFile.writeFile(path);
+      // 파일 잘 저장했으면 삭제
 
       return path;
     } catch (e) {

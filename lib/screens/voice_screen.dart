@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/modules/voice_module.dart';
 import 'package:hear_for_you/widgets/chat_modal.dart';
+import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:hear_for_you/widgets/voice_mode_select.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
   @override
   initState() {
     super.initState();
+    MissedAlertState.onScreen = false;
     if (Platform.isAndroid) {
       // 안드로이드라면
       PermissionCheckClass.AndroidRecognitionPermissionCheck(context);

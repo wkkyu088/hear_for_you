@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:hear_for_you/modules/regular_module.dart';
 import 'package:hear_for_you/service/full_screen_alert/provider/alarm_state.dart';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
+import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -39,6 +40,7 @@ class PopupState extends State<ModelPopup> {
     Future<String> prediction = FunctionClass.getPrediction();
     prediction.then((val) async {
       // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
+      MissedAlertState.onScreen = false;
       if (cases[2]) {
         if (Platform.isAndroid) {
           DateTime now = DateTime.now();
@@ -60,6 +62,7 @@ class PopupState extends State<ModelPopup> {
       }
     }).catchError((error) async {
       // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
+      MissedAlertState.onScreen = false;
       if (error.toString() == "SignalException") {
         if (cases[2]) {
           if (Platform.isAndroid) {

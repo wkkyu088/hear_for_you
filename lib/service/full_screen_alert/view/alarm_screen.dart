@@ -41,6 +41,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
         }
         // 알람을 자동으로 끌 시간
         if (min == 0 && sec == 10) {
+          MissedAlertState.onScreen = true;
           _dismissAlarm();
         }
       });
@@ -175,9 +176,11 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                               child: BottomNavBar(selectedIndex: 1)),
                         ),
                       );
+                      MissedAlertState.onScreen = true;
                       _dismissAlarm();
                     } else {
                       FunctionClass.changeLogState(logList.length - 1);
+                      MissedAlertState.onScreen = true;
                       _dismissAlarm();
                     }
                   },

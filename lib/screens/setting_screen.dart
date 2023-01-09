@@ -7,6 +7,7 @@ import 'package:hear_for_you/screens/settings/decibel_setting.dart';
 import 'package:hear_for_you/screens/settings/display_setting.dart';
 import 'package:hear_for_you/screens/settings/notification_setting.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
+import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:hear_for_you/widgets/profile_modal.dart';
 import 'package:hear_for_you/constants.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
@@ -29,6 +30,12 @@ class _SettingScreenState extends State<SettingScreen> {
   void setRegularValue(bool regularValue) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('regularValue', regularValue);
+  }
+
+  @override
+  initState() {
+    super.initState();
+    MissedAlertState.onScreen = false;
   }
 
   @override

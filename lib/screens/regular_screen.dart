@@ -33,6 +33,9 @@ class RegularScreenState extends State<RegularScreen>
   void initState() {
     super.initState();
 
+    // regularscreen에서는 missedalert가 필요하므로 true로 교체
+    MissedAlertState.onScreen = true;
+
     // 현재 안드로이드면
     if (Platform.isAndroid) {
       PermissionCheckClass.AndroidAlertPermissionCheck(context);
