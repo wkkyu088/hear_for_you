@@ -159,6 +159,9 @@ class _SettingScreenState extends State<SettingScreen> {
                               setRegularValue(regularValue);
                               if (regularValue) {
                                 context.read<RecordModule>().initState();
+                                Toast.show('5초 뒤 상시모드가 다시 시작됩니다.',
+                                    duration: Toast.lengthLong,
+                                    gravity: Toast.top);
                                 context.read<RecordModule>().record();
                               } else {
                                 context.read<RecordModule>().disposeState();
@@ -248,68 +251,68 @@ class _SettingScreenState extends State<SettingScreen> {
                   const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                 ),
                 // 4. 알림 설정 영역
-                customCard(
-                  '알림 설정',
-                  Column(
-                    children: [
-                      // 4-1. case0, 긴급재난 알림 페이지로 이동 + 켬, 끔 표시
-                      settingItem(
-                        Text(caseTitle[0], style: settingTitleStyle),
-                        Row(
-                          children: [
-                            Text(
-                              cases[0] ? '켬' : '끔',
-                              style: TextStyle(
-                                fontSize: kM,
-                                color: cases[0] ? kMain : kGrey5,
-                              ),
-                            ),
-                            chevronIcon,
-                          ],
-                        ),
-                        const NotificationSetting(num: 0),
-                      ),
-                      spacer(const EdgeInsets.only(bottom: 5)),
-                      // 4-2. case1, 실외위험 알림 페이지로 이동 + 켬, 끔 표시
-                      settingItem(
-                        Text(caseTitle[1], style: settingTitleStyle),
-                        Row(
-                          children: [
-                            Text(
-                              cases[1] ? '켬' : '끔',
-                              style: TextStyle(
-                                fontSize: kM,
-                                color: cases[1] ? kMain : kGrey5,
-                              ),
-                            ),
-                            chevronIcon,
-                          ],
-                        ),
-                        const NotificationSetting(num: 1),
-                      ),
-                      spacer(const EdgeInsets.only(bottom: 5)),
-                      // 4-3. case2, 실내위험 알림 페이지로 이동 + 켬, 끔 표시
-                      settingItem(
-                        Text(caseTitle[2], style: settingTitleStyle),
-                        Row(
-                          children: [
-                            Text(
-                              cases[2] ? '켬' : '끔',
-                              style: TextStyle(
-                                fontSize: kM,
-                                color: cases[2] ? kMain : kGrey5,
-                              ),
-                            ),
-                            chevronIcon,
-                          ],
-                        ),
-                        const NotificationSetting(num: 2),
-                      ),
-                    ],
-                  ),
-                  const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                ),
-                // 5. 화면 설정 영역
+                // customCard(
+                //   '알림 설정',
+                //   Column(
+                //     children: [
+                //       // 4-1. case0, 긴급재난 알림 페이지로 이동 + 켬, 끔 표시
+                //       settingItem(
+                //         Text(caseTitle[0], style: settingTitleStyle),
+                //         Row(
+                //           children: [
+                //             Text(
+                //               cases[0] ? '켬' : '끔',
+                //               style: TextStyle(
+                //                 fontSize: kM,
+                //                 color: cases[0] ? kMain : kGrey5,
+                //               ),
+                //             ),
+                //             chevronIcon,
+                //           ],
+                //         ),
+                //         const NotificationSetting(num: 0),
+                //       ),
+                //       spacer(const EdgeInsets.only(bottom: 5)),
+                //       // 4-2. case1, 실외위험 알림 페이지로 이동 + 켬, 끔 표시
+                //       settingItem(
+                //         Text(caseTitle[1], style: settingTitleStyle),
+                //         Row(
+                //           children: [
+                //             Text(
+                //               cases[1] ? '켬' : '끔',
+                //               style: TextStyle(
+                //                 fontSize: kM,
+                //                 color: cases[1] ? kMain : kGrey5,
+                //               ),
+                //             ),
+                //             chevronIcon,
+                //           ],
+                //         ),
+                //         const NotificationSetting(num: 1),
+                //       ),
+                //       spacer(const EdgeInsets.only(bottom: 5)),
+                //       // 4-3. case2, 실내위험 알림 페이지로 이동 + 켬, 끔 표시
+                //       settingItem(
+                //         Text(caseTitle[2], style: settingTitleStyle),
+                //         Row(
+                //           children: [
+                //             Text(
+                //               cases[2] ? '켬' : '끔',
+                //               style: TextStyle(
+                //                 fontSize: kM,
+                //                 color: cases[2] ? kMain : kGrey5,
+                //               ),
+                //             ),
+                //             chevronIcon,
+                //           ],
+                //         ),
+                //         const NotificationSetting(num: 2),
+                //       ),
+                //     ],
+                //   ),
+                //   const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                // ),
+                // // 5. 화면 설정 영역
                 customCard(
                   '기타 설정',
                   // 5-1. 화면 설정 페이지로 이동

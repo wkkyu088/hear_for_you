@@ -175,6 +175,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             if (selectedIndex != 0) {
               context.read<VoiceModule>().stopListening();
               if (regularValue && !context.read<RecordModule>().isRecording) {
+                ToastContext().init(context);
+
                 Toast.show('5초 뒤 상시모드가 다시 시작됩니다.',
                     duration: Toast.lengthLong, gravity: Toast.top);
                 debugPrint('debugging : 상시모드 재접근 rV $regularValue');
@@ -184,8 +186,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
             }
             if (selectedIndex == 0) {
               debugPrint('debugging : 음성모드 접근 rV $regularValue');
-
               if (regularValue) {
+                ToastContext().init(context);
                 Toast.show(
                   '상시모드가 잠시 중단됩니다.',
                   duration: Toast.lengthLong,
