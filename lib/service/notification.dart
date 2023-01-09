@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../constants.dart';
 import 'flash_light.dart';
 
 final notifications = FlutterLocalNotificationsPlugin();
@@ -10,7 +10,7 @@ final notifications = FlutterLocalNotificationsPlugin();
 //1. 앱 로드시 initNotification을 등록해줘야 합니다!
 initNotification() async {
   //안드로이드용 아이콘파일 이름
-  var androidSetting = const AndroidInitializationSettings('app_icon');
+  var androidSetting = const AndroidInitializationSettings('ic_notification');
 
   //ios에서 앱 로드시 유저에게 권한요청하려면
   var iosSetting = const DarwinInitializationSettings(
@@ -33,12 +33,12 @@ showNotification(var alarmID, var content) async {
   if (Platform.isAndroid) {
     FlashLight.startFlashLight(0);
   }
-  var androidDetails = const AndroidNotificationDetails(
+  var androidDetails = AndroidNotificationDetails(
     '유니크한 알림 채널 ID',
     '알림종류 설명',
     priority: Priority.high,
     importance: Importance.max,
-    color: Color.fromARGB(255, 255, 0, 0),
+    color: kMain,
   );
 
   var iosDetails = const DarwinNotificationDetails(
