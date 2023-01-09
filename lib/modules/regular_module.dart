@@ -7,9 +7,7 @@ import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform
 import 'package:hear_for_you/constants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:speech_to_text/speech_to_text.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:toast/toast.dart';
+import 'package:logger/logger.dart';
 
 import '../service/functions.dart';
 
@@ -21,7 +19,7 @@ class RecordModule extends ChangeNotifier {
   var theSource = AudioSource.microphone;
 
   String _mPath = '';
-  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder();
+  FlutterSoundRecorder? mRecorder = FlutterSoundRecorder(logLevel: Level.error);
   bool _mRecorderIsInited = false;
   late StreamSubscription<RecordingDisposition> _recorderSubscription;
 
@@ -97,11 +95,15 @@ class RecordModule extends ChangeNotifier {
   // ----------------------  Here is the code for recording and playback -------
 
   Future<void> record() async {
+    var isRepeating = false;
     debugPrint('debugging : 상시모드 on');
     isRecording = true;
     _recordTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       debugPrint('debugging : recordTimer ${DateTime.now().second}');
       // 녹음 시작
+      if (isRepeating) {
+        mRecorder!.stopRecorder();
+      }
       await mRecorder!.startRecorder(toFile: _mPath).then((value) async {
         notifyListeners();
         try {
@@ -112,16 +114,23 @@ class RecordModule extends ChangeNotifier {
         }
         notifyListeners();
       });
+      isRepeating = true;
+
+      // Timer(const Duration(seconds: 5), handleTimeout);
     });
   }
+
+  // void handleTimeout() async {
+  //   stop();
+  // }
 
   Future<void> stop() async {
     debugPrint('debugging : stop recording');
     isRecording = false;
-    const Duration(milliseconds: 500);
+    Timer(const Duration(milliseconds: 500), () {});
     await mRecorder!.stopRecorder().then((value) {
-      _recordTimer?.cancel();
       _recorderSubscription.cancel();
+      _recordTimer?.cancel();
       notifyListeners();
     });
   }
