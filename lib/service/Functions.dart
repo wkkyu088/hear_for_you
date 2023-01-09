@@ -222,8 +222,8 @@ class FunctionClass {
       // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 안드로이드에서 알람 방식을 바꾸려는 경우 showNotification을 다른 함수로 바꾸면 됨
       // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ result == unknown인 경우가 서버에서 무슨 소리인지 분석에 실패했을 경우임!
       if (result == "unknown") {
-        notification.showNotification(
-            "소리 알림", "${int.parse(dB.toString())} dB 이상의 소리가 발생했습니다. 주변을 확인하세요");
+        notification.showNotification("소리 알림",
+            "${int.parse(setting.dB.toString())} dB 이상의 소리가 발생했습니다. 주변을 확인하세요");
       } else {
         notification.showNotification("소리 알림", "$result가 들립니다. 주의하세요");
       }
