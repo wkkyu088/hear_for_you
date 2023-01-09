@@ -16,6 +16,7 @@ class RecordModule extends ChangeNotifier {
   var _recordTimer;
   var _currentWords;
   bool isRecording = false;
+  var beforeDb = -1.0;
   var theSource = AudioSource.microphone;
 
   String _mPath = '';
@@ -83,7 +84,11 @@ class RecordModule extends ChangeNotifier {
   void onData(RecordingDisposition event) async {
     double? decibel = event.decibels;
     debugPrint('debugging : decibel $decibel');
-    if (decibel! >= dB) {
+    if (decibel == beforeDb) {
+      debugPrint('debugging : 동일 데시벨 $beforeDb');
+      return;
+    } else if (decibel! >= dB) {
+      beforeDb = decibel;
       debugPrint('debugging : over $dB dB');
       debugPrint('debugging : 저장 경로 $_mPath');
 
