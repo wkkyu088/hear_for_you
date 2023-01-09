@@ -248,7 +248,7 @@ class _VoiceScreenState extends State<VoiceScreen> {
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
                               child: Text(
-                                '저장',
+                                '종료',
                                 style: TextStyle(
                                   color: darkMode ? kBlack : kWhite,
                                   fontSize: kS,
