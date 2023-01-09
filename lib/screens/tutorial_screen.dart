@@ -30,24 +30,22 @@ class _TutorialScreenState extends State<TutorialScreen> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    final double navigationBarHeight = MediaQuery.of(context).padding.bottom;
 
-    var items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) {
+    var items = [1, 2, 3, 4, 5, 6, 7, 8].map((i) {
       return Builder(
         builder: (BuildContext context) {
           return Container(
               width: screenWidth,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(color: kGrey2),
               child: Center(
-                child: Text('content $i'),
+                child: Image.asset("lib/assets/images/tutorial$i.PNG"),
               ));
         },
       );
     }).toList();
 
     return Scaffold(
-      backgroundColor: kWhite,
+      backgroundColor: const Color(0xFF999999),
       body: SizedBox(
         width: screenWidth,
         height: screenHeight,
@@ -60,9 +58,8 @@ class _TutorialScreenState extends State<TutorialScreen> {
               height: 100,
             ),
             Expanded(
-              child: Container(
+              child: SizedBox(
                 width: screenWidth,
-                padding: const EdgeInsets.only(top: 30, bottom: 30),
                 child: CarouselSlider(
                   items: items,
                   carouselController: controller,
@@ -97,7 +94,7 @@ class _TutorialScreenState extends State<TutorialScreen> {
                               vertical: 8.0, horizontal: 5.0),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: currentIdx == entry.key ? kMain : kGrey3),
+                              color: currentIdx == entry.key ? kBlack : kGrey4),
                         ),
                       );
                     }).toList(),
@@ -113,7 +110,10 @@ class _TutorialScreenState extends State<TutorialScreen> {
                         (route) => false,
                       );
                     },
-                    child: Text("건너뛰기", style: TextStyle(color: kGrey4)),
+                    child: Text(
+                      "건너뛰기",
+                      style: TextStyle(color: kWhite, fontSize: kS),
+                    ),
                   )
                 ],
               ),
