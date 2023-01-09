@@ -45,8 +45,8 @@ class FunctionClass {
 
   static bool dB_raised = false;
   // 서버 주소! 달라지면 여기서 바꾸면 됨
-  static const address = "http://3.39.56.58:8000";
-  // static const address = "http://127.0.0.1:8000";
+  static const address = "http://hearforyou.site";
+  // static const address = "http://127.0.0.1";
 
   // 이 함수를 부르면 파일 자르기, 서버로 데이터 전송, 데이터 받아서 반환 등의 과정을 자동으로 처리하고 알람을 띄워줌
   static int logsToShown() {
@@ -150,7 +150,11 @@ class FunctionClass {
       setting.logToServer.add("anaylzing : 저장할 경로는 $path입니다");
 
       // 원래 파일이 존재했을수도 있으니 일단 삭제하고 재저장(결과가 꼬이지 않도록 하기 위해)
-      File(path).delete();
+      try {
+        File(path).delete();
+      } catch (e) {
+        true;
+      }
 
       readedFile.writeFile(path);
 
@@ -167,12 +171,6 @@ class FunctionClass {
       // 에러를 전송하려 한다는 메세지 추가
       print("analyzing : 로그 서버로 전송 시도");
       setting.logToServer.add("analyzing : 로그 서버로 전송 시도");
-
-      print("@@@@@@@@ 전송하려는 데이터 @@@@@@@@@@@");
-      for (int i = 0; i < setting.logToServer.length; i++) {
-        print(setting.logToServer[i]);
-      }
-      print("@@@@@@@@ 전송하려는 데이터 끝@@@@@@@@@@@");
 
       var formData = FormData.fromMap({
         'logList': setting.logToServer,

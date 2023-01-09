@@ -167,8 +167,6 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                     if (Platform.isIOS) {
                       print("확인버튼 눌림");
                       // FunctionClass.changeLogState(logList.length - 1);
-                      MissedAlertState().renewMissedAlarm();
-                      Navigator.pop(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
