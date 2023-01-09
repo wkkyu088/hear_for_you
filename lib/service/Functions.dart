@@ -156,16 +156,7 @@ class FunctionClass {
       print("anaylzing : 저장할 경로는 $path입니다");
       setting.logToServer.add("anaylzing : 저장할 경로는 $path입니다");
 
-      // 원래 파일이 존재했을수도 있으니 일단 삭제하고 재저장(결과가 꼬이지 않도록 하기 위해)
-      // 원본 파일도 삭제하여 중복전송 방지
-      try {
-        File(path).delete();
-      } catch (e) {
-        true;
-      }
-
       readedFile.writeFile(path);
-      // 파일 잘 저장했으면 삭제
 
       return path;
     } catch (e) {
@@ -221,7 +212,11 @@ class FunctionClass {
       setting.logToServer.add("analyzing : 서버와 통신에 성공했습니다.");
 
       // 통신에 성공했으면 기존 객체 삭제하기
-      File(target).delete();
+      try {
+        File(target).delete();
+      } catch (e) {
+        true;
+      }
 
       // 서버가 반환해준 결과를 result에 저장
       var result = response.data['prediction'];

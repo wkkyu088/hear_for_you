@@ -21,7 +21,7 @@ class MissedAlertState extends State<MissedAlert> {
   late int logCount;
 
   // 스크린에 나와있는지 여부를 판단하는 bool형 변수
-  static bool onScreen = true;
+  static bool onScreen = false;
 
   @override
   initState() {
@@ -30,17 +30,6 @@ class MissedAlertState extends State<MissedAlert> {
     logCount = FunctionClass.howManyLogsLeft();
     print("출력할 로그는 $missedAlertNum 번째 값입니다");
   }
-
-  // 로그가 새로 생기면 정보 갱신 필요. 그에 따라 정보를 갱신하고 setState를 수행하는 함수 추가!
-  // void renewMissedAlarm() {
-  //   Timer(const Duration(milliseconds: 50), () async {
-  //     if (onScreen) {
-  //       missedAlertNum = FunctionClass.logsToShown();
-  //       logCount = FunctionClass.howManyLogsLeft();
-  //       setState(() {});
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

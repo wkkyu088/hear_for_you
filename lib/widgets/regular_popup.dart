@@ -41,6 +41,10 @@ class PopupState extends State<ModelPopup> {
     prediction.then((val) async {
       // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
       MissedAlertState.onScreen = false;
+      title = "분석 완료";
+      returnWidget = oneButtonDialog(
+          context, title, "결과를 출력하는 중입니다", message, defaultPress,
+          color: Colors.green);
       if (cases[2]) {
         if (Platform.isAndroid) {
           DateTime now = DateTime.now();
@@ -59,11 +63,21 @@ class PopupState extends State<ModelPopup> {
           returnWidget = AlarmScreen(alarmName: val);
           setState(() {});
         }
+      } else if (!cases[2]) {
+        title = "분석 완료";
+        returnWidget = oneButtonDialog(
+            context, title, val, message, defaultPress,
+            color: Colors.green);
+        setState(() {});
       }
     }).catchError((error) async {
       // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
       MissedAlertState.onScreen = false;
       if (error.toString() == "SignalException") {
+        title = "분석 완료";
+        returnWidget = oneButtonDialog(
+            context, title, "결과를 출력하는 중입니다", message, defaultPress,
+            color: Colors.green);
         if (cases[2]) {
           if (Platform.isAndroid) {
             DateTime now = DateTime.now();
@@ -79,6 +93,8 @@ class PopupState extends State<ModelPopup> {
                 .read<AlarmProvider>()
                 .setAlarm(time, "${dB.round()} dB 이상의 소리");
             await AlarmScheduler.scheduleRepeatable(time);
+            title = "분석 완료";
+
             setState(() {});
           } else {
             returnWidget =
@@ -86,6 +102,12 @@ class PopupState extends State<ModelPopup> {
             setState(() {});
           }
         }
+      } else if (!cases[2]) {
+        title = "분석 완료";
+        returnWidget = oneButtonDialog(
+            context, title, "${dB.round()} dB 이상의 소리", message, defaultPress,
+            color: Colors.green);
+        setState(() {});
       } else {
         print("analyzing : 에러가 발생했습니다 : $error");
         logToServer.add("analyzing : 에러가 발생했습니다 : $error");
