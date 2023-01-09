@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../modules/regular_module.dart';
+import '../../Functions.dart';
 import 'alarm_observer.dart';
 
 class AlarmScreen extends StatefulWidget {
@@ -166,7 +167,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                     // 확인버튼을 누른 알람은 로그에 등장하지 않도록 조치
                     if (Platform.isIOS) {
                       print("확인버튼 눌림");
-                      // FunctionClass.changeLogState(logList.length - 1);
+                      FunctionClass.changeLogState(logList.length - 1);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -176,6 +177,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
                       );
                       _dismissAlarm();
                     } else {
+                      FunctionClass.changeLogState(logList.length - 1);
                       _dismissAlarm();
                     }
                   },
