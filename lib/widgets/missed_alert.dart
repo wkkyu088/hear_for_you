@@ -147,10 +147,6 @@ class MissedAlertState extends State<MissedAlert> {
                         TextButton(
                           onPressed: () {
                             FunctionClass.changeLogState(missedAlertNum);
-                            Timer(const Duration(milliseconds: 50), () {
-                              missedAlertNum = FunctionClass.logsToShown();
-                              logCount = FunctionClass.howManyLogsLeft();
-                            });
                             setState(() {});
                           },
                           style: TextButton.styleFrom(
