@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/modules/regular_module.dart';
+import 'package:hear_for_you/screens/tutorial_screen.dart';
 import 'dart:io' show Platform;
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:siri_wave/siri_wave.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:toast/toast.dart';
 
-import '../service/functions.dart';
 import '../service/permission_check.dart';
 import 'package:provider/provider.dart';
 
@@ -98,44 +97,12 @@ class RegularScreenState extends State<RegularScreen>
                         ),
                         padding: const EdgeInsets.all(10),
                         onPressed: () async {
-                          // showPopup 내부에서 안드로이드, IOS에 필요한 동작 수행
-                          FunctionClass.showPopup(context);
-                          // 전체화면 알림
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => const AlertScreen()));
-                          // DateTime now = DateTime.now();
-                          // DateTime time = DateTime(
-                          //   now.year,
-                          //   now.month,
-                          //   now.day,
-                          //   now.hour,
-                          //   now.minute,
-                          //   now.second,
-                          // );
-                          // String alarmName = "소리소리소리";
-                          // context
-                          //     .read<AlarmProvider>()
-                          //     .setAlarm(time, alarmName);
-                          // await AlarmScheduler.scheduleRepeatable(time);
-
-                          // // 안드로이드 notification + 플래시
-                          // showNotification("알림 제목", "알림이 왔습니다.");
-                          // FlashLight.startFlashLight(0);
-
-                          // 커스텀 모달
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) {
-                          //       return customDialog("제목", "내용");
-                          //     });
-
                           // 튜토리얼 페이지
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => const TutorialScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TutorialScreen()));
                         },
                       ),
                       // 1-2. 상시모드 상태

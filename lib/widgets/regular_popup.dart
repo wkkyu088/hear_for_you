@@ -70,7 +70,7 @@ class PopupState extends State<ModelPopup> {
           );
           context
               .read<AlarmProvider>()
-              .setAlarm(time, "${int.parse(dB.toString())} dB 이상의 소리");
+              .setAlarm(time, "${dB.round()} dB 이상의 소리");
           await AlarmScheduler.scheduleRepeatable(time);
           setState(() {});
         } else {

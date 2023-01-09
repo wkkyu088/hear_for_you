@@ -113,13 +113,13 @@ class _DecibelSettingState extends State<DecibelSetting> {
               ),
               const SizedBox(height: 5),
               // 4. 데시벨 설정 관련 부가 설명
-              Text(
-                '부가 설명?',
-                style: TextStyle(
-                  fontSize: kXS,
-                  color: darkMode ? kWhite : kBlack,
-                ),
-              ),
+              // Text(
+              //   '부가 설명?',
+              //   style: TextStyle(
+              //     fontSize: kXS,
+              //     color: darkMode ? kWhite : kBlack,
+              //   ),
+              // ),
               const SizedBox(height: 20),
               // 5. 설정된 데시벨 범위 색상 표
               SizedBox(

@@ -35,8 +35,8 @@ class _VoiceScreenState extends State<VoiceScreen> {
       // IOS 라면
       PermissionCheckClass.IOSRecognitionPermissionCheck(context);
     }
-    isEmpty = false;
-    isInput = true;
+    isEmpty = true;
+    isInput = false;
 
     context.read<VoiceModule>().initSpeech();
   }
