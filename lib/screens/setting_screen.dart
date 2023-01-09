@@ -69,6 +69,61 @@ class _SettingScreenState extends State<SettingScreen> {
       );
     }
 
+    void setCases(int n, bool value) async {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setBool('case${n + 1}', value);
+      print("case${n + 1} changed! : $value");
+    }
+
+    List<String> notis = ["푸시 알림 ", "플래시 알림 ", "전체 화면 알림 "];
+    Widget notiItem(n) {
+      return InkWell(
+        onTap: () async {
+          setState(() {
+            cases[n] = !cases[n];
+            setCases(n, cases[n]);
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
+          child: Row(
+            children: [
+              Text(notis[n], style: settingTitleStyle),
+              cases[n]
+                  ? Text(
+                      '켜짐',
+                      style: TextStyle(
+                        fontFamily: 'PretendardBold',
+                        fontSize: kM,
+                        color: kMain,
+                      ),
+                    )
+                  : Text(
+                      '꺼짐',
+                      style: TextStyle(
+                        fontFamily: 'PretendardBold',
+                        fontSize: kM,
+                        color: kGrey5,
+                      ),
+                    ),
+              const Spacer(),
+              Transform.scale(
+                scale: 0.9,
+                child: SizedBox(
+                  height: 10,
+                  child: CupertinoSwitch(
+                    activeColor: kMain,
+                    value: cases[n],
+                    onChanged: (value) {},
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Consumer<RecordModule>(builder: (context, state, child) {
       return Scaffold(
         backgroundColor: darkMode ? kBlack : kGrey1,
@@ -251,6 +306,25 @@ class _SettingScreenState extends State<SettingScreen> {
                   const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                 ),
                 // 4. 알림 설정 영역
+                customCard(
+                  "알림 설정",
+                  Column(
+                    children: [
+                      notiItem(0),
+                      spacer(const EdgeInsets.only(bottom: 2)),
+                      Platform.isAndroid
+                          ? Column(
+                              children: [
+                                notiItem(1),
+                                spacer(const EdgeInsets.only(bottom: 2)),
+                              ],
+                            )
+                          : Container(),
+                      notiItem(2),
+                    ],
+                  ),
+                  const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                ),
                 // customCard(
                 //   '알림 설정',
                 //   Column(

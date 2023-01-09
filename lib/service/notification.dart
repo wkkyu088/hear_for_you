@@ -30,7 +30,8 @@ initNotification() async {
 
 //2. 이 함수를 필요한 곳에서 실행하면 알림이 나옴. content에는 원하는 알림 내용 넣기!
 showNotification(var alarmID, var content) async {
-  if (Platform.isAndroid) {
+  // --------------- cases[1] 플래시 알림 설정이 true이면 알림을 울리게 ---------------
+  if (Platform.isAndroid && cases[1]) {
     FlashLight.startFlashLight(0);
   }
   var androidDetails = AndroidNotificationDetails(
@@ -47,9 +48,12 @@ showNotification(var alarmID, var content) async {
     presentSound: true,
   );
 
-  // 알림 id, 제목, 내용 맘대로 채우기
-  notifications.show(1, '$alarmID', '$content',
-      NotificationDetails(android: androidDetails, iOS: iosDetails),
-      payload: '부가정보' // 부가정보
-      );
+  // --------------- cases[0] 푸시알림 설정이 true이면 알림을 울리게 ---------------
+  if (cases[0]) {
+    // 알림 id, 제목, 내용 맘대로 채우기
+    notifications.show(1, '$alarmID', '$content',
+        NotificationDetails(android: androidDetails, iOS: iosDetails),
+        payload: '부가정보' // 부가정보
+        );
+  }
 }

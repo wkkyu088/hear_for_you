@@ -38,26 +38,8 @@ class PopupState extends State<ModelPopup> {
     super.initState();
     Future<String> prediction = FunctionClass.getPrediction();
     prediction.then((val) async {
-      if (Platform.isAndroid) {
-        DateTime now = DateTime.now();
-        DateTime time = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          now.hour,
-          now.minute,
-          now.second,
-        );
-        context.read<AlarmProvider>().setAlarm(time, val);
-        await AlarmScheduler.scheduleRepeatable(time);
-        setState(() {});
-      } else {
-        returnWidget = AlarmScreen(alarmName: val);
-        setState(() {});
-      }
-    }).catchError((error) async {
-      // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
-      if (error.toString() == "SignalException") {
+      // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
+      if (cases[2]) {
         if (Platform.isAndroid) {
           DateTime now = DateTime.now();
           DateTime time = DateTime(
@@ -68,15 +50,38 @@ class PopupState extends State<ModelPopup> {
             now.minute,
             now.second,
           );
-          context
-              .read<AlarmProvider>()
-              .setAlarm(time, "${dB.round()} dB 이상의 소리");
+          context.read<AlarmProvider>().setAlarm(time, val);
           await AlarmScheduler.scheduleRepeatable(time);
           setState(() {});
         } else {
-          returnWidget =
-              AlarmScreen(alarmName: "${int.parse(dB.toString())} dB 이상의 소리");
+          returnWidget = AlarmScreen(alarmName: val);
           setState(() {});
+        }
+      }
+    }).catchError((error) async {
+      // SignalException은 무슨 소리인지 인지하지 못했을 경우임. 이때는 에러는 아니므로 다른 처리
+      if (error.toString() == "SignalException") {
+        if (cases[2]) {
+          if (Platform.isAndroid) {
+            DateTime now = DateTime.now();
+            DateTime time = DateTime(
+              now.year,
+              now.month,
+              now.day,
+              now.hour,
+              now.minute,
+              now.second,
+            );
+            context
+                .read<AlarmProvider>()
+                .setAlarm(time, "${dB.round()} dB 이상의 소리");
+            await AlarmScheduler.scheduleRepeatable(time);
+            setState(() {});
+          } else {
+            returnWidget =
+                AlarmScreen(alarmName: "${int.parse(dB.toString())} dB 이상의 소리");
+            setState(() {});
+          }
         }
       } else {
         print("analyzing : 에러가 발생했습니다 : $error");
@@ -90,6 +95,7 @@ class PopupState extends State<ModelPopup> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AlarmState>(builder: (context, state, child) {
+      print("state ${state.isFired}");
       if (state.isFired) {
         Navigator.pop(context);
       }
