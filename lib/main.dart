@@ -56,6 +56,21 @@ class MyApp extends StatelessWidget {
       statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
     ));
 
+    Map<int, Color> color = {
+      50: const Color.fromRGBO(255, 255, 255, .1),
+      100: const Color.fromRGBO(255, 255, 255, .2),
+      200: const Color.fromRGBO(255, 255, 255, .3),
+      300: const Color.fromRGBO(255, 255, 255, .4),
+      400: const Color.fromRGBO(255, 255, 255, .5),
+      500: const Color.fromRGBO(255, 255, 255, .6),
+      600: const Color.fromRGBO(255, 255, 255, .7),
+      700: const Color.fromRGBO(255, 255, 255, .8),
+      800: const Color.fromRGBO(255, 255, 255, .9),
+      900: const Color.fromRGBO(255, 255, 255, 1),
+    };
+
+    MaterialColor colorCustom = MaterialColor(0xFFFFFFFF, color);
+
     return MaterialApp(
       title: 'Hear For You',
       // 기기의 폰트 크기 무시
@@ -67,8 +82,9 @@ class MyApp extends StatelessWidget {
       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        primarySwatch: colorCustom,
         fontFamily: 'PretendardMedium',
+        appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
       ),
       // home: name == "" ? const LoginScreen() : const BottomNavBar(),
       // home: const BottomNavBar(),

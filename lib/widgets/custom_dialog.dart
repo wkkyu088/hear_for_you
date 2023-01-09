@@ -27,7 +27,7 @@ Widget oneButtonDialog(context, title, content, btn, onPressed,
                 content,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: kM,
+                  fontSize: kS + 1,
                   height: 1.4,
                   color: darkMode ? kWhite : color,
                 ),
@@ -80,7 +80,7 @@ Widget twoButtonDialog(
                 content,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: kM,
+                  fontSize: kS + 1,
                   height: 1.4,
                   color: darkMode ? kWhite : kBlack,
                 ),

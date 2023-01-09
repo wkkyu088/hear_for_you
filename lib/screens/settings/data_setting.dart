@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/screens/login_screen.dart';
+import 'package:hear_for_you/screens/settings/developers.dart';
+import 'package:hear_for_you/screens/settings/privacy_policy.dart';
 import 'package:hear_for_you/widgets/custom_card.dart';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:hear_for_you/widgets/setting_appbar.dart';
@@ -17,6 +19,8 @@ class DataSetting extends StatefulWidget {
 class _DataSettingState extends State<DataSetting> {
   @override
   Widget build(BuildContext context) {
+    String version = "1.0.0v";
+
     // 설정 타이틀의 스타일
     TextStyle settingTitleStyle(color) {
       return TextStyle(
@@ -32,13 +36,35 @@ class _DataSettingState extends State<DataSetting> {
     // 각 설정 목록, 누르면 해당 페이지로 이동
     Widget settingItem(title, action, screen) {
       return TextButton(
-        onPressed: () {
-          Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => screen))
-              .then((value) => setState(
-                    () {},
-                  ));
-        },
+        onPressed: screen != null
+            ? () {
+                if (screen == "license") {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) =>
+                          LicensePage(applicationVersion: version)));
+                } else if (screen == "email") {
+                  showDialog(
+                      context: context,
+                      builder: (builder) {
+                        return oneButtonDialog(
+                          context,
+                          "문의하기",
+                          "문의 사항이 있는 경우,\n아래 이메일로 연락바랍니다 :)\npeoples221120@gmail.com",
+                          "확인",
+                          () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      });
+                } else {
+                  Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => screen))
+                      .then((value) => setState(
+                            () {},
+                          ));
+                }
+              }
+            : null,
         style: TextButton.styleFrom(
           primary: kGrey5,
         ),
@@ -46,7 +72,7 @@ class _DataSettingState extends State<DataSetting> {
           children: [
             Text(title, style: settingTitleStyle(darkMode ? kWhite : kBlack)),
             const Spacer(),
-            action,
+            screen != null ? action : Text(version),
           ],
         ),
       );
@@ -65,19 +91,31 @@ class _DataSettingState extends State<DataSetting> {
               Column(
                 children: [
                   settingItem(
-                    '이용 약관',
+                    '오픈소스 라이선스',
                     chevronIcon,
-                    null,
+                    "license",
                   ),
                   spacer(const EdgeInsets.only(bottom: 5)),
                   settingItem(
                     '개인정보 정책',
                     chevronIcon,
-                    null,
+                    const PrivacyPolicy(),
+                  ),
+                  spacer(const EdgeInsets.only(bottom: 5)),
+                  settingItem(
+                    '문의하기',
+                    chevronIcon,
+                    "email",
                   ),
                   spacer(const EdgeInsets.only(bottom: 5)),
                   settingItem(
                     '만든 사람들',
+                    chevronIcon,
+                    const Developers(),
+                  ),
+                  spacer(const EdgeInsets.only(bottom: 5)),
+                  settingItem(
+                    '버전 정보',
                     chevronIcon,
                     null,
                   ),
@@ -126,8 +164,8 @@ class _DataSettingState extends State<DataSetting> {
 
                             if (!mounted) return;
                             Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
+                              context,
+                              MaterialPageRoute(
                                   builder: (context) => const LoginScreen()),
                               (route) => false,
                             );
