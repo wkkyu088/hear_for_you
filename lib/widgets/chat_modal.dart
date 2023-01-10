@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hear_for_you/widgets/custom_dialog.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../constants.dart';
@@ -19,17 +17,16 @@ _saveAsImage(String fileName, screenshotController) {
 
 /// storage/emulated/0/Android/data/com.example.hear_for_you/files/2022-12-17T12:41:41.844957.txt
 _saveAsText(String fileName) async {
-  final dir = await getExternalStorageDirectory();
-  List reChatList = [];
+  String reChatList = "";
   for (int i = 0; i < voiceScreenChat.length; i++) {
     if (voiceScreenChat[i][1] == true) {
-      reChatList.add('[나]\t{$voiceScreenChat[i][0]}\n');
+      reChatList += '[나] ${voiceScreenChat[i][0]}\n';
     } else {
-      reChatList.add('[상대방]\t{$voiceScreenChat[i][0]}\n');
+      reChatList += '[상대방] ${voiceScreenChat[i][0]}\n';
     }
   }
   debugPrint(reChatList.toString());
-  File('${dir!.path}/$fileName-chat.txt').writeAsString(reChatList.toString());
+  Clipboard.setData(ClipboardData(text: reChatList.toString()));
 }
 
 _endChat() {
@@ -47,7 +44,7 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
     actions: [
       // 전체 대화 이미지로 저장
       CupertinoActionSheetAction(
-        child: const Text('이미지로 저장하기'),
+        child: Text('이미지로 저장하기', style: TextStyle(color: kGrey4)),
         onPressed: () async {
           _saveAsImage(fileName, screenshotController);
 
@@ -83,8 +80,8 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
               builder: (BuildContext context) {
                 return oneButtonDialog(
                   context,
-                  "텍스트 파일 저장",
-                  "대화 내용을 파일에 저장하였습니다!",
+                  "클립보드에 복사",
+                  "대화 내용을 클립보드에 복사하였습니다!",
                   "확인",
                   () {
                     Navigator.pop(context, true);
@@ -97,7 +94,7 @@ CupertinoActionSheet chatModalBuilder(BuildContext context,
             navigator.pop();
           }
         },
-        child: const Text('텍스트 파일로 저장하기'),
+        child: Text('클립보드에 복사하기', style: TextStyle(color: kGrey4)),
       ),
       // 종료하고 대화 초기화하기
       CupertinoActionSheetAction(
