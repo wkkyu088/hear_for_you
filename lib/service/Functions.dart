@@ -104,8 +104,7 @@ class FunctionClass {
       return result;
     } catch (e) {
       if (e.toString().split(" ")[0] == "DioError") {
-        print("analyzing : dioError 발생하여 재실행 : $e");
-        setting.logToServer.add("analyzing : dioError 발생하여 재실행");
+        setting.logToServer.add("analyzing : dioError 발생하여 재실행 : $e");
         return getPrediction();
       } else if (e.toString().split(":")[0] == "FileSystemException") {
         throw "FileSystemException";
@@ -182,8 +181,8 @@ class FunctionClass {
       });
 
       var response = await dio.post("$address/uploadLog", data: formData);
-      print("analyzing : 서버와 통신에 성공했습니다");
-      setting.logToServer.add("analyzing : 서버와 통신에 성공했습니다");
+      print("analyzing : 서버에 로그를 올렸습니다");
+      setting.logToServer.add("analyzing : 서버에 로그를 올렸습니다");
     } catch (e) {
       print("analyzing : 서버와 통신도 실패.. $e");
       setting.logToServer.add("analyzing : 서버와 통신도 실패.. $e");
