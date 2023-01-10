@@ -161,7 +161,7 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
               // 확인 버튼
               Positioned(
                 bottom: 60,
-                left: screenWidth / 2 - 90 - navigationBarHeight,
+                left: screenWidth / 2 - 90,
                 width: 180,
                 child: TextButton(
                   onPressed: () {

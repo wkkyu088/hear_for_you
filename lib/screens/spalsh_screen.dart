@@ -44,23 +44,23 @@ class _SplashScreenState extends State<SplashScreen> {
         pref.getBool('case2')!,
         pref.getBool('case3')!
       ];
-      caseDetails = [
-        [
-          pref.getBool('case1detail1')!,
-          pref.getBool('case1detail2')!,
-          pref.getBool('case1detail3')!
-        ],
-        [
-          pref.getBool('case2detail1')!,
-          pref.getBool('case2detail2')!,
-          pref.getBool('case2detail3')!
-        ],
-        [
-          pref.getBool('case3detail1')!,
-          pref.getBool('case3detail2')!,
-          pref.getBool('case3detail3')!
-        ],
-      ];
+      // caseDetails = [
+      //   [
+      //     pref.getBool('case1detail1')!,
+      //     pref.getBool('case1detail2')!,
+      //     pref.getBool('case1detail3')!
+      //   ],
+      //   [
+      //     pref.getBool('case2detail1')!,
+      //     pref.getBool('case2detail2')!,
+      //     pref.getBool('case2detail3')!
+      //   ],
+      //   [
+      //     pref.getBool('case3detail1')!,
+      //     pref.getBool('case3detail2')!,
+      //     pref.getBool('case3detail3')!
+      //   ],
+      // ];
       logList = pref.getStringList('logList')!;
     } catch (e) {
       print(e);
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
     print(selectedColor);
     print(fontSizes);
     print(cases);
-    print(caseDetails);
+    // print(caseDetails);
     print("logs : ${logList}");
     print("######################################");
     debugPrint("debugging : $regularValue");

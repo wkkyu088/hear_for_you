@@ -44,81 +44,85 @@ class _TutorialScreenState extends State<TutorialScreen> {
       );
     }).toList();
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF999999),
-      body: SizedBox(
-        width: screenWidth,
-        height: screenHeight,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(
-                  top: 20 + statusBarHeight, left: 10, right: 10),
-              width: screenWidth,
-              height: 100,
-            ),
-            Expanded(
-              child: SizedBox(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF999999),
+        body: SizedBox(
+          width: screenWidth,
+          height: screenHeight,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                    top: 20 + statusBarHeight, left: 10, right: 10),
                 width: screenWidth,
-                child: CarouselSlider(
-                  items: items,
-                  carouselController: controller,
-                  options: CarouselOptions(
-                      aspectRatio: 9 / 16,
-                      viewportFraction: 1,
-                      initialPage: 0,
-                      enableInfiniteScroll: false,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          currentIdx = index;
-                        });
-                      }),
+                height: 100,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: screenWidth,
+                  child: CarouselSlider(
+                    items: items,
+                    carouselController: controller,
+                    options: CarouselOptions(
+                        aspectRatio: 9 / 16,
+                        viewportFraction: 1,
+                        initialPage: 0,
+                        enableInfiniteScroll: false,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            currentIdx = index;
+                          });
+                        }),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: items.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () => controller.animateToPage(entry.key),
-                        child: Container(
-                          width: 8,
-                          height: 8,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 5.0),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: currentIdx == entry.key ? kBlack : kGrey4),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AlarmObserver(
-                              child: BottomNavBar(selectedIndex: 1)),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    child: Text(
-                      "건너뛰기",
-                      style: TextStyle(color: kWhite, fontSize: kS),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: items.asMap().entries.map((entry) {
+                        return GestureDetector(
+                          onTap: () => controller.animateToPage(entry.key),
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 5.0),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:
+                                    currentIdx == entry.key ? kBlack : kGrey4),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AlarmObserver(
+                                child: BottomNavBar(selectedIndex: 1)),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      child: Text(
+                        "건너뛰기",
+                        style: TextStyle(color: kWhite, fontSize: kS),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

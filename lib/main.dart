@@ -82,6 +82,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: colorCustom,
         fontFamily: 'PretendardMedium',
+        textSelectionTheme: TextSelectionThemeData(
+            cursorColor: kGrey4,
+            selectionHandleColor: kGrey4,
+            selectionColor: kGrey4.withOpacity(0.3)),
         appBarTheme: const AppBarTheme(elevation: 0, centerTitle: true),
       ),
       // home: name == "" ? const LoginScreen() : const BottomNavBar(),
