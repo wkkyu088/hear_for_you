@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: TextField(
                             controller: textController,
-                            maxLength: 40,
+                            maxLength: 10,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.allow(
                                   RegExp("[ㄱ-ㅎ|ㅏ-ㅣ|가-힣0-9a-zA-Z]")),
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 5),

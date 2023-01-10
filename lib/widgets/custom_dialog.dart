@@ -75,7 +75,9 @@ Widget twoButtonDialog(
               style: TextStyle(
                   fontSize: kL, color: isDelete ? Colors.red : kMain)),
           Expanded(
-            child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              alignment: Alignment.center,
               child: Text(
                 content,
                 textAlign: TextAlign.center,

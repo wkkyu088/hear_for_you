@@ -163,7 +163,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                                   fontFamily: 'PretendardMedium'),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               constraints: const BoxConstraints(
-                                  minWidth: 65, minHeight: 45),
+                                  minWidth: 55, minHeight: 40),
                               borderColor: kGrey4,
                               selectedBorderColor: kMain,
                               borderRadius: BorderRadius.circular(10),
@@ -235,6 +235,7 @@ class _DisplaySettingState extends State<DisplaySetting> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
                     Text(
                       "⚠️ 앱을 껐다 켜면 적용됩니다.",
                       style: TextStyle(fontSize: 13, color: kMain),

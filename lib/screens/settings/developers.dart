@@ -68,7 +68,7 @@ class Developers extends StatelessWidget {
                           child: Text(
                             "#${desc[i]}",
                             style: TextStyle(
-                                fontSize: kS,
+                                fontSize: kS - 1,
                                 color: kBlack,
                                 fontFamily: 'PretendardLight'),
                           ),
@@ -109,18 +109,22 @@ class Developers extends StatelessWidget {
     return Scaffold(
       backgroundColor: darkMode ? kBlack : kGrey1,
       appBar: settingAppbar('만든 사람들', context),
-      body: Center(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-          margin: const EdgeInsets.only(bottom: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              profile(1, "오희정", ["팀장", "동국대 컴공", "Android개발"]),
-              profile(2, "정호종", ["동국대 컴공", "iOS개발", "AI개발"]),
-              profile(3, "원규진", ["동국대 컴공", "Android개발", "UI디자인"]),
-            ],
+      body: RawScrollbar(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+              margin: const EdgeInsets.only(bottom: 50),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  profile(1, "오희정", ["팀장", "동국대 컴공", "Android개발"]),
+                  profile(2, "정호종", ["동국대 컴공", "iOS개발", "AI개발"]),
+                  profile(3, "원규진", ["동국대 컴공", "Android개발", "UI디자인"]),
+                ],
+              ),
+            ),
           ),
         ),
       ),
