@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hear_for_you/screens/profile_notice.dart';
 import 'package:hear_for_you/screens/settings/data_setting.dart';
 import 'package:hear_for_you/screens/settings/decibel_setting.dart';
 import 'package:hear_for_you/screens/settings/display_setting.dart';
@@ -175,7 +176,6 @@ class _SettingScreenState extends State<SettingScreen> {
                         child: Container(
                           color: darkMode ? kGrey9 : kWhite,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 profileItems[profileValue],
@@ -184,6 +184,25 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: darkMode ? kWhite : kBlack,
                                 ),
                               ),
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const ProfileNotice();
+                                      });
+                                },
+                                tooltip: "장애정도 설정 안내 보기",
+                                icon: Icon(
+                                  Icons.help_rounded,
+                                  color: colorChart[7],
+                                  size: 20,
+                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                constraints: const BoxConstraints(),
+                              ),
+                              const Spacer(),
                               Icon(
                                 Icons.keyboard_arrow_down_rounded,
                                 size: 22,

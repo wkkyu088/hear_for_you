@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hear_for_you/modules/regular_module.dart';
 import 'package:hear_for_you/screens/tutorial_screen.dart';
+import 'package:hear_for_you/service/full_screen_alert/view/alarm_screen.dart';
 import 'dart:io' show Platform;
 import 'package:hear_for_you/widgets/missed_alert.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -97,6 +98,7 @@ class RegularScreenState extends State<RegularScreen>
                           size: 24,
                           color: darkMode ? kWhite : kBlack,
                         ),
+                        tooltip: "도움말 다시 보기",
                         padding: const EdgeInsets.all(10),
                         onPressed: () async {
                           // 튜토리얼 페이지
