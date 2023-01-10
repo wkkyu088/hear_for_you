@@ -467,12 +467,12 @@ class FunctionClass {
 
     ToastContext().init(context);
     Toast.show('소리를 분석 중입니다.',
-        duration: Toast.lengthShort, gravity: Toast.center);
+        duration: Toast.lengthShort, gravity: Toast.bottom);
 
     prediction.then((val) async {
       // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
       // MissedAlertState.onScreen = false;
-      Toast.show('분석을 완료하였습니다.', duration: 5, gravity: Toast.center);
+      Toast.show('분석을 완료하였습니다.', duration: 5, gravity: Toast.bottom);
 
       if (cases[2]) {
         if (Platform.isAndroid) {
@@ -500,7 +500,7 @@ class FunctionClass {
         if ( val == "null") {
           val = '소리';
         }
-        Toast.show('$val가 감지되었습니다.', duration: 5, gravity: Toast.center);
+        Toast.show('$val가 감지되었습니다.', duration: 5, gravity: Toast.bottom);
         Timer(const Duration(seconds: 5), () {
           context.read<RecordModule>().record();
         });
@@ -535,7 +535,7 @@ class FunctionClass {
           }
         } else {
           Toast.show('${dB.round()} dB 이상의 소리의 소리를 감지하였습니다.',
-              duration: 5, gravity: Toast.center);
+              duration: 5, gravity: Toast.bottom);
           Timer(const Duration(seconds: 5), () {
             context.read<RecordModule>().record();
           });
