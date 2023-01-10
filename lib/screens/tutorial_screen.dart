@@ -31,14 +31,15 @@ class _TutorialScreenState extends State<TutorialScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    var items = [1, 2, 3, 4, 5, 6, 7, 8].map((i) {
+    var items = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) {
       return Builder(
         builder: (BuildContext context) {
           return Container(
               width: screenWidth,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Center(
-                child: Image.asset("lib/assets/images/tutorial$i.PNG"),
+                child: Image.asset(
+                    "lib/assets/images/tutorial$i.${i == 0 ? "png" : "PNG"}"),
               ));
         },
       );
@@ -58,6 +59,9 @@ class _TutorialScreenState extends State<TutorialScreen> {
                     top: 20 + statusBarHeight, left: 10, right: 10),
                 width: screenWidth,
                 height: 100,
+                alignment: Alignment.center,
+                child: Text("원활한 앱 사용을 위해 꼭 읽어주세요 !",
+                    style: TextStyle(fontSize: kL, color: kWhite)),
               ),
               Expanded(
                 child: SizedBox(
