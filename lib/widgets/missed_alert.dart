@@ -143,7 +143,6 @@ class MissedAlertState extends State<MissedAlert> {
                         TextButton(
                           onPressed: () {
                             FunctionClass.changeLogState(missedAlertNum);
-                            setState(() {});
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.symmetric(

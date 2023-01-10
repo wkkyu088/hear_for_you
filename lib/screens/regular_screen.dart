@@ -41,12 +41,16 @@ class RegularScreenState extends State<RegularScreen>
     if (Platform.isAndroid) {
       PermissionCheckClass.AndroidAlertPermissionCheck(context);
       PermissionCheckClass.AndroidSystemAlertWindowPermissionCheck(context);
+      PermissionCheckClass.AndroidMicPermissionCheck(context);
+      PermissionCheckClass.AndroidRecognitionPermissionCheck(context);
       // // Mic, Recognition 체크
       // PermissionCheckClass.AndroidMicPermissionCheck(context);
       // PermissionCheckClass.AndroidRecognitionPermissionCheck(context);
     } else {
       // ios라면
       PermissionCheckClass.IOSAlertPermissionCheck(context);
+      PermissionCheckClass.IOSMicPermissionCheck(context);
+      PermissionCheckClass.IOSRecognitionPermissionCheck(context);
     }
     controller = AnimationController(
       duration: const Duration(seconds: 20),
