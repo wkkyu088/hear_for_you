@@ -21,7 +21,6 @@ class RecordModule extends ChangeNotifier {
 
   String _mPath = '';
   FlutterSoundRecorder? mRecorder = FlutterSoundRecorder(logLevel: Level.error);
-  bool _mRecorderIsInited = false;
   late StreamSubscription<RecordingDisposition> _recorderSubscription;
 
   Future<void> initState() async {
@@ -36,7 +35,6 @@ class RecordModule extends ChangeNotifier {
     }
     _mPath = "${dir?.path}/audio.wav";
     openTheRecorder().then((value) {
-      _mRecorderIsInited = true;
       mRecorder!.setSubscriptionDuration(const Duration(seconds: 1));
       notifyListeners();
     });
@@ -74,7 +72,6 @@ class RecordModule extends ChangeNotifier {
       androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
       androidWillPauseWhenDucked: true,
     ));
-    _mRecorderIsInited = true;
   }
 
   void setContext(BuildContext context) {
@@ -84,16 +81,16 @@ class RecordModule extends ChangeNotifier {
   void onData(RecordingDisposition event) async {
     double? decibel = event.decibels;
     debugPrint('debugging : decibel $decibel');
-    if (decibel == beforeDb && isRecording) {
+    if (decibel == beforeDb) {
       debugPrint('debugging : 동일 데시벨 $beforeDb');
       return;
-    } else if (decibel! >= dB && isRecording) {
+    } else if (decibel! >= dB) {
       beforeDb = decibel;
       debugPrint('debugging : over $dB dB');
       debugPrint('debugging : 저장 경로 $_mPath');
 
       await stop();
-      FunctionClass.showPopupTEMP(_context);
+      FunctionClass.showModelProcess(_context);
     }
   }
 

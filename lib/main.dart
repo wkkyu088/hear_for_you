@@ -137,6 +137,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       statusBarBrightness: darkMode ? Brightness.dark : Brightness.light,
     ));
 
+    context.read<RecordModule>().setContext(context);
+
     Widget bottomNavBar() {
       return BottomNavigationBar(
         backgroundColor: darkMode ? kBlack : kGrey1,

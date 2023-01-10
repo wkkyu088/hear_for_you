@@ -67,7 +67,6 @@ class RegularScreenState extends State<RegularScreen>
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final double screenWidth = MediaQuery.of(context).size.width;
-    context.read<RecordModule>().setContext(context);
 
     final waveController = SiriWaveController(
       amplitude: regularValue ? 1 : 0,

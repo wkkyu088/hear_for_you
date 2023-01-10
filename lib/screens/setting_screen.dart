@@ -41,7 +41,6 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
-    context.read<RecordModule>().setContext(context);
 
     // 설정 타이틀의 스타일
     TextStyle settingTitleStyle = TextStyle(
