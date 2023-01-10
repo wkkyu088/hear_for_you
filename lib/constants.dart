@@ -31,10 +31,10 @@ List<String> logList = [];
 List<String> logToServer = [];
 
 final profileItems = [
-  "중증 청각장애 (2~3급)",
+  "중증 청각장애 (1~3급)",
   "경증 청각장애 (4~6급)",
-  "청각중복장애 (시각 등)",
-  "직접 설정",
+  // "청각중복장애 (시각 등)",
+  // "직접 설정",
 ];
 List<String> caseTitle = ['긴급 재난', '실외 위험', '실내 위험'];
 List<String> detailTitle = ['진동 알림', '플래시 알림', '전체화면 알림'];

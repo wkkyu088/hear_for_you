@@ -7,9 +7,9 @@ import '../constants.dart';
 // 개인 설정의 장애 정도 선택 모달
 CupertinoActionSheet profileModalBuilder(BuildContext context) {
   final items = [
-    "중증 청각장애 (2~3급)",
+    "중증 청각장애 (1~3급)",
     "경증 청각장애 (4~6급)",
-    "청각중복장애 (시각 등)",
+    // "청각중복장애 (시각 등)",
     // "직접 설정",
   ];
 
@@ -28,11 +28,19 @@ CupertinoActionSheet profileModalBuilder(BuildContext context) {
                     ))
                 .toList(),
             onSelectedItemChanged: (index) async {
-              profileValue = index;
               final SharedPreferences pref =
                   await SharedPreferences.getInstance();
               pref.setInt('profileValue', profileValue);
-              print("Selected Item: $profileValue");
+              if (profileValue == 0) {
+                await pref.setDouble('dB', 60);
+              } else if (profileValue == 1) {
+                await pref.setDouble('dB', 80);
+              }
+
+              profileValue = index;
+              dB = profileValue == 0 ? 60 : 80;
+
+              print("Selected Item: $profileValue $dB");
             },
           ))
     ],
