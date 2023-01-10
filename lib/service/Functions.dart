@@ -498,6 +498,9 @@ class FunctionClass {
           );
         }
       } else {
+        if ( val == "null") {
+          val = '소리';
+        }
         Toast.show('$val가 감지되었습니다.', duration: 5, gravity: Toast.center);
         Timer(const Duration(seconds: 5), () {
           context.read<RecordModule>().record();
