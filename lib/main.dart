@@ -198,7 +198,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 ToastContext().init(context);
 
                 Toast.show('5초 뒤 상시모드가 시작됩니다.',
-                    duration: Toast.lengthLong, gravity: Toast.center);
+                    duration: Toast.lengthLong, gravity: Toast.bottom);
                 debugPrint('debugging : 상시모드 재접근 rV $regularValue');
 
                 context.read<RecordModule>().record();
@@ -211,7 +211,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Toast.show(
                   '상시모드가 잠시 중단됩니다.',
                   duration: Toast.lengthLong,
-                  gravity: Toast.center,
+                  gravity: Toast.bottom,
                 );
                 context.read<RecordModule>().stop();
               }
