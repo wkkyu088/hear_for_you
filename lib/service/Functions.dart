@@ -62,6 +62,7 @@ class FunctionClass {
     List<num> numList;
     for (int i = setting.logList.length - 1; i >= 0; i--) {
       if (setting.logList[i].split(",")[0] != "unknown" &&
+          setting.logList[i].split(",")[0] != "null" &&
           setting.logList[i].split(",")[2] == "false") {
         return i;
       }
@@ -73,6 +74,7 @@ class FunctionClass {
     int returnValue = 0;
     for (int i = setting.logList.length - 1; i >= 0; i--) {
       if (setting.logList[i].split(",")[0] != "unknown" &&
+          setting.logList[i].split(",")[0] != "null" &&
           setting.logList[i].split(",")[2] == "false") {
         returnValue += 1;
       }
@@ -236,15 +238,16 @@ class FunctionClass {
         setting.logList.removeAt(0);
       }
 
-      // 판단 이후 너무 자주 시끄럽다면 데시벨 10 높이기
-      // 이제 자주 시끄럽지 않다면 데시벨 10 다시 내리기
-      if (raiseDecibelCheck() && !dB_raised) {
-        dB_raised = true;
-        setting.dB += 10;
-      } else if (!raiseDecibelCheck() && dB_raised) {
-        dB_raised = false;
-        setting.dB -= 10;
-      }
+      // // @@@@@@@@ For Release 1.1
+      // // 판단 이후 너무 자주 시끄럽다면 데시벨 10 높이
+      // // 이제 자주 시끄럽지 않다면 데시벨 10 다시 내리기
+      // if (raiseDecibelCheck() && !dB_raised) {
+      //   dB_raised = true;
+      //   setting.dB += 10;
+      // } else if (!raiseDecibelCheck() && dB_raised) {
+      //   dB_raised = false;
+      //   setting.dB -= 10;
+      // }
 
       // 이후 SharedPreference에 저장
       pref.setStringList("logList", setting.logList);
@@ -464,12 +467,13 @@ class FunctionClass {
     Future<String> prediction = FunctionClass.getPrediction();
 
     ToastContext().init(context);
-    Toast.show('소리를 분석 중입니다.', duration: Toast.lengthShort, gravity: Toast.top);
+    Toast.show('소리를 분석 중입니다.',
+        duration: Toast.lengthShort, gravity: Toast.center);
 
     prediction.then((val) async {
       // --------------- cases[2] 전체 화면 알림 설정이 true이면 알림을 울리게 ---------------
       // MissedAlertState.onScreen = false;
-      Toast.show('분석을 완료하였습니다.', duration: 5, gravity: Toast.top);
+      Toast.show('분석을 완료하였습니다.', duration: 5, gravity: Toast.center);
 
       if (cases[2]) {
         if (Platform.isAndroid) {
@@ -494,7 +498,7 @@ class FunctionClass {
           );
         }
       } else {
-        Toast.show('$val가 감지되었습니다.', duration: 5, gravity: Toast.top);
+        Toast.show('$val가 감지되었습니다.', duration: 5, gravity: Toast.center);
         Timer(const Duration(seconds: 5), () {
           context.read<RecordModule>().record();
         });
@@ -529,7 +533,7 @@ class FunctionClass {
           }
         } else {
           Toast.show('${dB.round()} dB 이상의 소리의 소리를 감지하였습니다.',
-              duration: 5, gravity: Toast.top);
+              duration: 5, gravity: Toast.center);
           Timer(const Duration(seconds: 5), () {
             context.read<RecordModule>().record();
           });
